@@ -1,0 +1,504 @@
+<!-- Full HTML with Team, Testimonials, and Contact Sections -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scroll Studio – SaaS Video Agency</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #0d0d0d;
+      color: #f0f0f0;
+      text-align: center;
+      background-image: url('Illustration1.jpg');
+      background-size: cover;
+      background-attachment: fixed;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    header {
+      background: linear-gradient(90deg, #111, #222);
+      color: #fff;
+      padding: 15px 30px;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    header nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    header h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    header ul {
+      list-style: none;
+      display: flex;
+    }
+
+    header ul li {
+      margin: 0 15px;
+    }
+
+    header ul li a {
+      color: #f0f0f0;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+
+    header ul li a:hover {
+      color: #00ffff;
+    }
+
+    section {
+      padding: 120px 20px 80px;
+      min-height: 100vh;
+    }
+
+    .hero {
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.85), rgba(10, 10, 30, 0.85));
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .hero-content h1 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+    }
+
+    .hero-content p {
+      font-size: 1.2rem;
+      max-width: 700px;
+      margin: 0 auto 30px;
+    }
+
+    .hero-content button {
+      background: #00ffff;
+      border: none;
+      color: #000;
+      padding: 10px 25px;
+      margin: 10px;
+      font-weight: bold;
+      font-size: 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .hero-content button:hover {
+      background: #00cccc;
+    }
+
+    .why-choose h2,
+    .portfolio h2,
+    .team h2,
+    .testimonial-section h2,
+    .contact-section h2 {
+      color: #00ffff;
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+
+    .why-choose .features,
+    .team .features,
+    .testimonial-section .features {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 30px;
+    }
+
+    .feature {
+      background-color: #1a1a1a;
+      padding: 20px;
+      border-radius: 10px;
+      width: 250px;
+      box-shadow: 0 4px 10px rgba(0, 255, 255, 0.1);
+    }
+
+    .feature img {
+      width: 100%;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    .feature h3 {
+      color: #00ffff;
+    }
+
+    .portfolio {
+      background: rgba(0, 0, 0, 0.6);
+      padding: 80px 20px;
+      position: relative;
+    }
+
+    .portfolio h2 {
+      font-size: 2.5rem;
+      color: #00ffff;
+      margin-bottom: 20px;
+    }
+
+    .portfolio p {
+      margin-bottom: 30px;
+      color: #ccc;
+    }
+
+    .portfolio-container {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .portfolio-grid {
+      display: flex;
+      transition: transform 0.5s ease;
+      gap: 20px;
+      justify-content: center;
+      scroll-behavior: smooth;
+      overflow-x: scroll;
+      scroll-snap-type: x mandatory;
+      padding-bottom: 20px;
+    }
+
+    .portfolio-item {
+      flex: 0 0 320px;
+      background: #1a1a1a;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 255, 255, 0.05);
+      overflow: hidden;
+      scroll-snap-align: center;
+    }
+
+    .portfolio-item iframe {
+      width: 100%;
+      height: 180px;
+      border: none;
+    }
+
+    .portfolio-item .caption {
+      padding: 15px;
+      color: #fff;
+    }
+
+    .portfolio-arrows {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+
+    .portfolio-arrows button {
+      background: rgba(0, 0, 0, 0.5);
+      color: #fff;
+      border: none;
+      padding: 10px;
+      font-size: 1.5rem;
+      border-radius: 50%;
+      cursor: pointer;
+      pointer-events: all;
+      transition: background 0.3s;
+    }
+
+    .portfolio-arrows button:hover {
+      background: rgba(0, 0, 0, 0.8);
+    }
+    .contact-section form {
+      max-width: 600px;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .contact-section input,
+    .contact-section textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+      border: none;
+      background: #1a1a1a;
+      color: #fff;
+    }
+
+    .contact-section button {
+      background: #00ffff;
+      color: #000;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    footer {
+      background: #000;
+      color: #888;
+      padding: 40px 0;
+    }
+
+    footer ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    footer ul li {
+      display: inline;
+      margin: 0 10px;
+    }
+
+    footer ul li a {
+      color: #fff;
+      text-decoration: none;
+    }
+
+    footer ul li a:hover {
+      color: #00ffff;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <h1>Scroll Studio</h1>
+      <ul>
+        <li><a href="#hero">Home</a></li>
+        <li><a href="#portfolio">Portfolio</a></li>
+        <li><a href="#team">Team</a></li>
+        <li><a href="#testimonials">Testimonials</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section id="hero" class="hero">
+    <div class="hero-content">
+      <h1>We Make SaaS Scroll-Stopping</h1>
+      <p>Explainer videos, product launches, onboarding flows—we help SaaS companies tell their story, drive conversions, and scale with video that hits home.</p>
+      <button>Watch the Showreel</button>
+      <button>Book a Call</button>
+    </div>
+  </section>
+
+  <section class="why-choose">
+    <h2>Why Choose Scroll Studio?</h2>
+    <div class="features">
+      <div class="feature">
+        <h3>SaaS-Only Focus</h3>
+        <p>We know your audience. We specialize in translating technical features into engaging stories that convert.</p>
+      </div>
+      <div class="feature">
+        <h3>Conversion-Driven</h3>
+        <p>Our videos aren’t just pretty—they're designed to onboard users, drive signups, and grow retention.</p>
+      </div>
+      <div class="feature">
+        <h3>Speed & Quality</h3>
+        <p>We deliver high-quality, custom motion graphics—on time, on point, and on brand.</p>
+      </div>
+      <div class="feature">
+        <h3>Full Service</h3>
+        <p>Scriptwriting, storyboarding, animation, editing, and delivery. We handle everything end to end.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="portfolio">
+    <h2>Our Work</h2>
+    <p>Check out some of our best videos</p>
+    <div class="portfolio-container">
+      <div class="portfolio-arrows">
+        <button id="prevBtn">&#8592;</button>
+        <button id="nextBtn">&#8594;</button>
+      </div>
+      <div class="portfolio-grid" id="portfolioGrid">
+        <div class="portfolio-item">
+          <iframe src="https://www.youtube.com/embed/video1" allowfullscreen></iframe>
+          <div class="caption">Explainer – Productivity SaaS</div>
+        </div>
+        <div class="portfolio-item">
+            <iframe src="https://www.youtube.com/embed/video1" allowfullscreen></iframe>
+            <div class="caption">Explainer – Productivity SaaS</div>
+          </div>
+          <div class="portfolio-item">
+            <iframe src="https://www.youtube.com/embed/video1" allowfullscreen></iframe>
+            <div class="caption">Explainer – Productivity SaaS</div>
+          </div>
+          <div class="portfolio-item">
+            <iframe src="https://www.youtube.com/embed/video1" allowfullscreen></iframe>
+            <div class="caption">Explainer – Productivity SaaS</div>
+          </div>
+          <div class="portfolio-item">
+            <iframe src="https://www.youtube.com/embed/video1" allowfullscreen></iframe>
+            <div class="caption">Explainer – Productivity SaaS</div>
+          </div>
+          <div class="portfolio-item">
+            <iframe src="https://www.youtube.com/embed/video1" allowfullscreen></iframe>
+            <div class="caption">Explainer – Productivity SaaS</div>
+          </div>
+          <div class="portfolio-item">
+            <iframe src="https://www.youtube.com/embed/video1" allowfullscreen></iframe>
+            <div class="caption">Explainer – Productivity SaaS</div>
+          </div>
+        <div class="portfolio-item">
+          <iframe src="https://www.youtube.com/embed/video2" allowfullscreen></iframe>
+          <div class="caption">Demo – Fintech Tool</div>
+        </div>
+        <div class="portfolio-item">
+          <iframe src="https://www.youtube.com/embed/video3" allowfullscreen></iframe>
+          <div class="caption">Launch – AI Assistant</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const grid = document.getElementById('portfolioGrid');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+
+    nextBtn.addEventListener('click', () => {
+      grid.scrollBy({ left: 340, behavior: 'smooth' });
+    });
+
+    prevBtn.addEventListener('click', () => {
+      grid.scrollBy({ left: -340, behavior: 'smooth' });
+    });
+  </script>
+
+  <section id="team" class="team">
+    <h2>Meet the Team</h2>
+    <div class="features">
+      <div class="feature">
+        <img src="https://via.placeholder.com/150" alt="Team Member" />
+        <h3>Alice Johnson</h3>
+        <p>Creative Director</p>
+      </div>
+      <div class="feature">
+        <img src="https://via.placeholder.com/150" alt="Team Member" />
+        <h3>Mark Lee</h3>
+        <p>Motion Designer</p>
+      </div>
+      <div class="feature">
+        <img src="https://via.placeholder.com/150" alt="Team Member" />
+        <h3>Sara Kim</h3>
+        <p>Scriptwriter</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="testimonials" class="testimonial-section">
+    <h2>What Clients Say</h2>
+    <div class="features">
+      <div class="feature">
+        <p>“Scroll Studio helped us simplify a complex product. The video boosted our signups by 40%.”</p>
+        <h3>– Nina Patel, SaaS Founder</h3>
+      </div>
+      <div class="feature">
+        <p>“One of the best investments we’ve made. The onboarding video cut support tickets in half.”</p>
+        <h3>– Carlos Mendez, Product Manager</h3>
+      </div>
+      <div class="feature">
+        <p>“We love working with this team. Fast, professional, and creative.”</p>
+        <h3>– Jae Min, Head of Growth</h3>
+      </div>
+    </div>
+  </section>
+
+ <section id="contact" class="contact-section">
+  <h2>Contact Us</h2>
+  <p>We’d love to hear about your product. Let’s make something great together.</p>
+  <form style="
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: left;
+  ">
+    <label for="name" style="display:block; margin-bottom: 5px; font-weight: bold;">Full Name</label>
+    <input type="text" id="name" name="name" required style="
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.05);
+      color: #fff;
+      outline: none;
+    " />
+
+    <label for="email" style="display:block; margin-bottom: 5px; font-weight: bold;">Email</label>
+    <input type="email" id="email" name="email" required style="
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.05);
+      color: #fff;
+      outline: none;
+    " />
+
+    <label for="message" style="display:block; margin-bottom: 5px; font-weight: bold;">Message</label>
+    <textarea id="message" name="message" rows="5" required style="
+      width: 100%;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.05);
+      color: #fff;
+      margin-bottom: 20px;
+      outline: none;
+    "></textarea>
+
+    <button type="submit" style="
+      background: #00ffff;
+      color: #000;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+    ">Send Message</button>
+  </form>
+</section>
+
+
+  <footer>
+    <ul>
+      <li><a href="#hero">Home</a></li>
+      <li><a href="#portfolio">Portfolio</a></li>
+      <li><a href="#team">Team</a></li>
+      <li><a href="#testimonials">Testimonials</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <p>&copy; 2025 Scroll Studio. All Rights Reserved.</p>
+  </footer>
+</body>
+</html>
