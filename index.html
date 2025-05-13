@@ -89,7 +89,19 @@
       max-width: 700px;
       margin: 0 auto 30px;
     }
+     .hero-video {
+      width: 100%;
+      max-width: 800px;
+      margin-bottom: 30px;
+      border-radius: 15px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
 
+    .hero-video video {
+      width: 100%;
+      border-radius: 15px;
+    }
     .hero-content button {
       background: #00ffff;
       border: none;
@@ -293,7 +305,9 @@
     <div class="hero-content">
       <h1>We Make SaaS Scroll-Stopping</h1>
       <p>Explainer videos, product launches, onboarding flows—we help SaaS companies tell their story, drive conversions, and scale with video that hits home.</p>
-      <button>Watch the Showreel</button>
+      <div class="hero-video">
+        <video src="your-hero-video.mp4" autoplay muted loop></video>
+      </div>
       <!-- Calendly link widget begin -->
       <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
       <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
