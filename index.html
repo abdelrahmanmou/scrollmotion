@@ -1,548 +1,271 @@
-<!-- Full HTML with Team, Testimonials, and Contact Sections -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Scroll Studio – SaaS Video Agency</title>
-  <script id="vtag-ai-js" async src="https://r2.leadsy.ai/tag.js" data-pid="k6sdEH2Yi03PIPt7" data-version="062024"></script>
-  <meta name="p:domain_verify" content="fd5abe22b6c6bd799c821eefd63b977e"/>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      scroll-behavior: smooth;
-    }
+  <title>Scroll Studio – Premium Video Agency</title>
 
-    body {
-       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(180deg, #1a032a, #0d0d0d);
-      color: #f0f0f0;
-      text-align: center;
-      background-attachment: fixed;
-    }
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700&display=swap" rel="stylesheet">
 
-    header {
-      background: linear-gradient(90deg, #111, #222);
-      color: #fff;
-      padding: 15px 30px;
-      position: fixed;
-      width: 100%;
-      top: 0;
-      z-index: 1000;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-    }
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/style.css">
 
-    header nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    header h1 {
-      font-size: 1.5rem;
-      font-weight: 700;
-    }
-
-    header ul {
-      list-style: none;
-      display: flex;
-    }
-
-    header ul li {
-      margin: 0 15px;
-    }
-
-    header ul li a {
-      color: #f0f0f0;
-      text-decoration: none;
-      font-weight: bold;
-      transition: color 0.3s;
-    }
-
-    header ul li a:hover {
-      color: #00ffff;
-    }
-
-    section {
-      padding: 120px 20px 80px;
-      min-height: 100vh;
-    }
-
-    .hero {
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      text-align: center;
-    }
-
-    .hero-content h1 {
-      font-size: 3rem;
-      margin-bottom: 20px;
-    }
-
-    .hero-content p {
-      font-size: 1.2rem;
-      max-width: 700px;
-      margin: 0 auto 30px;
-    }
-     .hero-video {
-      width: 100%;
-      max-width: 800px;
-      margin-bottom: 30px;
-      border-radius: 15px;
-      overflow: hidden;
-      border: 1px solid rgba(255,255,255,0.1);
-    }
-
-    .hero-video video {
-      width: 100%;
-      border-radius: 15px;
-    }
-    .hero-content button {
-      background: #00ffff;
-      border: none;
-      color: #000;
-      padding: 10px 25px;
-      margin: 10px;
-      font-weight: bold;
-      font-size: 1rem;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-
-    .hero-content button:hover {
-      background: #00cccc;
-    }
-    
-    .why-choose h2,
-    .portfolio h2,
-    .team h2,
-    .testimonial-section h2,
-    .contact-section h2 {
-      color: #00ffff;
-      font-size: 2.5rem;
-      margin-bottom: 20px;
-    }
-
-    .why-choose .features,
-    .team .features,
-    .testimonial-section .features {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 30px;
-      margin-top: 30px;
-    }
-
-    .feature {
-      background-color: #1a1a1a;
-      padding: 20px;
-      border-radius: 10px;
-      width: 250px;
-      box-shadow: 0 4px 10px rgba(0, 255, 255, 0.1);
-    }
-
-    .feature img {
-      width: 100%;
-      border-radius: 8px;
-      margin-bottom: 10px;
-    }
-
-    .feature h3 {
-      color: #00ffff;
-    }
-
-    .portfolio {
-      background: linear-gradient(180deg, #1a032a, #0d0d0d);
-      padding: 80px 20px;
-      position: relative;
-    }
-
-    .portfolio h2 {
-      font-size: 2.5rem;
-      color: #00ffff;
-      margin-bottom: 20px;
-    }
-
-    .portfolio p {
-      margin-bottom: 30px;
-      color: #ccc;
-    }
-
-    .portfolio-container {
-      position: relative;
-      overflow: hidden;
-    }
-
-    .portfolio-grid {
-      display: flex;
-      transition: transform 0.5s ease;
-      gap: 20px;
-      justify-content: center;
-      scroll-behavior: smooth;
-      overflow-x: scroll;
-      scroll-snap-type: x mandatory;
-      padding-bottom: 20px;
-    }
-
-    .portfolio-item {
-      flex: 0 0 320px;
-      background: #1a1a1a;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0, 255, 255, 0.05);
-      overflow: hidden;
-      scroll-snap-align: center;
-    }
-
-    .portfolio-item iframe {
-      width: 100%;
-      height: 180px;
-      border: none;
-    }
-
-    .portfolio-item .caption {
-      padding: 15px;
-      color: #fff;
-    }
-
-    .portfolio-arrows {
-      position: absolute;
-      top: 50%;
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      transform: translateY(-50%);
-      pointer-events: none;
-    }
-
-    .portfolio-arrows button {
-      background: rgba(0, 0, 0, 0.5);
-      color: #fff;
-      border: none;
-      padding: 10px;
-      font-size: 1.5rem;
-      border-radius: 50%;
-      cursor: pointer;
-      pointer-events: all;
-      transition: background 0.3s;
-    }
-
-    .portfolio-arrows button:hover {
-      background: rgba(0, 0, 0, 0.8);
-    }
-    .contact-section form {
-      max-width: 600px;
-      margin: 0 auto;
-      text-align: left;
-    }
-    /* Container & Section Styling */
-    .testimonials-section {
-      padding: 4rem 1rem;
-      background: linear-gradient(180deg, #1a032a, #0d0d0d);
-      text-align: center;
-    }
-    .section-title {
-      font-size: 2rem;
-      margin-bottom: 2rem;
-      color: #fff;
-    }
-    
-    /* Layout */
-    .testimonials-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 2rem;
-      align-items: start;
-      justify-items: center;
-    }
-    
-    /* Glass-card */
-    .glass-card {
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 16px;
-      padding: 1rem;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-      width: 100%;
-      max-width: 300px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    
-    /* Video Styling */
-    .glass-card video {
-      width: 100%;
-      aspect-ratio: 9 / 16;  /* vertical orientation */
-      object-fit: cover;
-      border-radius: 12px;
-      margin-bottom: 0.75rem;
-    }
-    
-    /* Client Name */
-    .client-name {
-      margin: 0;
-      font-size: 1rem;
-      color: #fff;
-      font-weight: 500;
-    }
-
-    .contact-section input,
-    .contact-section textarea {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 15px;
-      border-radius: 5px;
-      border: none;
-      background: #1a1a1a;
-      color: #fff;
-    }
-
-    .contact-section button {
-      background: #00ffff;
-      color: #000;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    footer {
-      background: #000;
-      color: #888;
-      padding: 40px 0;
-    }
-
-    footer ul {
-      list-style: none;
-      padding: 0;
-    }
-
-    footer ul li {
-      display: inline;
-      margin: 0 10px;
-    }
-
-    footer ul li a {
-      color: #fff;
-      text-decoration: none;
-    }
-
-    footer ul li a:hover {
-      color: #00ffff;
-    }
-  </style>
+  <!-- Scripts -->
+  <script src="js/script.js" defer></script>
 </head>
+
 <body>
+
+  <!-- Header -->
   <header>
-    <nav>
-      <h1>Scroll Studio</h1>
-      <ul>
-        <li><a href="#hero">Home</a></li>
-        <li><a href="#portfolio">Portfolio</a></li>
-        <li><a href="#team">Team</a></li>
-        <li><a href="#testimonials">Testimonials</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-    </nav>
+    <div class="container">
+      <nav>
+        <a href="#" class="logo">Scroll<span class="text-gradient">Studio</span></a>
+        <div class="nav-links">
+          <a href="#about">About</a>
+          <a href="#portfolio">Portfolio</a>
+          <a href="#shorts">Shorts</a>
+          <a href="#motion">Motion</a>
+          <a href="#contact" class="btn btn-primary" style="padding: 8px 20px; font-size: 0.8rem;">Book Call</a>
+        </div>
+      </nav>
+    </div>
   </header>
 
-  <section id="hero" class="hero">
-    <div class="hero-content">
-      <h1>We Make SaaS Scroll-Stopping</h1>
-      <p>Explainer videos, product launches, onboarding flows—we help SaaS companies tell their story, drive conversions, and scale with video that hits home.</p>
-      <div class="hero-video">
-        <video src="Cryptexpromo.mp4" controls muted loop playsinline></video>
-      </div>
-      <!-- Calendly link widget begin -->
-      <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
-      <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="container hero-content fade-in">
+      <span class="hero-subtitle">Premium Video Editing Agency</span>
+      <h1>We Make SaaS <br><span class="text-gradient">Scroll-Stopping</span></h1>
+      <p>Explainer videos, product launches, and onboarding flows that convert. We help SaaS companies tell their story
+        and scale with video.</p>
 
-      <button onclick="Calendly.initPopupWidget({url: 'https://calendly.com/abdo-moustafa-1998/new-meeting'}); return false;">
-      Book a Call
-      </button>
-    </div>
-  </section>
+      <div class="hero-buttons">
+        <a href="#portfolio" class="btn btn-primary">View Work</a>
+        <a href="#contact" class="btn btn-outline">Get in Touch</a>
+      </div>
 
-  <section class="why-choose">
-    <h2>Why Choose Scroll Studio?</h2>
-    <div class="features">
-      <div class="feature">
-        <h3>SaaS-Only Focus</h3>
-        <p>We know your audience. We specialize in translating technical features into engaging stories that convert.</p>
-      </div>
-      <div class="feature">
-        <h3>Conversion-Driven</h3>
-        <p>Our videos aren’t just pretty—they're designed to onboard users, drive signups, and grow retention.</p>
-      </div>
-      <div class="feature">
-        <h3>Speed & Quality</h3>
-        <p>We deliver high-quality, custom motion graphics—on time, on point, and on brand.</p>
-      </div>
-      <div class="feature">
-        <h3>Full Service</h3>
-        <p>Scriptwriting, storyboarding, animation, editing, and delivery. We handle everything end to end.</p>
+      <div class="hero-video-wrapper fade-in">
+        <video src="assets/Cryptexpromo.mp4" autoplay muted loop playsinline width="100%"></video>
       </div>
     </div>
   </section>
 
-  <section class="portfolio">
-    <h2>Our Work</h2>
-    <p>Check out some of our best videos</p>
-    <div class="portfolio-container">
-      <div class="portfolio-arrows">
-        <button id="prevBtn">&#8592;</button>
-        <button id="nextBtn">&#8594;</button>
-      </div>
-      <div class="portfolio-grid" id="portfolioGrid">
-        <div class="portfolio-item">
-          <iframe src="https://www.youtube.com/embed/iMGmx4ZA7JI?si=ED0nmlmBm0aPnfyo" allowfullscreen></iframe>
-          <div class="caption">Explainer – Indie Crush</div>
+  <!-- About Section -->
+  <section id="about" class="section">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-text fade-in">
+          <h2>Meet the <span class="text-gradient">Creator</span></h2>
+          <p>Hi, I'm Abdelrahman. I'm a Creative Director and Motion Designer specializing in SaaS video content.</p>
+          <p>I combine technical understanding with creative storytelling to produce videos that not only look good but
+            drive actual business results. From complex software explainers to high-energy social media cuts, I handle
+            the entire production pipeline.</p>
+          <div class="stats" style="display: flex; gap: 30px; margin-top: 30px;">
+            <div>
+              <h3 class="text-gradient">50+</h3>
+              <p style="font-size: 0.9rem;">Projects Delivered</p>
+            </div>
+            <div>
+              <h3 class="text-gradient">100%</h3>
+              <p style="font-size: 0.9rem;">Client Satisfaction</p>
+            </div>
+          </div>
         </div>
-        <div class="portfolio-item">
-          <iframe src="https://www.youtube.com/embed/GgiPSq-xArE?si=nfmrndWpkpIBJj61" allowfullscreen></iframe>
-          <div class="caption">Explainer – Base Supply</div>
+        <div class="about-img fade-in">
+          <img src="assets/abdelrahman.JPG" alt="Abdelrahman - Creative Director">
         </div>
       </div>
     </div>
   </section>
 
+  <!-- Portfolio: Long Form -->
+  <section id="portfolio" class="section">
+    <div class="container">
+      <div class="text-center fade-in">
+        <h2>Long Form <span class="text-gradient">Content</span></h2>
+        <p>Deep dives, explainers, and product walkthroughs.</p>
+      </div>
 
-  <script>
-    const grid = document.getElementById('portfolioGrid');
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
+      <div class="portfolio-grid" style="margin-top: 40px;">
+        <!-- Item 1 -->
+        <div class="portfolio-card fade-in">
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/iMGmx4ZA7JI?si=ED0nmlmBm0aPnfyo" title="YouTube video player"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen></iframe>
+          </div>
+          <div class="card-content">
+            <h3 class="card-title">Indie Crush Explainer</h3>
+            <p style="font-size: 0.9rem;">Motion Graphics • Explainer</p>
+          </div>
+        </div>
 
-    nextBtn.addEventListener('click', () => {
-      grid.scrollBy({ left: 340, behavior: 'smooth' });
-    });
-
-    prevBtn.addEventListener('click', () => {
-      grid.scrollBy({ left: -340, behavior: 'smooth' });
-    });
-  </script>
-
-  <section id="team" class="team">
-    <h2>Meet the Team</h2>
-    <div class="features">
-      <div class="feature">
-        <img src="abdelrahman.JPG" alt="Team Member" />
-        <h3>Abdelrahman</h3>
-        <p>Creative Director / Motion Designer</p>
+        <!-- Item 2 -->
+        <div class="portfolio-card fade-in">
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/GgiPSq-xArE?si=nfmrndWpkpIBJj61" title="YouTube video player"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen></iframe>
+          </div>
+          <div class="card-content">
+            <h3 class="card-title">Base Supply Overview</h3>
+            <p style="font-size: 0.9rem;">Product Demo • Editing</p>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
- <!-- Testimonials Section -->
-<section id="testimonials" class="testimonials-section">
-  <h2 class="section-title">What Our Clients Say</h2>
-  <div class="testimonials-container">
-    <!-- Testimonial Card -->
-    <div class="glass-card testimonial">
-      <video src="alexsaint.mp4" controls muted loop playsinline></video>
-      <p class="client-name">Alex Saint @ Indie Crush</p>
+  <!-- Portfolio: Shorts -->
+  <section id="shorts" class="section" style="background: linear-gradient(to bottom, var(--bg-dark), #0a0a0a);">
+    <div class="container">
+      <div class="text-center fade-in">
+        <h2>Shorts & <span class="text-gradient">Reels</span></h2>
+        <p>High-retention vertical content for TikTok, Instagram, and YouTube Shorts.</p>
+      </div>
+
+      <div class="shorts-container fade-in">
+        <div class="shorts-track">
+          <!-- Short 1 -->
+          <div class="short-card">
+            <video src="assets/alexsaint.mp4" controls muted loop playsinline></video>
+          </div>
+          <!-- Short 2 -->
+          <div class="short-card">
+            <video src="assets/dean.MP4" controls muted loop playsinline></video>
+          </div>
+          <!-- Placeholder Short 3 -->
+          <div class="short-card"
+            style="display: flex; align-items: center; justify-content: center; background: #111;">
+            <p style="color: #555;">More Coming Soon</p>
+          </div>
+          <!-- Placeholder Short 4 -->
+          <div class="short-card"
+            style="display: flex; align-items: center; justify-content: center; background: #111;">
+            <p style="color: #555;">More Coming Soon</p>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="glass-card testimonial">
-      <video src="dean.MP4" controls muted loop playsinline></video>
-      <p class="client-name">Michael @ Base Supply</p>
+  </section>
+
+  <!-- Portfolio: Motion Graphics -->
+  <section id="motion" class="section">
+    <div class="container">
+      <div class="text-center fade-in">
+        <h2>Motion <span class="text-gradient">Graphics</span></h2>
+        <p>Visualizing complex ideas through animation.</p>
+      </div>
+
+      <div class="motion-grid" style="margin-top: 40px;">
+        <!-- Reusing hero video as a motion example since it's a promo -->
+        <div class="portfolio-card fade-in">
+          <div class="video-container">
+            <video src="assets/Cryptexpromo.mp4" controls muted loop playsinline
+              style="width: 100%; height: 100%; object-fit: cover; position: absolute;"></video>
+          </div>
+          <div class="card-content">
+            <h3 class="card-title">Cryptex Promo</h3>
+            <p style="font-size: 0.9rem;">3D Motion • Branding</p>
+          </div>
+        </div>
+      </div>
     </div>
-   
-    <!-- Repeat for more testimonials -->
-  </div>
-</section>
+  </section>
 
+  <!-- Testimonials -->
+  <section id="testimonials" class="section">
+    <div class="container">
+      <div class="text-center fade-in">
+        <h2>Client <span class="text-gradient">Love</span></h2>
+      </div>
 
- <section id="contact" class="contact-section">
-  <h2>Contact Us</h2>
-  <p>We’d love to hear about your product. Let’s make something great together.</p>
-  <form
-    action="mailto:abdelrahman@scrollmotion.site"
-    method="post"
-    enctype="text/plain"
-    style="
-      max-width: 600px;
-      margin: 40px auto;
-      padding: 30px;
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 20px;
-      backdrop-filter: blur(20px);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      text-align: left;
-    "
-  >
-    <label for="name" style="display:block; margin-bottom: 5px; font-weight: bold;">
-      Full Name
-    </label>
-    <input
-      type="text"
-      id="name"
-      name="Full Name"
-      required
-      style="
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 20px;
-        border-radius: 10px;
-        border: 1px solid rgba(255,255,255,0.1);
-        background: rgba(255,255,255,0.05);
-        color: #fff;
-        outline: none;
-      "
-    />
+      <div class="testimonials-grid" style="margin-top: 40px;">
+        <div class="testimonial-card fade-in">
+          <video src="assets/alexsaint.mp4" class="client-video" controls muted></video>
+          <h4>Alex Saint</h4>
+          <p style="font-size: 0.9rem; color: var(--accent-primary);">Indie Crush</p>
+          <p style="font-size: 0.9rem; margin-top: 10px;">"Incredible work on the explainer video. The motion graphics
+            were top notch."</p>
+        </div>
 
-    <label for="email" style="display:block; margin-bottom: 5px; font-weight: bold;">
-      Email
-    </label>
-    <input
-      type="email"
-      id="email"
-      name="Email"
-      required
-      style="
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 20px;
-        border-radius: 10px;
-        border: 1px solid rgba(255,255,255,0.1);
-        background: rgba(255,255,255,0.05);
-        color: #fff;
-        outline: none;
-      "
-    />
+        <div class="testimonial-card fade-in">
+          <video src="assets/dean.MP4" class="client-video" controls muted></video>
+          <h4>Michael</h4>
+          <p style="font-size: 0.9rem; color: var(--accent-primary);">Base Supply</p>
+          <p style="font-size: 0.9rem; margin-top: 10px;">"Fast delivery and exactly what we needed for our product
+            launch."</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <label for="message" style="display:block; margin-bottom: 5px; font-weight: bold;">
-      Message
-    </label>
-    <textarea
-      id="message"
-      name="Message"
-      rows="5"
-      required
-      style="
-        width: 100%;
-        padding: 10px;
-        border-radius: 10px
+  <!-- Contact -->
+  <section id="contact" class="section">
+    <div class="container">
+      <div class="contact-wrapper fade-in">
+        <div class="text-center">
+          <h2>Let's <span class="text-gradient">Connect</span></h2>
+          <p>Ready to level up your video content? Book a call or drop a message.</p>
+        </div>
 
+        <form id="contact-form" action="https://formspree.io/f/mrbvnerz" method="POST" style="margin-top: 30px;">
+          <div class="form-group">
+            <label class="form-label">Name</label>
+            <input type="text" name="name" class="form-input" required placeholder="Your Name">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input type="email" name="email" class="form-input" required placeholder="your@email.com">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Message</label>
+            <textarea name="message" class="form-textarea" rows="5" required
+              placeholder="Tell me about your project..."></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
+          <div id="form-status" style="margin-top: 15px; text-align: center; font-size: 0.9rem;"></div>
+        </form>
 
+        <div class="text-center" style="margin-top: 20px;">
+          <p>Or book directly:</p>
+          <!-- Calendly Link -->
+          <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+          <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+          <button class="btn btn-outline"
+            onclick="Calendly.initPopupWidget({url: 'https://calendly.com/abdo-moustafa-1998/new-meeting'}); return false;">Schedule
+            a Call</button>
+        </div>
+      </div>
+    </div>
+  </section>
 
+  <!-- Footer -->
   <footer>
-    <ul>
-      <li><a href="#hero">Home</a></li>
-      <li><a href="#portfolio">Portfolio</a></li>
-      <li><a href="#team">Team</a></li>
-      <li><a href="#testimonials">Testimonials</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-    <p>&copy; 2025 Scroll Studio. All Rights Reserved.</p>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <h3>Scroll<span class="text-gradient">Studio</span></h3>
+          <p style="font-size: 0.9rem;">© 2025 All Rights Reserved.</p>
+        </div>
+        <div class="social-links">
+          <!-- Placeholder Social Icons -->
+          <a href="#" class="social-icon">IG</a>
+          <a href="#" class="social-icon">YT</a>
+          <a href="#" class="social-icon">LI</a>
+        </div>
+      </div>
+    </div>
   </footer>
+
 </body>
+
 </html>
