@@ -82,23 +82,34 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Shorts Scroll Buttons
-    const shortsTrack = document.querySelector('.shorts-track');
-    const prevBtn = document.querySelector('.scroll-btn.prev');
-    const nextBtn = document.querySelector('.scroll-btn.next');
+    const shortsSection = document.getElementById('shorts');
+    if (shortsSection) {
+        const shortsTrack = shortsSection.querySelector('.shorts-track');
+        const prevBtn = shortsSection.querySelector('.scroll-btn.prev');
+        const nextBtn = shortsSection.querySelector('.scroll-btn.next');
 
-    if (shortsTrack && prevBtn && nextBtn) {
-        prevBtn.addEventListener('click', () => {
-            shortsTrack.scrollBy({
-                left: -300,
-                behavior: 'smooth'
-            });
-        });
+        if (shortsTrack && prevBtn && nextBtn) {
+            console.log('Shorts scroll buttons initialized');
 
-        nextBtn.addEventListener('click', () => {
-            shortsTrack.scrollBy({
-                left: 300,
-                behavior: 'smooth'
+            prevBtn.addEventListener('click', (e) => {
+                e.preventDefault(); // Prevent any default button behavior
+                console.log('Prev clicked');
+                shortsTrack.scrollBy({
+                    left: -320, // Scroll by card width + gap
+                    behavior: 'smooth'
+                });
             });
-        });
+
+            nextBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                console.log('Next clicked');
+                shortsTrack.scrollBy({
+                    left: 320,
+                    behavior: 'smooth'
+                });
+            });
+        } else {
+            console.warn('Shorts elements not found:', { shortsTrack, prevBtn, nextBtn });
+        }
     }
 });
