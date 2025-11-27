@@ -75,8 +75,30 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
             } catch (error) {
-                status.innerHTML = '<span style="color: #ff4444;">Oops! There was a problem submitting your form.</span>';
+                status.textContent = 'Oops! There was a network error.';
+                status.style.color = 'red';
             }
+        });
+    }
+
+    // Shorts Scroll Buttons
+    const shortsTrack = document.querySelector('.shorts-track');
+    const prevBtn = document.querySelector('.scroll-btn.prev');
+    const nextBtn = document.querySelector('.scroll-btn.next');
+
+    if (shortsTrack && prevBtn && nextBtn) {
+        prevBtn.addEventListener('click', () => {
+            shortsTrack.scrollBy({
+                left: -300,
+                behavior: 'smooth'
+            });
+        });
+
+        nextBtn.addEventListener('click', () => {
+            shortsTrack.scrollBy({
+                left: 300,
+                behavior: 'smooth'
+            });
         });
     }
 });
