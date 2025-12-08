@@ -112,4 +112,18 @@ document.addEventListener('DOMContentLoaded', () => {
             console.warn('Shorts elements not found:', { shortsTrack, prevBtn, nextBtn });
         }
     }
+    // Carousel Logic
+    const carousel = document.querySelector('#insights-carousel');
+    const prevBtn = document.querySelector('.prev-btn');
+    const nextBtn = document.querySelector('.next-btn');
+
+    if (carousel && prevBtn && nextBtn) {
+        prevBtn.addEventListener('click', () => {
+            carousel.scrollBy({ left: -340, behavior: 'smooth' });
+        });
+
+        nextBtn.addEventListener('click', () => {
+            carousel.scrollBy({ left: 340, behavior: 'smooth' });
+        });
+    }
 });

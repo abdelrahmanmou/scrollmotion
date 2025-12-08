@@ -499,6 +499,28 @@ footer {
     transition: var(--transition-fast);
 }
 
+.carousel-btn {
+    background: var(--bg-card);
+    border: 1px solid var(--accent-subtle);
+    color: var(--text-main);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: var(--transition-smooth);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.carousel-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(255, 255, 255, 0.05);
+}
+
 .social-icon:hover {
     color: var(--text-main);
 }
@@ -523,15 +545,32 @@ footer {
 }
 
 
-/* Blog Section */
+/* Blog Section & Carousel */
+.carousel-container {
+    padding: 0 20px;
+}
+
 .blog-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
     gap: var(--spacing-md);
-    margin-top: 40px;
+    padding: 20px 5px;
+    /* Add padding for shadow/hover space */
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+.blog-grid::-webkit-scrollbar {
+    display: none;
+    /* Chrome/Safari */
 }
 
 .blog-card {
+    min-width: 320px;
+    /* Fixed width for carousel items */
+    scroll-snap-align: center;
     background: var(--bg-card);
     border-radius: var(--radius-md);
     padding: var(--spacing-md);
