@@ -731,9 +731,19 @@ footer {
     }
 
     /* Blog/Insights Carousel */
+    .blog-grid {
+        gap: var(--spacing-sm);
+        padding: 15px 0;
+        margin: 0 -15px;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
     .blog-card {
-        min-width: 280px;
+        min-width: calc(85vw - 30px);
+        max-width: 300px;
         padding: var(--spacing-sm);
+        flex-shrink: 0;
     }
 
     .blog-title {
@@ -741,13 +751,24 @@ footer {
     }
 
     .carousel-container {
-        padding: 0 10px;
+        padding: 0;
+        overflow: visible;
     }
 
     .carousel-btn {
         width: 36px;
         height: 36px;
         font-size: 1rem;
+    }
+
+    /* Ensure section doesn't clip carousel */
+    #insights {
+        overflow-x: clip;
+        overflow-y: visible;
+    }
+
+    #insights .container {
+        overflow: visible;
     }
 
     /* Contact Form */
@@ -814,7 +835,8 @@ footer {
     }
 
     .blog-card {
-        min-width: 260px;
+        min-width: calc(90vw - 30px);
+        max-width: 280px;
     }
 
     .btn {
