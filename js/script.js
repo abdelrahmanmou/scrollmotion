@@ -165,4 +165,30 @@ document.addEventListener('DOMContentLoaded', () => {
             carousel.scrollBy({ left: 340, behavior: 'smooth' });
         });
     }
+
+    // Motion Graphics Carousel Scroll Buttons
+    const motionSection = document.getElementById('motion');
+    if (motionSection) {
+        const motionTrack = motionSection.querySelector('.motion-track');
+        const motionPrevBtn = motionSection.querySelector('.scroll-btn.prev');
+        const motionNextBtn = motionSection.querySelector('.scroll-btn.next');
+
+        if (motionTrack && motionPrevBtn && motionNextBtn) {
+            motionPrevBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                motionTrack.scrollBy({
+                    left: -470, // Scroll by card width + gap
+                    behavior: 'smooth'
+                });
+            });
+
+            motionNextBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                motionTrack.scrollBy({
+                    left: 470,
+                    behavior: 'smooth'
+                });
+            });
+        }
+    }
 });

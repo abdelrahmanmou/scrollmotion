@@ -433,6 +433,106 @@ nav {
     object-fit: cover;
 }
 
+/* Vertical Video Testimonials */
+.vertical-testimonials {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-md);
+    flex-wrap: wrap;
+}
+
+.vertical-testimonials .testimonial-card {
+    max-width: 300px;
+    text-align: center;
+}
+
+.vertical-video {
+    aspect-ratio: 9/16 !important;
+    max-height: 450px;
+    object-fit: cover;
+    width: 100%;
+}
+
+/* Motion Graphics Carousel */
+.motion-container {
+    position: relative;
+    overflow: hidden;
+    padding: var(--spacing-md) 0;
+}
+
+.motion-track {
+    display: flex;
+    gap: var(--spacing-md);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 20px;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.motion-track::-webkit-scrollbar {
+    display: none;
+}
+
+.motion-card {
+    flex: 0 0 450px;
+    scroll-snap-align: center;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: var(--bg-card);
+    transition: var(--transition-smooth);
+}
+
+.motion-card:hover {
+    transform: scale(1.02);
+}
+
+.motion-card .video-wrapper {
+    position: relative;
+    padding-bottom: 56.25%;
+    /* 16:9 */
+    height: 0;
+    overflow: hidden;
+    background: #111;
+}
+
+.motion-card .video-wrapper video,
+.motion-card .video-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.motion-card .card-content {
+    padding: var(--spacing-sm);
+}
+
+.motion-container:hover .scroll-btn {
+    opacity: 1;
+}
+
+@media (max-width: 768px) {
+    .motion-card {
+        flex: 0 0 320px;
+    }
+
+    .vertical-testimonials {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .vertical-testimonials .testimonial-card {
+        max-width: 280px;
+    }
+
+    .vertical-video {
+        max-height: 400px;
+    }
+}
+
 /* Contact Form */
 .contact-wrapper {
     max-width: 600px;
