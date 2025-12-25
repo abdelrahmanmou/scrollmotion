@@ -1,6 +1,10 @@
 import { defineConfig } from 'vite'
-import { resolve } from 'path'
+import { resolve, dirname } from 'path'
 import { readdirSync, statSync } from 'fs'
+import { fileURLToPath } from 'url'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 // Function to find all HTML files recursively
 function getHtmlFiles(dir, files = {}) {
@@ -25,6 +29,5 @@ export default defineConfig({
             input: htmlFiles,
         },
     },
-    // Copy static assets
     publicDir: false,
 })
