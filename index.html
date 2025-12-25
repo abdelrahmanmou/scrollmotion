@@ -28,12 +28,14 @@
   <meta property="og:site_name" content="Scroll Studio" />
 
   <!-- Twitter -->
-  <meta property="twitter:card" content="summary_large_image" />
-  <meta property="twitter:url" content="https://scrollmotion.site/" />
-  <meta property="twitter:title" content="Scroll Studio – SaaS Video Production & Motion Graphics Agency" />
-  <meta property="twitter:description"
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@scrollstudio" />
+  <meta name="twitter:creator" content="@scrollstudio" />
+  <meta name="twitter:title" content="Scroll Studio – SaaS Video Production & Motion Graphics Agency" />
+  <meta name="twitter:description"
     content="Premium SaaS video production agency specializing in motion graphics, product launch videos, and explainers that convert." />
-  <meta property="twitter:image" content="https://scrollmotion.site/abdelrahman.JPG" />
+  <meta name="twitter:image" content="https://scrollmotion.site/abdelrahman.JPG" />
+  <meta name="twitter:image:alt" content="Scroll Studio - SaaS Video Production Agency" />
 
   <!-- Structured Data - Organization -->
   <script type="application/ld+json">
@@ -90,6 +92,96 @@
 }
 </script>
 
+  <!-- FAQ Structured Data -->
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How much does a SaaS explainer video cost?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "SaaS explainer video costs range from $2,000 for freelancer work to $30,000+ for premium agency production. Most Series A startups budget $5,000-$15,000 for a high-quality 60-90 second explainer video."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How long should a SaaS product video be?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "For homepage explainers, 60-90 seconds is ideal. Social media teasers should be 15-30 seconds. Product demos can be 2-5 minutes depending on complexity. The key is matching video length to the viewer's intent and funnel stage."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What's the difference between 2D and 3D animation for SaaS?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "2D animation is faster to produce, more affordable, and works well for explaining abstract concepts. 3D animation offers more visual impact and depth, ideal for product showcases and premium brand positioning. Choice depends on budget, timeline, and brand aesthetic."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How long does it take to produce a SaaS video?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A typical SaaS explainer video takes 3-6 weeks from briefing to final delivery. This includes scriptwriting (1 week), storyboarding (1 week), animation (2-3 weeks), and revisions (1 week). Rush projects can be completed faster with adjusted scope."
+      }
+    }
+  ]
+}
+</script>
+
+  <!-- VideoObject Structured Data -->
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoObject",
+  "name": "Cryptex 3D Motion Graphics Promo",
+  "description": "Premium 3D motion graphics promotional video showcasing brand identity and visual storytelling for tech companies.",
+  "thumbnailUrl": "https://scrollmotion.site/abdelrahman.JPG",
+  "uploadDate": "2025-01-01",
+  "contentUrl": "https://scrollmotion.site/Cryptexpromo.mp4",
+  "embedUrl": "https://scrollmotion.site/Cryptexpromo.mp4",
+  "duration": "PT1M",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Scroll Studio",
+    "url": "https://scrollmotion.site"
+  }
+}
+</script>
+
+  <!-- WebSite Schema for Sitelinks Search Box -->
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Scroll Studio",
+  "url": "https://scrollmotion.site",
+  "description": "Premium SaaS video production agency specializing in explainer videos, motion graphics, and product demos.",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Scroll Studio"
+  },
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://scrollmotion.site/blog/?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+
+
+  <!-- Preload Critical Resources -->
+  <link rel="preload" href="Cryptexpromo.mp4" as="video" type="video/mp4">
+  <link rel="dns-prefetch" href="https://www.youtube.com">
+  <link rel="dns-prefetch" href="https://assets.calendly.com">
+  <link rel="preconnect" href="https://www.youtube.com" crossorigin>
+  <link rel="preconnect" href="https://assets.calendly.com" crossorigin>
+
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -118,9 +210,8 @@
         <div class="nav-links">
           <a href="#about">About</a>
           <a href="#portfolio">Portfolio</a>
-          <a href="#shorts">Shorts</a>
-          <a href="#motion">Motion</a>
-          <a href="#insights">Insights</a>
+          <a href="case-studies.html">Case Studies</a>
+          <a href="blog/">Blog</a>
           <a href="#contact" class="btn btn-primary" style="padding: 8px 20px; font-size: 0.8rem;">Book Call</a>
         </div>
       </nav>
@@ -144,7 +235,9 @@
       </div>
 
       <div class="hero-video-wrapper">
-        <video src="Cryptexpromo.mp4" autoplay muted loop playsinline width="100%"></video>
+        <video src="Cryptexpromo.mp4" autoplay muted loop playsinline width="100%" fetchpriority="high"
+          poster="thumbnails/cryptex-thumb.jpg"
+          aria-label="Premium 3D motion graphics demo reel showcasing SaaS video production capabilities"></video>
       </div>
     </div>
   </section>
@@ -174,7 +267,9 @@
           </div>
         </div>
         <div class="about-img fade-in">
-          <img src="abdelrahman.JPG" alt="Abdelrahman - Creative Director">
+          <img src="abdelrahman.JPG"
+            alt="Abdelrahman - Creative Director and founder of Scroll Studio, a SaaS video production agency specializing in motion graphics and explainer videos"
+            loading="lazy">
         </div>
       </div>
     </div>
@@ -275,19 +370,23 @@
         <div class="shorts-track">
           <!-- Short 1 -->
           <div class="short-card">
-            <video src="Ahmed El-Shuqairyfinall.mp4" controls muted loop playsinline preload="none"></video>
+            <video src="Ahmed El-Shuqairyfinall.mp4" controls muted loop playsinline preload="none"
+              poster="thumbnails/ahmed-thumb.jpg"></video>
           </div>
           <!-- Short 2 -->
           <div class="short-card">
-            <video src="Azza Fahmy Final.mp4" controls muted loop playsinline preload="none"></video>
+            <video src="Azza Fahmy Final.mp4" controls muted loop playsinline preload="none"
+              poster="thumbnails/azza-thumb.jpg"></video>
           </div>
           <!-- Short 3 -->
           <div class="short-card">
-            <video src="Mostafa Mosharrafa.mp4" controls muted loop playsinline preload="none"></video>
+            <video src="Mostafa Mosharrafa.mp4" controls muted loop playsinline preload="none"
+              poster="thumbnails/mostafa-thumb.jpg"></video>
           </div>
           <!-- Short 4 -->
           <div class="short-card">
-            <video src="Reel2edited.mp4" controls muted loop playsinline preload="none"></video>
+            <video src="Reel2edited.mp4" controls muted loop playsinline preload="none"
+              poster="thumbnails/reel2-thumb.jpg"></video>
           </div>
         </div>
         <button class="scroll-btn next" aria-label="Scroll Right">❯</button>
@@ -309,7 +408,8 @@
           <!-- Motion 1 -->
           <div class="motion-card">
             <div class="video-wrapper">
-              <video src="Cryptexpromo.mp4" controls muted loop playsinline preload="none"></video>
+              <video src="Cryptexpromo.mp4" controls muted loop playsinline preload="none"
+                poster="thumbnails/cryptex-thumb.jpg"></video>
             </div>
             <div class="card-content">
               <h3 class="card-title">Cryptex Promo</h3>
@@ -320,7 +420,8 @@
           <!-- Motion 2 -->
           <div class="motion-card">
             <div class="video-wrapper">
-              <video src="Blackbox X Elevenlabs.mp4" controls muted loop playsinline preload="none"></video>
+              <video src="Blackbox X Elevenlabs.mp4" controls muted loop playsinline preload="none"
+                poster="thumbnails/blackbox-thumb.jpg"></video>
             </div>
             <div class="card-content">
               <h3 class="card-title">Blackbox X Elevenlabs</h3>
@@ -370,7 +471,8 @@
 
       <div class="testimonials-grid vertical-testimonials" style="margin-top: 40px;">
         <div class="testimonial-card fade-in">
-          <video src="alexsaint.mp4" class="client-video vertical-video" controls muted preload="none"></video>
+          <video src="alexsaint.mp4" class="client-video vertical-video" controls muted preload="none"
+            poster="thumbnails/alexsaint-thumb.jpg"></video>
           <h4>Alex Saint</h4>
           <p style="font-size: 0.9rem; color: var(--accent-primary);">Indie Crush</p>
           <p style="font-size: 0.9rem; margin-top: 10px;">"Incredible work on the explainer video. The motion graphics
@@ -378,7 +480,8 @@
         </div>
 
         <div class="testimonial-card fade-in">
-          <video src="dean.MP4" class="client-video vertical-video" controls muted preload="none"></video>
+          <video src="dean.MP4" class="client-video vertical-video" controls muted preload="none"
+            poster="thumbnails/dean-thumb.jpg"></video>
           <h4>Michael</h4>
           <p style="font-size: 0.9rem; color: var(--accent-primary);">Base Supply</p>
           <p style="font-size: 0.9rem; margin-top: 10px;">"Fast delivery and exactly what we needed for our product
@@ -510,17 +613,60 @@
   <!-- Footer -->
   <footer>
     <div class="container">
-      <div class="footer-content">
+      <div class="footer-content"
+        style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; padding: 60px 0 40px;">
         <div class="footer-brand">
           <h3>Scroll<span class="text-gradient">Studio</span></h3>
-          <p style="font-size: 0.9rem;">© 2025 All Rights Reserved.</p>
+          <p style="font-size: 0.95rem; color: var(--text-muted); margin-top: 15px; max-width: 280px;">Premium SaaS
+            video production agency. We help tech companies tell their story and scale with video.</p>
+          <div class="social-links" style="margin-top: 20px;">
+            <a href="#" class="social-icon">IG</a>
+            <a href="#" class="social-icon">YT</a>
+            <a href="#" class="social-icon">LI</a>
+          </div>
         </div>
-        <div class="social-links">
-          <!-- Placeholder Social Icons -->
-          <a href="#" class="social-icon">IG</a>
-          <a href="#" class="social-icon">YT</a>
-          <a href="#" class="social-icon">LI</a>
+        <div class="footer-links">
+          <h4 style="font-size: 0.95rem; margin-bottom: 20px; color: #fff;">Services</h4>
+          <ul style="list-style: none; padding: 0;">
+            <li style="margin-bottom: 10px;"><a href="services/saas-explainer-videos.html"
+                style="color: var(--text-muted); font-size: 0.9rem;">Explainer Videos</a></li>
+            <li style="margin-bottom: 10px;"><a href="services/motion-graphics.html"
+                style="color: var(--text-muted); font-size: 0.9rem;">Motion Graphics</a></li>
+            <li style="margin-bottom: 10px;"><a href="services/product-demo-videos.html"
+                style="color: var(--text-muted); font-size: 0.9rem;">Product Demos</a></li>
+            <li style="margin-bottom: 10px;"><a href="services/startup-video-production.html"
+                style="color: var(--text-muted); font-size: 0.9rem;">Startup Videos</a></li>
+          </ul>
         </div>
+        <div class="footer-links">
+          <h4 style="font-size: 0.95rem; margin-bottom: 20px; color: #fff;">Industries</h4>
+          <ul style="list-style: none; padding: 0;">
+            <li style="margin-bottom: 10px;"><a href="industries/fintech.html"
+                style="color: var(--text-muted); font-size: 0.9rem;">FinTech</a></li>
+            <li style="margin-bottom: 10px;"><a href="industries/edtech.html"
+                style="color: var(--text-muted); font-size: 0.9rem;">EdTech</a></li>
+            <li style="margin-bottom: 10px;"><a href="industries/healthtech.html"
+                style="color: var(--text-muted); font-size: 0.9rem;">HealthTech</a></li>
+            <li style="margin-bottom: 10px;"><a href="industries/ecommerce.html"
+                style="color: var(--text-muted); font-size: 0.9rem;">E-commerce</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h4 style="font-size: 0.95rem; margin-bottom: 20px; color: #fff;">Resources</h4>
+          <ul style="list-style: none; padding: 0;">
+            <li style="margin-bottom: 10px;"><a href="how-we-work.html"
+                style="color: var(--text-muted); font-size: 0.9rem;">How We Work</a></li>
+            <li style="margin-bottom: 10px;"><a href="blog/"
+                style="color: var(--text-muted); font-size: 0.9rem;">Blog</a></li>
+            <li style="margin-bottom: 10px;"><a href="#portfolio"
+                style="color: var(--text-muted); font-size: 0.9rem;">Portfolio</a></li>
+            <li style="margin-bottom: 10px;"><a href="#contact"
+                style="color: var(--text-muted); font-size: 0.9rem;">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+      <div style="border-top: 1px solid var(--accent-subtle); padding-top: 30px; text-align: center;">
+        <p style="font-size: 0.85rem; color: var(--text-muted);">© 2025 Scroll Studio. All Rights Reserved.</p>
       </div>
     </div>
   </footer>

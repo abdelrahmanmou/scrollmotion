@@ -47,6 +47,33 @@
     }
     </script>
 
+    <!-- BreadcrumbList Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://scrollmotion.site/"
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Insights",
+                "item": "https://scrollmotion.site/#insights"
+            },
+            {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "Perfect SaaS Explainer Video Guide"
+            }
+        ]
+    }
+    </script>
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -116,6 +143,11 @@
         <div class="container">
             <nav>
                 <a href="../index.html" class="logo">ScrollStudio</a>
+                <button class="mobile-menu-btn" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
                 <div class="nav-links">
                     <a href="../index.html#about">About</a>
                     <a href="../index.html#portfolio">Portfolio</a>
@@ -130,6 +162,7 @@
                 </div>
             </nav>
         </div>
+        <div class="mobile-overlay"></div>
     </header>
 
     <!-- Article Content -->

@@ -128,11 +128,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const nextBtn = shortsSection.querySelector('.scroll-btn.next');
 
         if (shortsTrack && prevBtn && nextBtn) {
-            console.log('Shorts scroll buttons initialized');
 
             prevBtn.addEventListener('click', (e) => {
-                e.preventDefault(); // Prevent any default button behavior
-                console.log('Prev clicked');
+                e.preventDefault();
                 shortsTrack.scrollBy({
                     left: -320, // Scroll by card width + gap
                     behavior: 'smooth'
@@ -141,14 +139,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
             nextBtn.addEventListener('click', (e) => {
                 e.preventDefault();
-                console.log('Next clicked');
                 shortsTrack.scrollBy({
                     left: 320,
                     behavior: 'smooth'
                 });
             });
-        } else {
-            console.warn('Shorts elements not found:', { shortsTrack, prevBtn, nextBtn });
         }
     }
     // Carousel Logic

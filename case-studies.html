@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Case Studies | SaaS Video Production Success Stories | Scroll Studio</title>
+    <meta name="description"
+        content="See how we've helped SaaS companies increase conversions with video. Real case studies, real results from FinTech, EdTech, and tech startups." />
+    <meta name="keywords"
+        content="saas video case study, video production results, explainer video roi, motion graphics portfolio" />
+    <link rel="canonical" href="https://scrollmotion.site/case-studies.html" />
+
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>">
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://scrollmotion.site/case-studies.html" />
+    <meta property="og:title" content="Case Studies | SaaS Video Production Results | Scroll Studio" />
+    <meta property="og:description" content="Real case studies showing how video drives results for SaaS companies." />
+    <meta property="og:image" content="https://scrollmotion.site/abdelrahman.JPG" />
+
+    <!-- BreadcrumbList Schema -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://scrollmotion.site/"},
+            {"@type": "ListItem", "position": 2, "name": "Case Studies"}
+        ]
+    }
+    </script>
+
+    <!-- ItemList Schema for Case Studies -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        "name": "Video Production Case Studies",
+        "description": "Success stories from SaaS companies we've worked with",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "item": {
+                    "@type": "Article",
+                    "name": "Cryptex - 3D Motion Graphics Promo",
+                    "description": "How we created a premium 3D promo video for a crypto platform"
+                }
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "item": {
+                    "@type": "Article",
+                    "name": "Blackbox AI x ElevenLabs Collaboration",
+                    "description": "Motion graphics explainer for AI development tools"
+                }
+            }
+        ]
+    }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .case-hero {
+            padding-top: 140px;
+            padding-bottom: 60px;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .case-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .case-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            border: 1px solid var(--accent-subtle);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .case-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .case-video {
+            width: 100%;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+        }
+
+        .case-content {
+            padding: 30px;
+        }
+
+        .case-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 5px 12px;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            color: var(--accent-primary);
+        }
+
+        .case-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .case-content p {
+            color: var(--text-muted);
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .case-stats {
+            display: flex;
+            gap: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--accent-subtle);
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .testimonial-section {
+            background: var(--bg-card);
+            padding: 60px 40px;
+            border-radius: var(--radius-lg);
+            margin-top: 80px;
+            border: 1px solid var(--accent-subtle);
+        }
+
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .testimonial-card {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 30px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--accent-subtle);
+        }
+
+        .testimonial-card p {
+            font-style: italic;
+            color: #ccc;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .testimonial-author {
+            font-weight: 500;
+            color: #fff;
+        }
+
+        .testimonial-role {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            padding: 60px 40px;
+            border-radius: var(--radius-lg);
+            text-align: center;
+            margin: 80px 0;
+            border: 1px solid var(--accent-subtle);
+        }
+
+        @media (max-width: 768px) {
+            .case-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .case-stats {
+                flex-wrap: wrap;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <a href="index.html" class="logo">ScrollStudio</a>
+                <button class="mobile-menu-btn" aria-label="Toggle menu">
+                    <span></span><span></span><span></span>
+                </button>
+                <div class="nav-links">
+                    <a href="index.html#about">About</a>
+                    <a href="index.html#portfolio">Portfolio</a>
+                    <a href="case-studies.html" class="active">Case Studies</a>
+                    <a href="blog/">Blog</a>
+                    <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+                    <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript"
+                        async></script>
+                    <button class="btn btn-primary" style="padding: 8px 20px; font-size: 0.8rem;"
+                        onclick="Calendly.initPopupWidget({url: 'https://calendly.com/abdo-moustafa-1998/new-meeting'}); return false;">Book
+                        Call</button>
+                </div>
+            </nav>
+        </div>
+        <div class="mobile-overlay"></div>
+    </header>
+
+    <section class="section">
+        <div class="container">
+            <div class="case-hero fade-in">
+                <h1>Case Studies</h1>
+                <p style="color: var(--text-muted); font-size: 1.2rem;">
+                    Real results from real clients. See how video transforms SaaS marketing.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" style="padding-top: 0;">
+        <div class="container">
+            <div class="case-grid">
+
+                <!-- Case Study 1: Cryptex -->
+                <article class="case-card fade-in">
+                    <video class="case-video" src="Cryptexpromo.mp4" poster="thumbnails/cryptex-thumb.jpg" controls
+                        muted preload="none"></video>
+                    <div class="case-content">
+                        <span class="case-badge">3D Motion Graphics</span>
+                        <h3>Cryptex - Premium 3D Promo</h3>
+                        <p>Created a high-impact 3D motion graphics promo for Cryptex, a cryptocurrency platform. The
+                            video showcases brand identity through dynamic visuals and cinematic storytelling.</p>
+                        <div class="case-stats">
+                            <div class="stat">
+                                <div class="stat-value">3D</div>
+                                <div class="stat-label">Animation Style</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">60s</div>
+                                <div class="stat-label">Duration</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">2 wks</div>
+                                <div class="stat-label">Delivery</div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Case Study 2: Blackbox x ElevenLabs -->
+                <article class="case-card fade-in">
+                    <video class="case-video" src="Blackbox X Elevenlabs.mp4" poster="thumbnails/blackbox-thumb.jpg"
+                        controls muted preload="none"></video>
+                    <div class="case-content">
+                        <span class="case-badge">Tech Explainer</span>
+                        <h3>Blackbox AI x ElevenLabs</h3>
+                        <p>Motion graphics explainer showcasing the collaboration between Blackbox AI development tools
+                            and ElevenLabs voice technology. Clean, minimal animation style with focus on product
+                            features.</p>
+                        <div class="case-stats">
+                            <div class="stat">
+                                <div class="stat-value">2D</div>
+                                <div class="stat-label">Animation Style</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">90s</div>
+                                <div class="stat-label">Duration</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">3 wks</div>
+                                <div class="stat-label">Delivery</div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+            </div>
+
+            <!-- Testimonials -->
+            <div class="testimonial-section fade-in">
+                <h2 style="text-align: center;">What Clients Say</h2>
+                <div class="testimonial-grid">
+                    <div class="testimonial-card">
+                        <p>"Incredible work on the explainer video. The motion graphics perfectly captured our brand
+                            while making complex features feel simple."</p>
+                        <div class="testimonial-author">Alex Saint</div>
+                        <div class="testimonial-role">Founder, Indie Crush</div>
+                    </div>
+                    <div class="testimonial-card">
+                        <p>"Fast delivery and exactly what we needed for our product launch. The video helped us clearly
+                            communicate our value proposition."</p>
+                        <div class="testimonial-author">Michael</div>
+                        <div class="testimonial-role">CEO, Base Supply</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA -->
+            <div class="cta-section fade-in">
+                <h2>Ready to Become the Next Case Study?</h2>
+                <p style="max-width: 500px; margin: 0 auto 30px; color: var(--text-muted);">Let's create video content
+                    that drives real results for your SaaS.</p>
+                <button class="btn btn-primary"
+                    onclick="Calendly.initPopupWidget({url: 'https://calendly.com/abdo-moustafa-1998/new-meeting'}); return false;">Book
+                    a Discovery Call</button>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>Scroll<span class="text-gradient">Studio</span></h3>
+                    <p style="font-size: 0.9rem;">© 2025 All Rights Reserved.</p>
+                </div>
+                <div class="social-links">
+                    <a href="#" class="social-icon">IG</a>
+                    <a href="#" class="social-icon">YT</a>
+                    <a href="#" class="social-icon">LI</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/script.js" defer></script>
+</body>
+
+</html>

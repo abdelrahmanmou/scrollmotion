@@ -1,0 +1,26 @@
+{
+  "name": "scrollmotion",
+  "version": "1.0.0",
+  "description": "The Scroll Motion Agency Website",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abdelrahmanmou/scrollmotion.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/abdelrahmanmou/scrollmotion/issues"
+  },
+  "homepage": "https://github.com/abdelrahmanmou/scrollmotion#readme",
+  "devDependencies": {
+    "vite": "^7.2.7"
+  }
+}

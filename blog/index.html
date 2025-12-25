@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SaaS Video Marketing Blog | Insights & Guides | Scroll Studio</title>
+    <meta name="description"
+        content="Expert insights on SaaS video marketing, explainer videos, motion graphics, and video production strategy. Learn how to grow your software business with video." />
+    <meta name="keywords"
+        content="saas video marketing blog, video production tips, explainer video guide, motion graphics insights, saas marketing" />
+    <link rel="canonical" href="https://scrollmotion.site/blog/" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://scrollmotion.site/blog/" />
+    <meta property="og:title" content="SaaS Video Marketing Blog | Scroll Studio" />
+    <meta property="og:description"
+        content="Expert insights on SaaS video marketing, explainer videos, and motion graphics." />
+    <meta property="og:image" content="https://scrollmotion.site/abdelrahman.JPG" />
+    <meta property="og:site_name" content="Scroll Studio" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="SaaS Video Marketing Blog | Scroll Studio" />
+    <meta name="twitter:description" content="Expert insights on SaaS video marketing and production." />
+    <meta name="twitter:image" content="https://scrollmotion.site/abdelrahman.JPG" />
+
+    <!-- CollectionPage Schema -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": "SaaS Video Marketing Blog",
+        "description": "Expert insights on SaaS video marketing, explainer videos, motion graphics, and video production strategy.",
+        "url": "https://scrollmotion.site/blog/",
+        "publisher": {
+            "@type": "Organization",
+            "name": "Scroll Studio",
+            "url": "https://scrollmotion.site"
+        },
+        "mainEntity": {
+            "@type": "ItemList",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "url": "https://scrollmotion.site/articles/saas-video-marketing-strategy-2025.html",
+                    "name": "The Complete Guide to SaaS Video Marketing Strategy in 2025"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "url": "https://scrollmotion.site/articles/saas-video-production-costs.html",
+                    "name": "SaaS Video Production Costs: What Should You Budget in 2025?"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 3,
+                    "url": "https://scrollmotion.site/articles/2d-vs-3d-animation-saas.html",
+                    "name": "2D vs. 3D Animation for SaaS: Which Style Converts Better?"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 4,
+                    "url": "https://scrollmotion.site/articles/perfect-saas-explainer-video.html",
+                    "name": "How to Create the Perfect SaaS Explainer Video"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 5,
+                    "url": "https://scrollmotion.site/articles/saas-motion-graphics.html",
+                    "name": "Why Custom Motion Graphics Are Essential for SaaS Growth"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 6,
+                    "url": "https://scrollmotion.site/articles/product-demos-vs-explainers.html",
+                    "name": "Product Demos vs. Explainers: When to Use Each"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 7,
+                    "url": "https://scrollmotion.site/articles/saas-video-launch.html",
+                    "name": "The Ultimate Guide to a Successful SaaS Video Launch"
+                }
+            ]
+        }
+    }
+    </script>
+
+    <!-- BreadcrumbList -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://scrollmotion.site/"},
+            {"@type": "ListItem", "position": 2, "name": "Blog"}
+        ]
+    }
+    </script>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .blog-hero {
+            padding-top: 140px;
+            padding-bottom: 60px;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+        }
+
+        .blog-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--accent-subtle);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .blog-card-content {
+            padding: 25px;
+        }
+
+        .blog-card-category {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 5px 12px;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        .blog-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .blog-card h3 a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .blog-card h3 a:hover {
+            color: var(--accent-primary);
+        }
+
+        .blog-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .blog-card-meta {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .featured-article {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+        }
+
+        .featured-article .blog-card-content {
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .featured-article h3 {
+            font-size: 1.8rem;
+        }
+
+        .featured-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .featured-article {
+                grid-template-columns: 1fr;
+            }
+
+            .blog-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <a href="../index.html" class="logo">ScrollStudio</a>
+                <button class="mobile-menu-btn" aria-label="Toggle menu">
+                    <span></span><span></span><span></span>
+                </button>
+                <div class="nav-links">
+                    <a href="../index.html#about">About</a>
+                    <a href="../index.html#portfolio">Portfolio</a>
+                    <a href="../index.html#shorts">Shorts</a>
+                    <a href="./" class="active">Blog</a>
+                    <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+                    <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript"
+                        async></script>
+                    <button class="btn btn-primary" style="padding: 8px 20px; font-size: 0.8rem;"
+                        onclick="Calendly.initPopupWidget({url: 'https://calendly.com/abdo-moustafa-1998/new-meeting'}); return false;">Book
+                        Call</button>
+                </div>
+            </nav>
+        </div>
+        <div class="mobile-overlay"></div>
+    </header>
+
+    <!-- Blog Hero -->
+    <section class="section">
+        <div class="container">
+            <div class="blog-hero fade-in">
+                <h1>SaaS Video Marketing Blog</h1>
+                <p style="color: var(--text-muted); font-size: 1.2rem;">
+                    Expert insights on video marketing, production tips, and growth strategies for SaaS companies.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Grid -->
+    <section class="section" style="padding-top: 0;">
+        <div class="container">
+            <div class="blog-grid">
+
+                <!-- Featured Article -->
+                <article class="blog-card featured-article fade-in">
+                    <div class="blog-card-content">
+                        <span class="blog-card-category featured-badge">Featured</span>
+                        <h3><a href="../articles/saas-video-marketing-strategy-2025.html">The Complete Guide to SaaS
+                                Video Marketing Strategy in 2025</a></h3>
+                        <p>Master the art of SaaS video marketing with our comprehensive guide. Learn which video types
+                            convert best at each stage of the funnel and how to measure ROI.</p>
+                        <div class="blog-card-meta">By Abdelrahman • 10 min read</div>
+                    </div>
+                </article>
+
+                <!-- Article 2 -->
+                <article class="blog-card fade-in">
+                    <div class="blog-card-content">
+                        <span class="blog-card-category">Budgeting</span>
+                        <h3><a href="../articles/saas-video-production-costs.html">SaaS Video Production Costs: What
+                                Should You Budget in 2025?</a></h3>
+                        <p>Break down the real cost of video production. From $2k freelancers to $30k agencies, find out
+                            what budget you need.</p>
+                        <div class="blog-card-meta">By Abdelrahman • 7 min read</div>
+                    </div>
+                </article>
+
+                <!-- Article 3 -->
+                <article class="blog-card fade-in">
+                    <div class="blog-card-content">
+                        <span class="blog-card-category">Design</span>
+                        <h3><a href="../articles/2d-vs-3d-animation-saas.html">2D vs. 3D Animation for SaaS: Which Style
+                                Converts Better?</a></h3>
+                        <p>Debating between 2D and 3D animation? We break down which style converts best for different
+                            use cases.</p>
+                        <div class="blog-card-meta">By Abdelrahman • 6 min read</div>
+                    </div>
+                </article>
+
+                <!-- Article 4 -->
+                <article class="blog-card fade-in">
+                    <div class="blog-card-content">
+                        <span class="blog-card-category">Production</span>
+                        <h3><a href="../articles/perfect-saas-explainer-video.html">How to Create the Perfect SaaS
+                                Explainer Video (Step-by-Step)</a></h3>
+                        <p>From script to final render, learn the exact step-by-step process to create premium explainer
+                            videos that convert.</p>
+                        <div class="blog-card-meta">By Abdelrahman • 8 min read</div>
+                    </div>
+                </article>
+
+                <!-- Article 5 -->
+                <article class="blog-card fade-in">
+                    <div class="blog-card-content">
+                        <span class="blog-card-category">Production</span>
+                        <h3><a href="../articles/saas-motion-graphics.html">Why Custom Motion Graphics Are Essential for
+                                SaaS Growth</a></h3>
+                        <p>Discover why top SaaS companies rely on custom motion graphics to simplify complex tech and
+                            drive conversions.</p>
+                        <div class="blog-card-meta">By Abdelrahman • 4 min read</div>
+                    </div>
+                </article>
+
+                <!-- Article 6 -->
+                <article class="blog-card fade-in">
+                    <div class="blog-card-content">
+                        <span class="blog-card-category">Strategy</span>
+                        <h3><a href="../articles/product-demos-vs-explainers.html">Product Demos vs. Explainers: The
+                                Difference and When to Use Them</a></h3>
+                        <p>Confused between a product demo and an explainer video? Learn which asset converts best at
+                            each funnel stage.</p>
+                        <div class="blog-card-meta">By Abdelrahman • 5 min read</div>
+                    </div>
+                </article>
+
+                <!-- Article 7 -->
+                <article class="blog-card fade-in">
+                    <div class="blog-card-content">
+                        <span class="blog-card-category">Launch</span>
+                        <h3><a href="../articles/saas-video-launch.html">The Ultimate Guide to a Successful SaaS Video
+                                Launch</a></h3>
+                        <p>Learn how to execute a flawless SaaS video launch that drives signups and revenue on day one.
+                        </p>
+                        <div class="blog-card-meta">By Abdelrahman • 6 min read</div>
+                    </div>
+                </article>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="section">
+        <div class="container">
+            <div
+                style="background: var(--bg-card); padding: 60px 40px; border-radius: var(--radius-lg); text-align: center; border: 1px solid var(--accent-subtle);">
+                <h2>Ready to Create Your Video?</h2>
+                <p style="max-width: 500px; margin: 20px auto 30px; color: var(--text-muted);">
+                    Stop reading about video marketing—start executing. Let's discuss your project.
+                </p>
+                <button class="btn btn-primary"
+                    onclick="Calendly.initPopupWidget({url: 'https://calendly.com/abdo-moustafa-1998/new-meeting'}); return false;">Book
+                    a Discovery Call</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>Scroll<span class="text-gradient">Studio</span></h3>
+                    <p style="font-size: 0.9rem;">© 2025 All Rights Reserved.</p>
+                </div>
+                <div class="social-links">
+                    <a href="#" class="social-icon">IG</a>
+                    <a href="#" class="social-icon">YT</a>
+                    <a href="#" class="social-icon">LI</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/script.js" defer></script>
+</body>
+
+</html>

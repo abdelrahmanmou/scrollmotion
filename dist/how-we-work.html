@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>How We Work | Our Video Production Process | Scroll Studio</title>
+    <meta name="description"
+        content="Discover our proven 5-step video production process. From discovery to delivery, learn how we create premium SaaS videos on time and on budget." />
+    <meta name="keywords"
+        content="video production process, how we work, saas video workflow, explainer video process, motion graphics process" />
+    <link rel="canonical" href="https://scrollmotion.site/how-we-work.html" />
+
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>">
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://scrollmotion.site/how-we-work.html" />
+    <meta property="og:title" content="How We Work | Our Video Production Process | Scroll Studio" />
+    <meta property="og:description" content="Our proven 5-step video production process for SaaS companies." />
+    <meta property="og:image" content="https://scrollmotion.site/abdelrahman.JPG" />
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "HowTo",
+        "name": "SaaS Video Production Process",
+        "description": "Our proven 5-step process for creating high-converting SaaS videos",
+        "step": [
+            {
+                "@type": "HowToStep",
+                "position": 1,
+                "name": "Discovery Call",
+                "text": "We start with a 30-minute discovery call to understand your product, audience, and goals."
+            },
+            {
+                "@type": "HowToStep",
+                "position": 2,
+                "name": "Strategy & Script",
+                "text": "We develop a video strategy and craft a script that hooks, explains, and converts."
+            },
+            {
+                "@type": "HowToStep",
+                "position": 3,
+                "name": "Storyboard & Design",
+                "text": "Visual blueprints and style frames give you a preview before animation begins."
+            },
+            {
+                "@type": "HowToStep",
+                "position": 4,
+                "name": "Animation & Production",
+                "text": "Our team brings your video to life with smooth animation and professional voiceover."
+            },
+            {
+                "@type": "HowToStep",
+                "position": 5,
+                "name": "Review & Delivery",
+                "text": "You review the final video, request revisions, and receive all file formats for distribution."
+            }
+        ]
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://scrollmotion.site/"},
+            {"@type": "ListItem", "position": 2, "name": "How We Work"}
+        ]
+    }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        .process-hero {
+            padding-top: 140px;
+            padding-bottom: 60px;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .process-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .process-timeline {
+            position: relative;
+            padding: 40px 0;
+        }
+
+        .process-timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--accent-primary), var(--accent-subtle));
+        }
+
+        .process-step {
+            display: flex;
+            align-items: center;
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .process-step:nth-child(odd) {
+            flex-direction: row;
+        }
+
+        .process-step:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .step-content {
+            width: 45%;
+            background: var(--bg-card);
+            padding: 30px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--accent-subtle);
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: #fff;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+
+        .step-content h3 {
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+            color: #fff;
+        }
+
+        .step-content p {
+            font-size: 1rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+            margin: 0;
+        }
+
+        .step-duration {
+            font-size: 0.85rem;
+            color: var(--accent-primary);
+            margin-top: 12px;
+        }
+
+        .cta-section {
+            background: var(--bg-card);
+            padding: 60px 40px;
+            border-radius: var(--radius-lg);
+            text-align: center;
+            margin: 80px 0;
+            border: 1px solid var(--accent-subtle);
+        }
+
+        @media (max-width: 768px) {
+            .process-timeline::before {
+                left: 30px;
+            }
+
+            .process-step,
+            .process-step:nth-child(even) {
+                flex-direction: column;
+                align-items: flex-start;
+                padding-left: 80px;
+            }
+
+            .step-number {
+                left: 0;
+                transform: none;
+            }
+
+            .step-content {
+                width: 100%;
+            }
+        }
+    </style>
+  <link rel="stylesheet" crossorigin href="/assets/style-DqHOgBYK.css">
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <a href="index.html" class="logo">ScrollStudio</a>
+                <button class="mobile-menu-btn" aria-label="Toggle menu">
+                    <span></span><span></span><span></span>
+                </button>
+                <div class="nav-links">
+                    <a href="index.html#about">About</a>
+                    <a href="index.html#portfolio">Portfolio</a>
+                    <a href="index.html#shorts">Shorts</a>
+                    <a href="blog/">Blog</a>
+                    <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+                    <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript"
+                        async></script>
+                    <button class="btn btn-primary" style="padding: 8px 20px; font-size: 0.8rem;"
+                        onclick="Calendly.initPopupWidget({url: 'https://calendly.com/abdo-moustafa-1998/new-meeting'}); return false;">Book
+                        Call</button>
+                </div>
+            </nav>
+        </div>
+        <div class="mobile-overlay"></div>
+    </header>
+
+    <section class="section">
+        <div class="container">
+            <div class="process-hero fade-in">
+                <h1>How We Work</h1>
+                <p style="color: var(--text-muted); font-size: 1.2rem;">
+                    Our proven 5-step process delivers high-converting videos on time and on budget. No surprises, just
+                    results.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" style="padding-top: 0;">
+        <div class="container">
+            <div class="process-content">
+                <div class="process-timeline">
+
+                    <div class="process-step fade-in">
+                        <div class="step-content">
+                            <h3>🎯 Discovery Call</h3>
+                            <p>We start with a 30-minute call to understand your product, target audience, and business
+                                goals. No sales pitch—just genuine conversation about how video can help you grow.</p>
+                            <div class="step-duration">Duration: 30 minutes</div>
+                        </div>
+                        <div class="step-number">1</div>
+                    </div>
+
+                    <div class="process-step fade-in">
+                        <div class="step-content">
+                            <h3>📝 Strategy & Script</h3>
+                            <p>Based on our discovery, we develop a video strategy and craft a script that hooks viewers
+                                in 3 seconds, explains your value in 60, and converts them by the end. You review and
+                                approve before we design anything.</p>
+                            <div class="step-duration">Duration: 3-5 days</div>
+                        </div>
+                        <div class="step-number">2</div>
+                    </div>
+
+                    <div class="process-step fade-in">
+                        <div class="step-content">
+                            <h3>🎨 Storyboard & Design</h3>
+                            <p>We create visual blueprints showing every scene, plus high-fidelity style frames that
+                                define your video's look. You'll see exactly what the final product will look like
+                                before animation begins.</p>
+                            <div class="step-duration">Duration: 5-7 days</div>
+                        </div>
+                        <div class="step-number">3</div>
+                    </div>
+
+                    <div class="process-step fade-in">
+                        <div class="step-content">
+                            <h3>🎬 Animation & Production</h3>
+                            <p>Our team brings your video to life with smooth 2D or 3D animation, professional
+                                voiceover, and cinematic sound design. This is where the magic happens.</p>
+                            <div class="step-duration">Duration: 2-3 weeks</div>
+                        </div>
+                        <div class="step-number">4</div>
+                    </div>
+
+                    <div class="process-step fade-in">
+                        <div class="step-content">
+                            <h3>✅ Review & Delivery</h3>
+                            <p>You receive the first draft for review. We offer up to 3 rounds of revisions included.
+                                Once approved, you get all file formats optimized for web, social, and ads.</p>
+                            <div class="step-duration">Duration: 3-5 days</div>
+                        </div>
+                        <div class="step-number">5</div>
+                    </div>
+
+                </div>
+
+                <div class="cta-section">
+                    <h2>Ready to Start?</h2>
+                    <p style="max-width: 500px; margin: 0 auto 30px; color: var(--text-muted);">Most projects take 3-6
+                        weeks from kickoff to delivery. Let's start with a discovery call.</p>
+                    <button class="btn btn-primary"
+                        onclick="Calendly.initPopupWidget({url: 'https://calendly.com/abdo-moustafa-1998/new-meeting'}); return false;">Book
+                        Your Discovery Call</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>Scroll<span class="text-gradient">Studio</span></h3>
+                    <p style="font-size: 0.9rem;">© 2025 All Rights Reserved.</p>
+                </div>
+                <div class="social-links">
+                    <a href="#" class="social-icon">IG</a>
+                    <a href="#" class="social-icon">YT</a>
+                    <a href="#" class="social-icon">LI</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/script.js" defer></script>
+</body>
+
+</html>
