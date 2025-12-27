@@ -22,9 +22,9 @@
     /* Spacing */
     --spacing-xs: 0.5rem;
     --spacing-sm: 1.5rem;
-    --spacing-md: 3rem;
-    --spacing-lg: 6rem;
-    --spacing-xl: 10rem;
+    --spacing-md: 4rem;
+    --spacing-lg: 8rem;
+    --spacing-xl: 12rem;
 
     /* Border Radius */
     --radius-sm: 4px;

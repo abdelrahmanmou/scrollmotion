@@ -161,12 +161,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Motion Graphics Carousel Scroll Buttons
-    const motionSection = document.getElementById('motion');
-    if (motionSection) {
-        const motionTrack = motionSection.querySelector('.motion-track');
-        const motionPrevBtn = motionSection.querySelector('.scroll-btn.prev');
-        const motionNextBtn = motionSection.querySelector('.scroll-btn.next');
+    // Motion Graphics & Cinematic Launch Carousel Scroll Buttons (Generic)
+    const motionSections = document.querySelectorAll('#motion-graphics, #cinematic-launch, #motion'); // Support old and new IDs
+
+    motionSections.forEach(section => {
+        const motionTrack = section.querySelector('.motion-track');
+        const motionPrevBtn = section.querySelector('.scroll-btn.prev');
+        const motionNextBtn = section.querySelector('.scroll-btn.next');
 
         if (motionTrack && motionPrevBtn && motionNextBtn) {
             motionPrevBtn.addEventListener('click', (e) => {
@@ -185,5 +186,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             });
         }
-    }
+    });
+
+    // Horizontal Scroll with Mouse Wheel
+    const scrollContainers = [
+        document.querySelector('.shorts-track'),
+        document.querySelector('.motion-track'),
+        document.querySelector('#insights-carousel')
+    ];
+
+    scrollContainers.forEach(container => {
+        if (container) {
+            container.addEventListener('wheel', (e) => {
+                if (e.deltaY !== 0) {
+                    e.preventDefault();
+                    container.scrollLeft += e.deltaY;
+                }
+            }, { passive: false });
+        }
+    });
 });
