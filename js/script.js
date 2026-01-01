@@ -3,6 +3,95 @@
 */
 
 document.addEventListener('DOMContentLoaded', () => {
+    // ===== LAZY LOAD YOUTUBE IFRAMES =====
+    // Replace YouTube iframes with lightweight thumbnails. Load actual iframe on click.
+    const youtubeIframes = document.querySelectorAll('iframe[src*="youtube.com/embed"]');
+
+    youtubeIframes.forEach(iframe => {
+        // Extract video ID from src
+        const src = iframe.getAttribute('src');
+        const match = src.match(/embed\/([a-zA-Z0-9_-]+)/);
+        if (!match) return;
+
+        const videoId = match[1];
+        const title = iframe.getAttribute('title') || 'Video';
+
+        // Create facade container
+        const facade = document.createElement('div');
+        facade.className = 'youtube-facade';
+        facade.setAttribute('data-video-id', videoId);
+        facade.setAttribute('data-title', title);
+        facade.style.cssText = `
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #111 url('https://img.youtube.com/vi/${videoId}/hqdefault.jpg') center/cover no-repeat;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        `;
+
+        // Add play button overlay
+        const playBtn = document.createElement('div');
+        playBtn.innerHTML = `
+            <svg width="68" height="48" viewBox="0 0 68 48">
+                <path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C68.06 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="#f00"/>
+                <path d="M45 24L27 14v20" fill="#fff"/>
+            </svg>
+        `;
+        playBtn.style.cssText = `
+            opacity: 0.9;
+            transition: opacity 0.2s, transform 0.2s;
+        `;
+        facade.appendChild(playBtn);
+
+        // Hover effect
+        facade.addEventListener('mouseenter', () => {
+            playBtn.style.opacity = '1';
+            playBtn.style.transform = 'scale(1.1)';
+        });
+        facade.addEventListener('mouseleave', () => {
+            playBtn.style.opacity = '0.9';
+            playBtn.style.transform = 'scale(1)';
+        });
+
+        // Click to load actual iframe
+        facade.addEventListener('click', () => {
+            const realIframe = document.createElement('iframe');
+            realIframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+            realIframe.title = title;
+            realIframe.frameBorder = '0';
+            realIframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+            realIframe.allowFullscreen = true;
+            realIframe.style.cssText = 'position: absolute; top: 0; left: 0; width: 100%; height: 100%;';
+            facade.replaceWith(realIframe);
+        });
+
+        // Replace iframe with facade
+        iframe.replaceWith(facade);
+    });
+
+    // ===== LAZY LOAD VIDEOS =====
+    // Use Intersection Observer to load videos only when they enter the viewport
+    const lazyVideos = document.querySelectorAll('video[data-src]');
+    const videoObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const video = entry.target;
+                if (video.dataset.src) {
+                    video.src = video.dataset.src;
+                    video.removeAttribute('data-src');
+                }
+                videoObserver.unobserve(video);
+            }
+        });
+    }, { rootMargin: '200px' });
+
+    lazyVideos.forEach(video => videoObserver.observe(video));
+
     // Smooth Scroll for Navigation
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
