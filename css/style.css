@@ -112,7 +112,7 @@ p {
 }
 
 .section {
-    padding: var(--spacing-xl) 0;
+    padding: 100px 0;
 }
 
 .text-center {
@@ -675,7 +675,7 @@ footer {
     }
 
     .section {
-        padding: var(--spacing-lg) 0;
+        padding: 80px 0;
     }
 }
 
