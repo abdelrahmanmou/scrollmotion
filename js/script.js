@@ -3,6 +3,9 @@
 */
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Mark that JS has loaded - enables fade animations
+    document.body.classList.add('js-loaded');
+
     // ===== LAZY LOAD YOUTUBE IFRAMES =====
     // Replace YouTube iframes with lightweight thumbnails. Load actual iframe on click.
     const youtubeIframes = document.querySelectorAll('iframe[src*="youtube.com/embed"]');
