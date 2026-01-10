@@ -154,6 +154,26 @@
     <priority>0.8</priority>
   </url>
 
+  <!-- LOCATION + SERVICE COMBINATIONS -->
+  <url>
+    <loc>https://scrollmotion.site/locations/dubai-saas-videos.html</loc>
+    <lastmod>2026-01-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://scrollmotion.site/locations/london-saas-videos.html</loc>
+    <lastmod>2026-01-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://scrollmotion.site/locations/nyc-saas-videos.html</loc>
+    <lastmod>2026-01-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
   <!-- PILLAR PAGE - Main Topic Hub -->
   <url>
     <loc>https://scrollmotion.site/articles/saas-video-marketing-strategy-2025.html</loc>
