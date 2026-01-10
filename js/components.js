@@ -87,7 +87,7 @@ function generateHeader() {
         <div class="container">
             <nav>
                 <a href="${homeLink}" class="logo">
-                    <img src="${base}logo.png" alt="Scroll Studio" height="40" style="height: 40px; width: auto;">
+                    <img src="${base}logo.svg" alt="Scroll Studio" height="40" style="height: 40px; width: auto;">
                 </a>
                 <button class="mobile-menu-btn" aria-label="Toggle menu">
                     <span></span>

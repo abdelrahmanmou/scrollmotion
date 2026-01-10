@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 200">
+  <defs>
+    <style>
+      .text-main { font-family: sans-serif; font-weight: 900; font-size: 140px; fill: #ffffff; }
+      .text-sub { font-family: sans-serif; font-weight: 500; font-size: 32px; letter-spacing: 2px; fill: #ffffff; }
+      .arrow { fill: none; stroke: #ffffff; stroke-width: 12; stroke-linecap: round; stroke-linejoin: round; }
+    </style>
+  </defs>
+  
+  <!-- "Scroll" Text -->
+  <text x="50%" y="110" text-anchor="middle" class="text-main">Scroll</text>
+  
+  <!-- "MOTION STUDIO" Text -->
+  <text x="42%" y="160" text-anchor="middle" class="text-sub">MOTION STUDIO</text>
+  
+  <!-- Curved Arrow -->
+  <path d="M 390 100 Q 430 100 420 140 Q 410 170 360 160" class="arrow" marker-end="url(#arrowhead)"/>
+  
+  <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+    <polygon points="0 0, 10 3.5, 0 7" fill="#ffffff" />
+  </marker>
+</svg>
