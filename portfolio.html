@@ -27,6 +27,67 @@
 
   <!-- Scripts -->
   <script src="js/script.js" defer></script>
+
+  <!-- BreadcrumbList Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://scrollmotion.site/"},
+      {"@type": "ListItem", "position": 2, "name": "Portfolio"}
+    ]
+  }
+  </script>
+
+  <!-- CollectionPage Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "Scroll Studio Portfolio",
+    "description": "Full portfolio of Scroll Studio. SaaS motion graphics, startup explainers, and content creation.",
+    "url": "https://scrollmotion.site/portfolio.html",
+    "mainEntity": {
+      "@type": "ItemList",
+      "name": "Video Production Portfolio",
+      "numberOfItems": 12,
+      "itemListElement": [
+        {
+          "@type": "VideoObject",
+          "position": 1,
+          "name": "Cryptex Promo",
+          "description": "3D Motion Graphics and Branding video",
+          "thumbnailUrl": "https://scrollmotion.site/thumbnails/cryptex-thumb.jpg"
+        },
+        {
+          "@type": "VideoObject",
+          "position": 2,
+          "name": "Blackbox X Elevenlabs",
+          "description": "SaaS Motion Graphics Promo video",
+          "thumbnailUrl": "https://scrollmotion.site/thumbnails/blackbox-thumb.jpg"
+        },
+        {
+          "@type": "VideoObject",
+          "position": 3,
+          "name": "Indie Crush Explainer",
+          "description": "SaaS Explainer Video"
+        },
+        {
+          "@type": "VideoObject",
+          "position": 4,
+          "name": "Base Supply Overview",
+          "description": "SaaS Product Demo"
+        }
+      ]
+    },
+    "provider": {
+      "@type": "Organization",
+      "name": "Scroll Studio",
+      "url": "https://scrollmotion.site"
+    }
+  }
+  </script>
 </head>
 
 <body>
