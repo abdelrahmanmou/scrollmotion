@@ -1733,6 +1733,32 @@ footer {
     transform: scale(1.05);
 }
 
+.play-button-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px;
+    height: 60px;
+    background: rgba(193, 255, 114, 0.2);
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(193, 255, 114, 0.4);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #c1ff72;
+    z-index: 5;
+    transition: all 0.4s ease;
+    pointer-events: none;
+}
+
+.work-card-v2:hover .play-button-overlay {
+    background: rgba(193, 255, 114, 0.4);
+    transform: translate(-50%, -50%) scale(1.1);
+    box-shadow: 0 0 20px rgba(193, 255, 114, 0.2);
+}
+
 .work-info-v2 {
     display: flex;
     justify-content: space-between;

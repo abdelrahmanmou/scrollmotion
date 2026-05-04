@@ -296,6 +296,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }, { passive: false });
         }
+    });
+
     // Work v2 Hover Play
     document.querySelectorAll('.work-card-v2').forEach(card => {
         const video = card.querySelector('video');
