@@ -1745,18 +1745,43 @@ footer {
     border: 1px solid rgba(193, 255, 114, 0.4);
     border-radius: 50%;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #c1ff72;
-    z-index: 5;
-    transition: all 0.4s ease;
-    pointer-events: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  height: 60px;
+  background: rgba(193, 255, 114, 0.2);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #c1ff72;
+  opacity: 1; /* Visible by default */
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  z-index: 10;
+  border: 1px solid rgba(193, 255, 114, 0.3);
 }
 
-.work-card-v2:hover .play-button-overlay {
-    background: rgba(193, 255, 114, 0.4);
-    transform: translate(-50%, -50%) scale(1.1);
-    box-shadow: 0 0 20px rgba(193, 255, 114, 0.2);
+.work-card-v2:hover .play-button-overlay,
+.work-card-v2.is-playing .play-button-overlay {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.8);
+}
+
+.play-button-overlay svg {
+  margin-left: 4px;
+}
+
+@media (max-width: 768px) {
+  .play-button-overlay {
+    width: 50px;
+    height: 50px;
+    opacity: 0.9;
+  }
 }
 
 .work-info-v2 {

@@ -298,18 +298,47 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Work v2 Hover Play
+    // Work v2 Hover & Tap Play
     document.querySelectorAll('.work-card-v2').forEach(card => {
         const video = card.querySelector('video');
         if (video) {
+            // Desktop Hover logic
             card.addEventListener('mouseenter', () => {
-                video.muted = false;
-                video.play().catch(e => console.log("Auto-play prevented", e));
+                if (window.matchMedia('(hover: hover)').matches) {
+                    video.muted = false;
+                    video.play().catch(e => console.log("Playback blocked", e));
+                    card.classList.add('is-playing');
+                }
             });
+
             card.addEventListener('mouseleave', () => {
-                video.pause();
-                video.muted = true;
-                video.currentTime = 0;
+                if (window.matchMedia('(hover: hover)').matches) {
+                    video.pause();
+                    video.muted = true;
+                    video.currentTime = 0;
+                    card.classList.remove('is-playing');
+                }
+            });
+
+            // Mobile/Touch Tap logic
+            card.addEventListener('click', (e) => {
+                // If it's a YouTube link, just let it open
+                if (card.querySelector('a') || card.querySelector('[onclick*="window.open"]')) return;
+
+                if (video.paused) {
+                    // Pause all other videos
+                    document.querySelectorAll('.work-card-v2 video').forEach(v => {
+                        v.pause();
+                        v.closest('.work-card-v2').classList.remove('is-playing');
+                    });
+                    
+                    video.muted = false;
+                    video.play().catch(e => console.log("Playback blocked", e));
+                    card.classList.add('is-playing');
+                } else {
+                    video.pause();
+                    card.classList.remove('is-playing');
+                }
             });
         }
     });
