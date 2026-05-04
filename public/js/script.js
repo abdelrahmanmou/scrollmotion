@@ -303,10 +303,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const video = card.querySelector('video');
         if (video) {
             card.addEventListener('mouseenter', () => {
+                video.muted = false;
                 video.play().catch(e => console.log("Auto-play prevented", e));
             });
             card.addEventListener('mouseleave', () => {
                 video.pause();
+                video.muted = true;
                 video.currentTime = 0;
             });
         }
