@@ -29,5 +29,4 @@ export default defineConfig({
             input: htmlFiles,
         },
     },
-    publicDir: false,
 })
