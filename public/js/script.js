@@ -296,5 +296,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }, { passive: false });
         }
+    // Work v2 Hover Play
+    document.querySelectorAll('.work-card-v2').forEach(card => {
+        const video = card.querySelector('video');
+        if (video) {
+            card.addEventListener('mouseenter', () => {
+                video.play().catch(e => console.log("Auto-play prevented", e));
+            });
+            card.addEventListener('mouseleave', () => {
+                video.pause();
+                video.currentTime = 0;
+            });
+        }
     });
 });

@@ -76,21 +76,20 @@
 <body>
 
   <!-- Header -->
-  <header>
+  <header class="header-modern">
     <div class="container">
       <nav>
-        <a href="/" class="logo"><img src="logo.svg" alt="Scroll Studio" height="40" style="height: 40px; width: auto;"></a>
-        <button class="mobile-menu-btn" aria-label="Toggle menu">
+        <a href="/" class="logo">Abdelrahman Moustafa</a>
+        <button class="mobile-menu-btn" aria-label="Toggle menu" style="border: 1px solid rgba(0,0,0,0.1); border-radius: 50%; padding: 12px;">
           <span></span>
           <span></span>
           <span></span>
         </button>
         <div class="nav-links">
-          <a href="#about">About</a>
           <a href="portfolio.html">Portfolio</a>
           <a href="case-studies.html">Case Studies</a>
           <a href="blog/">Blog</a>
-          <a href="#contact" class="btn btn-primary" style="padding: 8px 20px; font-size: 0.8rem;">Book Call</a>
+          <a href="#contact" class="btn btn-primary" style="padding: 8px 20px; font-size: 0.8rem; background: #000; color: #fff;">Book Call</a>
         </div>
       </nav>
     </div>
@@ -98,153 +97,148 @@
   </header>
 
   <!-- Hero Section -->
-  <section class="hero">
-    <div class="hero-bg"></div>
-    <div class="container hero-content">
-      <span class="hero-subtitle">SaaS Motion Graphics & Launch Videos</span>
-      <h1>Cinematic Videos for<br>Ambitious Startups</h1>
-      <p>I help SaaS companies & startups tell their story through premium <strong>motion graphics</strong> and
-        <strong>high-converting ad creatives</strong>.
-      </p>
-
-      <div class="hero-buttons">
-        <a href="portfolio.html" class="btn btn-primary">View Full Portfolio</a>
-        <a href="#contact" class="btn btn-outline">Start Project</a>
-      </div>
-
-      <div class="hero-video-wrapper">
-        <video src="Cryptexpromo.mp4" autoplay muted loop playsinline width="100%" preload="auto"
-          poster="thumbnails/cryptex-thumb.jpg" aria-label="Premium 3D motion graphics demo reel"></video>
-      </div>
-    </div>
-  </section>
-
-  <!-- About Section -->
-  <section id="about" class="section">
+  <section class="hero-modern">
+    <div class="hero-modern-bg"></div>
     <div class="container">
-      <div class="about-grid">
-        <div class="about-text fade-in">
-          <h2>The Studio</h2>
-          <p>Hi, I'm Abdelrahman. Scroll Studio is my specialized <strong>SaaS motion graphics practice</strong>.</p>
-          <p>Unlike large agencies with bloated overhead, I partner directly with founders and marketing teams to
-            produce <strong>tier-one video assets</strong>. From 3D product reveals to high-tempo social ads, I execute
-            the entire pipeline—strategy, design, animation, and sound—delivering agency quality with the agility of a
-            solo expert.</p>
-          <div class="stats" style="display: flex; gap: 30px; margin-top: 30px;">
-            <div>
-              <h3 class="text-gradient">50+</h3>
-              <p style="font-size: 0.9rem;">Startups Helped</p>
-            </div>
-            <div>
-              <h3 class="text-gradient">Direct</h3>
-              <p style="font-size: 0.9rem;">Partner Access</p>
-            </div>
-          </div>
+      <!-- Top Badge -->
+
+      <!-- Main Headline -->
+      <div class="hero-modern-headline">
+        <h1>Hi I'm Abdelrahman<br><span class="italic">Launch Video Expert</span></h1>
+      </div>
+
+      <!-- Person Image -->
+      <div class="hero-modern-image">
+        <img src="assets/hero-portrait.png" alt="Abdelrahman Moustafa">
+      </div>
+
+      <!-- Floating Left Badge -->
+      <div class="badge-floating badge-available">
+        <div class="badge-dot"></div>
+        <span>Available for new opportunities</span>
+      </div>
+
+      <!-- Right Description & CTA -->
+      <div class="hero-description">
+        <p>Cinematic reveals and high-end motion graphics that help SaaS founders launch with impact.</p>
+        <a href="#contact" class="hero-cta-modern">
+          Get in Touch
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"></path>
+          </svg>
+        </a>
+      </div>
+
+      <!-- Trust Indicator -->
+      <div class="hero-trust">
+        <div class="trust-avatars">
+          <img src="thumbnails/alexsaint-thumb.jpg" alt="Client">
+          <img src="thumbnails/dean-thumb.jpg" alt="Client">
+          <img src="thumbnails/mostafa-thumb.jpg" alt="Client">
         </div>
-        <div class="about-img fade-in">
-          <img src="abdelrahman.JPG" alt="Abdelrahman - Creative Director of Scroll Studio" loading="lazy">
+        <div class="trust-text">
+          Trusted by over <strong>50+ happy startups</strong> globally.
+        </div>
+      </div>
+    </div>
+
+    <!-- Logo Bar -->
+    <div class="logo-bar">
+      <div class="container">
+        <div class="logo-track">
+          <div class="logo-item">FocalPoint</div>
+          <div class="logo-item">Screentime</div>
+          <div class="logo-item">Segment</div>
+          <div class="logo-item">Shutterframe</div>
+          <div class="logo-item">Lightspeed</div>
+          <div class="logo-item">Mastermind</div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Motion Graphics Section -->
-  <section id="motion-graphics" class="section">
+
+  <!-- Selected Work Section v2 -->
+  <section id="work" class="section">
     <div class="container">
-      <div class="text-center fade-in">
-        <h2>Motion Graphics</h2>
-        <p>Explainer videos and complex data visualization.</p>
+      <div class="work-section-header fade-in">
+        <span class="work-label">/ Best Projects</span>
+        <h2 class="work-section-title">Selected Works</h2>
       </div>
 
-      <div class="motion-container fade-in">
-        <button class="scroll-btn prev" aria-label="Scroll Left">❮</button>
-        <div class="motion-track">
-          <!-- Item 1 -->
-          <div class="motion-card">
-            <div class="video-wrapper">
-              <video data-src="Cryptexpromo.mp4" controls muted loop playsinline preload="none"
-                poster="thumbnails/cryptex-thumb.jpg" style="object-fit: cover;"></video>
-            </div>
-            <div class="card-content">
-              <h3 class="card-title">Cryptex Promo</h3>
-              <p style="font-size: 0.9rem;">3D Motion Graphics</p>
+      <div class="work-grid-v2">
+        <!-- Project 1: Searchable -->
+        <div class="work-card-v2 fade-in">
+          <div class="mockup-box">
+            <div class="mockup-inner">
+              <video src="SearchableFinal.mp4" muted loop playsinline poster="thumbnails/blackbox-thumb.jpg"></video>
             </div>
           </div>
-
-          <!-- Item 2 -->
-          <div class="motion-card">
-            <div class="video-wrapper">
-              <iframe src="https://www.youtube.com/embed/iMGmx4ZA7JI" title="Indie Crush" frameborder="0" loading="lazy"
-                allowfullscreen></iframe>
-            </div>
-            <div class="card-content">
-              <h3 class="card-title">Indie Crush</h3>
-              <p style="font-size: 0.9rem;">Explainer Video</p>
-            </div>
-          </div>
-
-          <!-- Item 3 -->
-          <div class="motion-card">
-            <div class="video-wrapper">
-              <iframe src="https://www.youtube.com/embed/GgiPSq-xArE" title="Base Supply" frameborder="0" loading="lazy"
-                allowfullscreen></iframe>
-            </div>
-            <div class="card-content">
-              <h3 class="card-title">Base Supply</h3>
-              <p style="font-size: 0.9rem;">Product Demo</p>
+          <div class="work-info-v2">
+            <h3 class="work-title-v2">Searchable AI</h3>
+            <div class="work-tags-v2">
+              <span class="tag-v2">SaaS</span>
+              <span class="tag-v2">Launch</span>
             </div>
           </div>
         </div>
-        <button class="scroll-btn next" aria-label="Scroll Right">❯</button>
+
+        <!-- Project 2: Cryptex -->
+        <div class="work-card-v2 fade-in">
+          <div class="mockup-box">
+            <div class="mockup-inner">
+              <video src="Cryptexpromo.mp4" muted loop playsinline poster="thumbnails/cryptex-thumb.jpg"></video>
+            </div>
+          </div>
+          <div class="work-info-v2">
+            <h3 class="work-title-v2">Cryptex Promo</h3>
+            <div class="work-tags-v2">
+              <span class="tag-v2">3D Motion</span>
+              <span class="tag-v2">Branding</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 3: Spice Launch -->
+        <div class="work-card-v2 fade-in">
+          <div class="mockup-box">
+            <div class="mockup-inner">
+              <video src="10SecFinal.mp4" muted loop playsinline poster="thumbnails/reel2-thumb.jpg"></video>
+            </div>
+          </div>
+          <div class="work-info-v2">
+            <h3 class="work-title-v2">Spice Reveal</h3>
+            <div class="work-tags-v2">
+              <span class="tag-v2">Product</span>
+              <span class="tag-v2">Teaser</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 4: Indie Crush -->
+        <div class="work-card-v2 fade-in">
+          <div class="mockup-box" style="cursor: pointer;" onclick="window.open('https://www.youtube.com/watch?v=iMGmx4ZA7JI', '_blank')">
+            <div class="mockup-inner">
+              <img src="thumbnails/alexsaint-thumb.jpg" alt="Indie Crush" class="thumb-img">
+            </div>
+          </div>
+          <div class="work-info-v2">
+            <h3 class="work-title-v2">Indie Crush</h3>
+            <div class="work-tags-v2">
+              <span class="tag-v2">Explainer</span>
+              <span class="tag-v2">SaaS</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center" style="margin-top: 80px;">
+        <a href="portfolio.html" class="btn btn-outline" style="padding: 12px 40px; font-size: 0.9rem; letter-spacing: 1px;">VIEW ALL PROJECTS</a>
       </div>
     </div>
   </section>
 
-  <!-- Cinematic Launch Videos Section (Mockups) -->
-  <section id="cinematic-launch" class="section"
-    style="background: linear-gradient(to bottom, var(--bg-dark), #0a0a0a);">
-    <div class="container">
-      <div class="text-center fade-in">
-        <h2>Cinematic Launch Videos</h2>
-        <p>High-energy trailers and brand films.</p>
-      </div>
 
-      <div class="motion-container fade-in">
-        <button class="scroll-btn prev" aria-label="Scroll Left">❮</button>
-        <div class="motion-track">
-          <!-- Searchable Launch Video -->
-          <div class="motion-card">
-            <div class="video-wrapper">
-              <video src="SearchableFinal.mp4" controls muted loop playsinline preload="metadata"
-                style="object-fit: cover;"></video>
-            </div>
-            <div class="card-content">
-              <h3 class="card-title">Searchable</h3>
-              <p style="font-size: 0.9rem;">SaaS Launch Trailer</p>
-            </div>
-          </div>
-
-          <!-- 10Sec Launch Video -->
-          <div class="motion-card">
-            <div class="video-wrapper">
-              <video src="10SecFinal.mp4" controls muted loop playsinline preload="metadata"
-                style="object-fit: cover;"></video>
-            </div>
-            <div class="card-content">
-              <h3 class="card-title">Spice Launch</h3>
-              <p style="font-size: 0.9rem;">Product Teaser</p>
-            </div>
-          </div>
-        </div>
-        <button class="scroll-btn next" aria-label="Scroll Right">❯</button>
-      </div>
-
-      <div class="text-center" style="margin-top: 30px;">
-        <a href="portfolio.html" class="btn btn-outline" style="padding: 10px 30px; font-size: 0.85rem;">View All
-          Projects →</a>
-      </div>
-    </div>
-  </section>
 
   <!-- Testimonials -->
   <section id="testimonials" class="section">
@@ -430,5 +424,4 @@
   </footer>
 
 </body>
-
 </html>
