@@ -6,6 +6,110 @@ document.addEventListener('DOMContentLoaded', () => {
     // Mark that JS has loaded - enables fade animations
     document.body.classList.add('js-loaded');
 
+    // 1. Initialize Lenis Smooth Scroll
+    const lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        orientation: 'vertical',
+        gestureOrientation: 'vertical',
+        smoothWheel: true,
+        wheelMultiplier: 1,
+        smoothTouch: false,
+        touchMultiplier: 2,
+        infinite: false,
+    });
+
+    function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    // 2. GSAP Scroll Animations
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Reveal Sections
+    const revealElements = document.querySelectorAll('.fade-in');
+    revealElements.forEach((el) => {
+        gsap.fromTo(el, 
+            { 
+                opacity: 0, 
+                y: 50,
+            }, 
+            {
+                opacity: 1,
+                y: 0,
+                duration: 1.2,
+                ease: 'power4.out',
+                scrollTrigger: {
+                    trigger: el,
+                    start: 'top 90%',
+                    toggleActions: 'play none none none'
+                }
+            }
+        );
+    });
+
+    // 3. Magnetic Buttons
+    const magneticButtons = document.querySelectorAll('.btn-primary, .btn-outline, .btn-hero-main');
+    magneticButtons.forEach(btn => {
+        btn.addEventListener('mousemove', (e) => {
+            const rect = btn.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+
+            gsap.to(btn, {
+                x: x * 0.3,
+                y: y * 0.3,
+                duration: 0.3,
+                ease: 'power2.out'
+            });
+        });
+
+        btn.addEventListener('mouseleave', () => {
+            gsap.to(btn, {
+                x: 0,
+                y: 0,
+                duration: 0.5,
+                ease: 'elastic.out(1, 0.3)'
+            });
+        });
+    });
+
+    // 4. Header Scroll Blur
+    const header = document.querySelector('.header-modern');
+    if (header) {
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+    }
+
+    // 5. Hero Reveal Animation
+    const heroTl = gsap.timeline();
+    heroTl.from('.hero-content h1', {
+        y: 100,
+        opacity: 0,
+        duration: 1.2,
+        ease: 'power4.out',
+        delay: 0.5
+    })
+    .from('.hero-content .subtitle-modern', {
+        y: 50,
+        opacity: 0,
+        duration: 1,
+        ease: 'power3.out'
+    }, '-=0.8')
+    .from('.hero-actions-modern', {
+        y: 30,
+        opacity: 0,
+        duration: 1,
+        ease: 'power3.out'
+    }, '-=0.6');
+
     // ===== LAZY LOAD YOUTUBE IFRAMES =====
     // Replace YouTube iframes with lightweight thumbnails. Load actual iframe on click.
     const youtubeIframes = document.querySelectorAll('iframe[src*="youtube.com/embed"]');
