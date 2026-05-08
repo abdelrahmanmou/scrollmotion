@@ -28,5 +28,9 @@ export default defineConfig({
         rollupOptions: {
             input: htmlFiles,
         },
+        // Exclude mp4 files from asset processing - keep them as static files
+        assetsInlineLimit: 0,
     },
+    // Prevent Vite from processing video files
+    assetsInclude: ['**/*.mp4'],
 })
