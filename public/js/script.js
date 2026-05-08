@@ -402,47 +402,111 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Work v2 Hover & Tap Play
-    document.querySelectorAll('.work-card-v2').forEach(card => {
-        const video = card.querySelector('video');
-        if (video) {
-            // Desktop Hover logic
-            card.addEventListener('mouseenter', () => {
-                if (window.matchMedia('(hover: hover)').matches) {
-                    video.muted = false;
-                    video.play().catch(e => console.log("Playback blocked", e));
-                    card.classList.add('is-playing');
-                }
-            });
+    // Work v2 Video Controls
+    document.querySelectorAll('.video-container').forEach(container => {
+        const video = container.querySelector('video');
+        const playBtn = container.querySelector('.play-btn');
+        const muteBtn = container.querySelector('.mute-btn');
+        
+        if (!video || !playBtn || !muteBtn) return;
 
-            card.addEventListener('mouseleave', () => {
-                if (window.matchMedia('(hover: hover)').matches) {
-                    video.pause();
-                    video.muted = true;
-                    video.currentTime = 0;
-                    card.classList.remove('is-playing');
-                }
-            });
+        const playIcon = playBtn.querySelector('.play-icon');
+        const pauseIcon = playBtn.querySelector('.pause-icon');
+        const muteIcon = muteBtn.querySelector('.mute-icon');
+        const unmuteIcon = muteBtn.querySelector('.unmute-icon');
 
-            // Mobile/Touch Tap logic
-            card.addEventListener('click', (e) => {
-                // If it's a YouTube link, just let it open
-                if (card.querySelector('a') || card.querySelector('[onclick*="window.open"]')) return;
+        function updatePlayButton() {
+            if (video.paused) {
+                playIcon.style.display = 'block';
+                pauseIcon.style.display = 'none';
+                container.classList.remove('is-playing');
+            } else {
+                playIcon.style.display = 'none';
+                pauseIcon.style.display = 'block';
+                container.classList.add('is-playing');
+            }
+        }
 
-                if (video.paused) {
-                    // Pause all other videos
-                    document.querySelectorAll('.work-card-v2 video').forEach(v => {
+        function updateMuteButton() {
+            if (video.muted) {
+                muteIcon.style.display = 'block';
+                unmuteIcon.style.display = 'none';
+            } else {
+                muteIcon.style.display = 'none';
+                unmuteIcon.style.display = 'block';
+            }
+        }
+
+        // Play/Pause toggle
+        playBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            
+            if (video.paused) {
+                // Pause all other videos first
+                document.querySelectorAll('.video-container video').forEach(v => {
+                    if (v !== video) {
                         v.pause();
-                        v.closest('.work-card-v2').classList.remove('is-playing');
-                    });
-                    
+                        v.closest('.video-container').classList.remove('is-playing');
+                    }
+                });
+                
+                video.play().then(() => {
                     video.muted = false;
-                    video.play().catch(e => console.log("Playback blocked", e));
-                    card.classList.add('is-playing');
-                } else {
-                    video.pause();
-                    card.classList.remove('is-playing');
-                }
+                    updatePlayButton();
+                    updateMuteButton();
+                }).catch(e => {
+                    console.log("Playback blocked", e);
+                    // Try muted first
+                    video.muted = true;
+                    video.play().then(() => {
+                        updatePlayButton();
+                        updateMuteButton();
+                    });
+                });
+            } else {
+                video.pause();
+                updatePlayButton();
+            }
+        });
+
+        // Mute/Unmute toggle
+        muteBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            video.muted = !video.muted;
+            updateMuteButton();
+        });
+
+        // Video event listeners
+        video.addEventListener('play', updatePlayButton);
+        video.addEventListener('pause', updatePlayButton);
+        video.addEventListener('volumechange', updateMuteButton);
+
+        // Click on container to play/pause
+        container.addEventListener('click', (e) => {
+            if (e.target === container || e.target.classList.contains('mockup-inner')) {
+                playBtn.click();
+            }
+        });
+
+        // Initialize
+        updatePlayButton();
+        updateMuteButton();
+    });
+
+    // Stagger animations for grid items
+    const staggerContainers = [
+        '.services-grid',
+        '.process-grid',
+        '.pricing-grid',
+        '.testimonials-grid'
+    ];
+
+    staggerContainers.forEach(selector => {
+        const container = document.querySelector(selector);
+        if (container) {
+            const items = container.children;
+            Array.from(items).forEach((item, index) => {
+                item.style.transitionDelay = `${index * 0.1}s`;
             });
         }
     });
