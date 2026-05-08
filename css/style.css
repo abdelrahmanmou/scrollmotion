@@ -1774,6 +1774,13 @@ footer {
     height: 100%;
     object-fit: cover;
     transition: transform 0.8s ease;
+    display: block;
+    min-width: 100%;
+    min-height: 100%;
+}
+
+.mockup-inner video {
+    background: #000;
 }
 
 .work-card-v2:hover .mockup-inner video,
