@@ -392,19 +392,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Force videos to load first frame
-    document.querySelectorAll('.video-container video').forEach(video => {
-        video.load();
-        // Try to play and immediately pause to show first frame
-        video.play().then(() => {
-            video.pause();
-            video.currentTime = 0;
-        }).catch(e => {
-            // Autoplay blocked, at least load the metadata
-            console.log('Video autoplay blocked, loading metadata only');
-        });
-    });
-
     // Work v2 Video Controls
     document.querySelectorAll('.video-container').forEach(container => {
         const video = container.querySelector('video');

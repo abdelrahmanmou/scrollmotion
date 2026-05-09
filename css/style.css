@@ -1744,6 +1744,7 @@ footer {
 .mockup-box {
     position: relative;
     width: 100%;
+    aspect-ratio: 16/10;
     background: #0f0f0f;
     border-radius: 30px;
     overflow: hidden;
@@ -1761,7 +1762,7 @@ footer {
 
 .mockup-inner {
     width: 100%;
-    aspect-ratio: 16/10;
+    height: 100%;
     border-radius: 15px;
     overflow: hidden;
     background: #000;
