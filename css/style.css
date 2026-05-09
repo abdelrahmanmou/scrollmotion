@@ -1075,8 +1075,8 @@ footer {
 
 /* Only animate if JS has loaded and user prefers motion */
 .js-loaded .fade-in:not(.visible) {
-    opacity: 0;
-    transform: translateY(20px);
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .fade-in.visible {
