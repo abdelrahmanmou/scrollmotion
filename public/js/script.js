@@ -418,6 +418,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Work v2 Video Controls
     document.querySelectorAll('.video-container').forEach(container => {
         const video = container.querySelector('video');
+        const poster = container.querySelector('.video-poster');
         const playBtn = container.querySelector('.play-btn');
         const muteBtn = container.querySelector('.mute-btn');
         
@@ -459,9 +460,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.querySelectorAll('.video-container video').forEach(v => {
                     if (v !== video) {
                         v.pause();
+                        v.style.opacity = '0';
+                        const vPoster = v.closest('.mockup-inner').querySelector('.video-poster');
+                        if (vPoster) vPoster.style.opacity = '1';
                         v.closest('.video-container').classList.remove('is-playing');
                     }
                 });
+                
+                // Hide poster, show video
+                if (poster) poster.style.opacity = '0';
+                video.style.opacity = '1';
                 
                 video.play().then(() => {
                     video.muted = false;
@@ -496,7 +504,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Click on container to play/pause
         container.addEventListener('click', (e) => {
-            if (e.target === container || e.target.classList.contains('mockup-inner')) {
+            if (e.target === container || e.target.classList.contains('mockup-inner') || e.target.classList.contains('video-poster')) {
                 playBtn.click();
             }
         });
