@@ -30,7 +30,15 @@
   <!-- Scripts -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script>
+    // Patch module.exports so the Lenis CJS build defines a global
+    window.module = { exports: {} };
+  </script>
   <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/dist/lenis.min.js"></script>
+  <script>
+    window.Lenis = window.module.exports;
+    delete window.module;
+  </script>
   <script src="js/script.js" defer></script>
 
   <!-- Structured Data (Organization) -->
