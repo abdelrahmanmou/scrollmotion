@@ -72,7 +72,7 @@ body {
     z-index: 9999;
     pointer-events: none;
     opacity: 0.05;
-    background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+    background-image: url("/noise.svg");
     mix-blend-mode: overlay;
 }
 
