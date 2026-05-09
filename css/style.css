@@ -2102,11 +2102,52 @@ footer {
 }
 
 /* ===== Pricing Section ===== */
+/* Pricing Tabs */
+.pricing-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 50px;
+    flex-wrap: wrap;
+}
+
+.pricing-tab {
+    padding: 14px 32px;
+    border-radius: 100px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: transparent;
+    color: var(--text-muted);
+    font-family: var(--font-main);
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.pricing-tab:hover {
+    border-color: rgba(193, 255, 114, 0.3);
+    color: #fff;
+}
+
+.pricing-tab.active {
+    background: #c1ff72;
+    color: #000;
+    border-color: #c1ff72;
+}
+
+.pricing-tab-content {
+    display: none;
+}
+
+.pricing-tab-content.active {
+    display: block;
+}
+
 .pricing-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 40px;
-    max-width: 900px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    max-width: 1200px;
     margin: 0 auto;
 }
 
@@ -2230,6 +2271,12 @@ footer {
     text-decoration: underline;
 }
 
+@media (max-width: 1024px) {
+    .pricing-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
 @media (max-width: 768px) {
     .pricing-grid {
         grid-template-columns: 1fr;
@@ -2237,6 +2284,10 @@ footer {
     }
     .pricing-card {
         padding: 40px 30px;
+    }
+    .pricing-tab {
+        padding: 12px 24px;
+        font-size: 0.85rem;
     }
 }
 

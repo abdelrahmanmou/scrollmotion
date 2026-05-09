@@ -268,6 +268,23 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Pricing Tabs
+    const pricingTabs = document.querySelectorAll('.pricing-tab');
+    const pricingContents = document.querySelectorAll('.pricing-tab-content');
+
+    pricingTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const target = tab.dataset.tab;
+
+            pricingTabs.forEach(t => t.classList.remove('active'));
+            pricingContents.forEach(c => c.classList.remove('active'));
+
+            tab.classList.add('active');
+            const content = document.getElementById('tab-' + target);
+            if (content) content.classList.add('active');
+        });
+    });
+
     // Contact Form Handling (AJAX)
     const form = document.getElementById('contact-form');
     const status = document.getElementById('form-status');
