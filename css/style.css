@@ -1813,7 +1813,7 @@ footer {
 }
 
 .work-card-v2:hover .play-button-overlay,
-.work-card-v2.is-playing .play-button-overlay {
+.video-container.is-playing .play-button-overlay {
   opacity: 0;
   transform: translate(-50%, -50%) scale(0.8);
 }

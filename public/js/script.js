@@ -1,80 +1,110 @@
 /* 
   Scroll Studio - Main Script
+  Defensive, works across all pages even without GSAP/Lenis
 */
 
 document.addEventListener('DOMContentLoaded', () => {
     // Mark that JS has loaded - enables fade animations
     document.body.classList.add('js-loaded');
 
-    // 1. Initialize Lenis Smooth Scroll
-    const lenis = new Lenis({
-        duration: 1.2,
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-        orientation: 'vertical',
-        gestureOrientation: 'vertical',
-        smoothWheel: true,
-        wheelMultiplier: 1,
-        smoothTouch: false,
-        touchMultiplier: 2,
-        infinite: false,
-    });
+    // 1. Initialize Lenis Smooth Scroll (only if loaded)
+    if (typeof Lenis !== 'undefined') {
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            orientation: 'vertical',
+            gestureOrientation: 'vertical',
+            smoothWheel: true,
+            wheelMultiplier: 1,
+            smoothTouch: false,
+            touchMultiplier: 2,
+            infinite: false,
+        });
 
-    function raf(time) {
-        lenis.raf(time);
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
         requestAnimationFrame(raf);
     }
-    requestAnimationFrame(raf);
 
-    // 2. GSAP Scroll Animations
-    gsap.registerPlugin(ScrollTrigger);
+    // 2. GSAP Scroll Animations (only if loaded)
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
 
-    // Reveal Sections
-    const revealElements = document.querySelectorAll('.fade-in');
-    revealElements.forEach((el) => {
-        gsap.fromTo(el, 
-            { 
-                opacity: 0, 
-                y: 50,
-            }, 
-            {
-                opacity: 1,
-                y: 0,
+        // Reveal Sections
+        const revealElements = document.querySelectorAll('.fade-in');
+        revealElements.forEach((el) => {
+            gsap.fromTo(el, 
+                { 
+                    opacity: 0, 
+                    y: 50,
+                }, 
+                {
+                    opacity: 1,
+                    y: 0,
+                    duration: 1.2,
+                    ease: 'power4.out',
+                    scrollTrigger: {
+                        trigger: el,
+                        start: 'top 90%',
+                        toggleActions: 'play none none none'
+                    }
+                }
+            );
+        });
+
+        // 3. Magnetic Buttons (GSAP required)
+        const magneticButtons = document.querySelectorAll('.btn-primary, .btn-outline, .btn-hero-main');
+        magneticButtons.forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+
+                gsap.to(btn, {
+                    x: x * 0.3,
+                    y: y * 0.3,
+                    duration: 0.3,
+                    ease: 'power2.out'
+                });
+            });
+
+            btn.addEventListener('mouseleave', () => {
+                gsap.to(btn, {
+                    x: 0,
+                    y: 0,
+                    duration: 0.5,
+                    ease: 'elastic.out(1, 0.3)'
+                });
+            });
+        });
+
+        // 5. Hero Reveal Animation (only on pages with modern hero)
+        const heroHeadline = document.querySelector('.hero-modern-headline h1');
+        if (heroHeadline) {
+            const heroTl = gsap.timeline();
+            heroTl.from('.hero-modern-headline h1', {
+                y: 100,
+                opacity: 0,
                 duration: 1.2,
                 ease: 'power4.out',
-                scrollTrigger: {
-                    trigger: el,
-                    start: 'top 90%',
-                    toggleActions: 'play none none none'
-                }
-            }
-        );
-    });
-
-    // 3. Magnetic Buttons
-    const magneticButtons = document.querySelectorAll('.btn-primary, .btn-outline, .btn-hero-main');
-    magneticButtons.forEach(btn => {
-        btn.addEventListener('mousemove', (e) => {
-            const rect = btn.getBoundingClientRect();
-            const x = e.clientX - rect.left - rect.width / 2;
-            const y = e.clientY - rect.top - rect.height / 2;
-
-            gsap.to(btn, {
-                x: x * 0.3,
-                y: y * 0.3,
-                duration: 0.3,
-                ease: 'power2.out'
-            });
-        });
-
-        btn.addEventListener('mouseleave', () => {
-            gsap.to(btn, {
-                x: 0,
-                y: 0,
-                duration: 0.5,
-                ease: 'elastic.out(1, 0.3)'
-            });
-        });
-    });
+                delay: 0.5
+            })
+            .from('.hero-description p', {
+                y: 50,
+                opacity: 0,
+                duration: 1,
+                ease: 'power3.out'
+            }, '-=0.8')
+            .from('.hero-cta-modern', {
+                y: 30,
+                opacity: 0,
+                duration: 1,
+                ease: 'power3.out'
+            }, '-=0.6');
+        }
+    }
 
     // 4. Header Scroll Blur
     const header = document.querySelector('.header-modern');
@@ -87,28 +117,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-
-    // 5. Hero Reveal Animation
-    const heroTl = gsap.timeline();
-    heroTl.from('.hero-content h1', {
-        y: 100,
-        opacity: 0,
-        duration: 1.2,
-        ease: 'power4.out',
-        delay: 0.5
-    })
-    .from('.hero-content .subtitle-modern', {
-        y: 50,
-        opacity: 0,
-        duration: 1,
-        ease: 'power3.out'
-    }, '-=0.8')
-    .from('.hero-actions-modern', {
-        y: 30,
-        opacity: 0,
-        duration: 1,
-        ease: 'power3.out'
-    }, '-=0.6');
 
     // ===== LAZY LOAD YOUTUBE IFRAMES =====
     // Replace YouTube iframes with lightweight thumbnails. Load actual iframe on click.
@@ -184,28 +192,33 @@ document.addEventListener('DOMContentLoaded', () => {
     // ===== LAZY LOAD VIDEOS =====
     // Use Intersection Observer to load videos only when they enter the viewport
     const lazyVideos = document.querySelectorAll('video[data-src]');
-    const videoObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const video = entry.target;
-                if (video.dataset.src) {
-                    video.src = video.dataset.src;
-                    video.removeAttribute('data-src');
+    if (lazyVideos.length > 0) {
+        const videoObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const video = entry.target;
+                    if (video.dataset.src) {
+                        video.src = video.dataset.src;
+                        video.removeAttribute('data-src');
+                    }
+                    videoObserver.unobserve(video);
                 }
-                videoObserver.unobserve(video);
-            }
-        });
-    }, { rootMargin: '200px' });
+            });
+        }, { rootMargin: '200px' });
 
-    lazyVideos.forEach(video => videoObserver.observe(video));
+        lazyVideos.forEach(video => videoObserver.observe(video));
+    }
 
     // Smooth Scroll for Navigation
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            document.querySelector(this.getAttribute('href')).scrollIntoView({
-                behavior: 'smooth'
-            });
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                e.preventDefault();
+                target.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            }
         });
     });
 
@@ -272,24 +285,35 @@ document.addEventListener('DOMContentLoaded', () => {
     const pricingTabs = document.querySelectorAll('.pricing-tab');
     const pricingContents = document.querySelectorAll('.pricing-tab-content');
 
-    pricingTabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-            const target = tab.dataset.tab;
+    if (pricingTabs.length > 0) {
+        pricingTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const target = tab.dataset.tab;
 
-            pricingTabs.forEach(t => t.classList.remove('active'));
-            pricingContents.forEach(c => c.classList.remove('active'));
+                pricingTabs.forEach(t => t.classList.remove('active'));
+                pricingContents.forEach(c => c.classList.remove('active'));
 
-            tab.classList.add('active');
-            const content = document.getElementById('tab-' + target);
-            if (content) content.classList.add('active');
+                tab.classList.add('active');
+                const content = document.getElementById('tab-' + target);
+                if (content) content.classList.add('active');
+            });
         });
-    });
+    }
 
     // Contact Form Handling (AJAX)
     const form = document.getElementById('contact-form');
-    const status = document.getElementById('form-status');
+    let status = document.getElementById('form-status');
 
-    if (form) {
+    // Create status element if missing
+    if (form && !status) {
+        status = document.createElement('div');
+        status.id = 'form-status';
+        status.style.marginTop = '20px';
+        status.style.textAlign = 'center';
+        form.appendChild(status);
+    }
+
+    if (form && status) {
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             const data = new FormData(form);
@@ -367,29 +391,31 @@ document.addEventListener('DOMContentLoaded', () => {
     // Motion Graphics & Cinematic Launch Carousel Scroll Buttons (Generic)
     const motionSections = document.querySelectorAll('#motion-graphics, #cinematic-launch, #motion'); // Support old and new IDs
 
-    motionSections.forEach(section => {
-        const motionTrack = section.querySelector('.motion-track');
-        const motionPrevBtn = section.querySelector('.scroll-btn.prev');
-        const motionNextBtn = section.querySelector('.scroll-btn.next');
+    if (motionSections.length > 0) {
+        motionSections.forEach(section => {
+            const motionTrack = section.querySelector('.motion-track');
+            const motionPrevBtn = section.querySelector('.scroll-btn.prev');
+            const motionNextBtn = section.querySelector('.scroll-btn.next');
 
-        if (motionTrack && motionPrevBtn && motionNextBtn) {
-            motionPrevBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                motionTrack.scrollBy({
-                    left: -470, // Scroll by card width + gap
-                    behavior: 'smooth'
+            if (motionTrack && motionPrevBtn && motionNextBtn) {
+                motionPrevBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    motionTrack.scrollBy({
+                        left: -470, // Scroll by card width + gap
+                        behavior: 'smooth'
+                    });
                 });
-            });
 
-            motionNextBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                motionTrack.scrollBy({
-                    left: 470,
-                    behavior: 'smooth'
+                motionNextBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    motionTrack.scrollBy({
+                        left: 470,
+                        behavior: 'smooth'
+                    });
                 });
-            });
-        }
-    });
+            }
+        });
+    }
 
     // Horizontal Scroll with Mouse Wheel
     const scrollContainers = [
@@ -425,23 +451,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function updatePlayButton() {
             if (video.paused) {
-                playIcon.style.display = 'block';
-                pauseIcon.style.display = 'none';
+                if (playIcon) playIcon.style.display = 'block';
+                if (pauseIcon) pauseIcon.style.display = 'none';
                 container.classList.remove('is-playing');
             } else {
-                playIcon.style.display = 'none';
-                pauseIcon.style.display = 'block';
+                if (playIcon) playIcon.style.display = 'none';
+                if (pauseIcon) pauseIcon.style.display = 'block';
                 container.classList.add('is-playing');
             }
         }
 
         function updateMuteButton() {
             if (video.muted) {
-                muteIcon.style.display = 'block';
-                unmuteIcon.style.display = 'none';
+                if (muteIcon) muteIcon.style.display = 'block';
+                if (unmuteIcon) unmuteIcon.style.display = 'none';
             } else {
-                muteIcon.style.display = 'none';
-                unmuteIcon.style.display = 'block';
+                if (muteIcon) muteIcon.style.display = 'none';
+                if (unmuteIcon) unmuteIcon.style.display = 'block';
             }
         }
 
@@ -455,9 +481,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (v !== video) {
                         v.pause();
                         v.style.opacity = '0';
-                        const vPoster = v.closest('.mockup-inner').querySelector('.video-poster');
+                        const vContainer = v.closest('.video-container');
+                        const vPoster = vContainer ? vContainer.querySelector('.video-poster') : null;
                         if (vPoster) vPoster.style.opacity = '1';
-                        v.closest('.video-container').classList.remove('is-playing');
+                        if (vContainer) vContainer.classList.remove('is-playing');
                     }
                 });
                 
