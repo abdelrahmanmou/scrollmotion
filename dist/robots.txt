@@ -1,8 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://scrollmotion.site/sitemap.xml
-
-# AI/LLM Information File
-# See https://llmstxt.org for specification
-LLMs: https://scrollmotion.site/llms.txt
