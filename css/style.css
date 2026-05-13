@@ -1770,6 +1770,7 @@ footer {
     border: 1px solid rgba(255, 255, 255, 0.03);
     transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     box-shadow: 0 0 0 rgba(193, 255, 114, 0);
+    min-height: 200px; /* Fallback */
 }
 
 .work-card-v2:hover .mockup-box {
@@ -1779,12 +1780,14 @@ footer {
 }
 
 .mockup-inner {
-    width: 100%;
-    height: 100%;
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    right: 30px;
+    bottom: 30px;
     border-radius: 15px;
     overflow: hidden;
     background: #000;
-    position: relative;
 }
 
 .mockup-inner video,
@@ -1892,6 +1895,14 @@ footer {
     .mockup-box {
         padding: 15px;
         border-radius: 20px;
+        min-height: 250px;
+        aspect-ratio: auto;
+    }
+    .mockup-inner {
+        top: 15px;
+        left: 15px;
+        right: 15px;
+        bottom: 15px;
     }
     .work-info-v2 {
         flex-direction: column;
