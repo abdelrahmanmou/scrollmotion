@@ -123,28 +123,10 @@
             <!-- Person Image (3D Character Ready) -->
       <div class="hero-modern-image" id="tilt-container">
         <!-- 3D Video Character -->
-        <video id="hero-video" autoplay loop muted playsinline style="display: none; width: 100%; height: auto; max-height: 85vh; object-fit: contain; filter: drop-shadow(0 20px 80px rgba(0,0,0,0.8)); -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 95%); mask-image: linear-gradient(to bottom, black 70%, transparent 95%);">
+        <video id="hero-video" autoplay loop muted playsinline poster="assets/hero-portrait.png" style="width: 100%; height: auto; max-height: 85vh; object-fit: contain; mix-blend-mode: screen; filter: drop-shadow(0 20px 80px rgba(0,0,0,0.8)); -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 95%); mask-image: linear-gradient(to bottom, black 70%, transparent 95%);">
           <source src="assets/3d-character.mp4" type="video/mp4">
         </video>
-        <!-- Fallback Image (shows until video is uploaded) -->
-        <img id="hero-fallback" src="assets/hero-portrait.png" alt="Abdelrahman Moustafa" loading="lazy" style="width: 100%; height: auto; max-height: 85vh; display: block; filter: drop-shadow(0 20px 80px rgba(0,0,0,0.8)); object-fit: contain; -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 95%); mask-image: linear-gradient(to bottom, black 70%, transparent 95%);">
       </div>
-
-      <script>
-        const heroVideo = document.getElementById('hero-video');
-        const heroFallback = document.getElementById('hero-fallback');
-        
-        if (heroVideo) {
-            heroVideo.addEventListener('canplay', () => {
-                heroVideo.style.display = 'block';
-                heroFallback.style.display = 'none';
-            });
-            heroVideo.addEventListener('error', () => {
-                heroVideo.style.display = 'none';
-                heroFallback.style.display = 'block';
-            });
-        }
-      </script>
 
       <!-- Floating Left Badge -->
       <div class="badge-floating badge-available">
