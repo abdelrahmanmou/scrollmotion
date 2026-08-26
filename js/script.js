@@ -593,3 +593,21 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
+    // Premium 3D Portfolio Tilt Effect
+    const tiltContainer = document.getElementById('tilt-container');
+    const heroSection = document.querySelector('.hero-modern');
+    if (tiltContainer && heroSection) {
+        heroSection.addEventListener('mousemove', (e) => {
+            const x = (window.innerWidth / 2 - e.pageX) / 25;
+            const y = (window.innerHeight / 2 - e.pageY) / 25;
+            tiltContainer.style.transform = `perspective(1000px) rotateY(${x}deg) rotateX(${y}deg)`;
+        });
+        heroSection.addEventListener('mouseleave', () => {
+            tiltContainer.style.transition = 'transform 0.5s ease';
+            tiltContainer.style.transform = 'perspective(1000px) rotateY(0deg) rotateX(0deg)';
+            setTimeout(() => {
+                tiltContainer.style.transition = '';
+            }, 500);
+        });
+    }
