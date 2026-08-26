@@ -567,8 +567,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 item.style.transitionDelay = `${index * 0.1}s`;
             });
         }
-    });
-});
 
     // Share button logic
     document.querySelectorAll('.share-btn').forEach(btn => {
@@ -579,8 +577,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!card || !card.id) return;
             
             const url = window.location.origin + window.location.pathname + '#' + card.id;
-            try {
-                await navigator.clipboard.writeText(url);
+            
+            const markCopied = () => {
                 btn.classList.add('copied');
                 const originalHTML = btn.innerHTML;
                 btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';
@@ -588,11 +586,36 @@ document.addEventListener('DOMContentLoaded', () => {
                     btn.classList.remove('copied');
                     btn.innerHTML = originalHTML;
                 }, 2000);
-            } catch (err) {
-                console.error('Failed to copy link', err);
+            };
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                try {
+                    await navigator.clipboard.writeText(url);
+                    markCopied();
+                } catch (err) {
+                    console.error('Failed to copy link via clipboard API', err);
+                }
+            } else {
+                // Fallback for non-HTTPS or older browsers
+                try {
+                    const tempInput = document.createElement('input');
+                    tempInput.value = url;
+                    document.body.appendChild(tempInput);
+                    tempInput.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(tempInput);
+                    markCopied();
+                } catch (err) {
+                    console.error('Failed to copy link via execCommand', err);
+                }
             }
         });
     });
+
+    });
+});
+
+
 
     // Premium 3D Portfolio Tilt Effect
     const tiltContainer = document.getElementById('tilt-container');
