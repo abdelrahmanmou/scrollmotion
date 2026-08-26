@@ -553,3 +553,27 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+    // Share button logic
+    document.querySelectorAll('.share-btn').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const card = btn.closest('.short-card');
+            if (!card || !card.id) return;
+            
+            const url = window.location.origin + window.location.pathname + '#' + card.id;
+            try {
+                await navigator.clipboard.writeText(url);
+                btn.classList.add('copied');
+                const originalHTML = btn.innerHTML;
+                btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+                setTimeout(() => {
+                    btn.classList.remove('copied');
+                    btn.innerHTML = originalHTML;
+                }, 2000);
+            } catch (err) {
+                console.error('Failed to copy link', err);
+            }
+        });
+    });

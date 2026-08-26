@@ -2547,4 +2547,37 @@ html.lenis {
 .lenis.lenis-stopped {
     overflow: hidden;
 }
-
+
+/* Share Button */
+.share-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+.share-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+}
+.share-btn svg {
+    width: 16px;
+    height: 16px;
+}
+.share-btn.copied {
+    background: #c1ff72;
+    color: #000;
+    border-color: #c1ff72;
+}
