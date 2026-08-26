@@ -109,13 +109,20 @@ document.addEventListener('DOMContentLoaded', () => {
     // 4. Header Scroll Blur
     const header = document.querySelector('.header-modern');
     if (header) {
+        let isScrolling = false;
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
+            if (!isScrolling) {
+                window.requestAnimationFrame(() => {
+                    if (window.scrollY > 50) {
+                        header.classList.add('scrolled');
+                    } else {
+                        header.classList.remove('scrolled');
+                    }
+                    isScrolling = false;
+                });
+                isScrolling = true;
             }
-        });
+        }, { passive: true });
     }
 
     // ===== LAZY LOAD YOUTUBE IFRAMES =====
@@ -427,9 +434,18 @@ document.addEventListener('DOMContentLoaded', () => {
     scrollContainers.forEach(container => {
         if (container) {
             container.addEventListener('wheel', (e) => {
+                // Only hijack vertical scroll if there's room to scroll horizontally
                 if (e.deltaY !== 0) {
-                    e.preventDefault();
-                    container.scrollLeft += e.deltaY;
+                    const isAtLeftEnd = container.scrollLeft === 0;
+                    const isAtRightEnd = container.scrollLeft + container.clientWidth >= container.scrollWidth - 1;
+                    
+                    if (e.deltaY > 0 && !isAtRightEnd) {
+                        e.preventDefault();
+                        container.scrollLeft += e.deltaY;
+                    } else if (e.deltaY < 0 && !isAtLeftEnd) {
+                        e.preventDefault();
+                        container.scrollLeft += e.deltaY;
+                    }
                 }
             }, { passive: false });
         }
