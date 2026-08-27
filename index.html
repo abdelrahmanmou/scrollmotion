@@ -125,9 +125,21 @@
         <!-- 3D Video Character -->
         <video id="hero-video" autoplay loop muted playsinline poster="assets/3d-character-poster.webp" style="width: 100%; height: auto; max-height: 95vh; transform: scale(1.15); transform-origin: bottom center; object-fit: contain; filter: drop-shadow(0 20px 80px rgba(0,0,0,0.8)); -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 95%); mask-image: linear-gradient(to bottom, black 70%, transparent 95%);">
           <source src="assets/3d-character-alpha.webm" type="video/webm">
-          <source src="assets/3d-character-safari.mov" type="video/quicktime">
           <source src="assets/3d-character.mp4" type="video/mp4">
         </video>
+        <script>
+          // Safari (macOS & iOS) has severe bugs with transparent video formats.
+          // We instantly replace the video with a high-quality Animated WebP on Safari.
+          const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+          if (isSafari) {
+              const video = document.getElementById('hero-video');
+              const img = document.createElement('img');
+              img.src = 'assets/3d-character-animated.webp';
+              img.id = 'hero-video';
+              img.style.cssText = video.style.cssText;
+              video.parentNode.replaceChild(img, video);
+          }
+        </script>
       </div>
 
       <!-- Floating Left Badge -->
