@@ -123,14 +123,72 @@
             <!-- Person Image (3D Character Ready) -->
       <div class="hero-modern-image" id="tilt-container">
         <!-- 3D Video Character -->
-        <video id="hero-video" autoplay loop muted playsinline poster="assets/3d-character-poster.webp" style="width: 100%; height: auto; max-height: 95vh; transform: scale(1.15); transform-origin: bottom center; object-fit: contain; filter: drop-shadow(0 20px 80px rgba(0,0,0,0.8)); -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 95%); mask-image: linear-gradient(to bottom, black 70%, transparent 95%);">
-          <!-- Safari / iOS HEVC with Alpha -->
-          <source src="assets/3d-character-safari.mp4" type='video/mp4; codecs="hvc1"'>
+        <video id="hero-video-src" autoplay loop muted playsinline poster="assets/3d-character-poster.webp" style="display: none;">
           <!-- Chrome / Firefox VP9 with Alpha -->
           <source src="assets/3d-character-alpha.webm" type="video/webm">
-          <!-- Ultimate fallback for ancient browsers -->
-          <source src="assets/3d-character.mp4" type="video/mp4">
+          <!-- Safari / iOS Green Screen Fallback -->
+          <source src="assets/3d-character-safari-green.mp4" type="video/mp4">
         </video>
+        <canvas id="hero-video" style="width: 100%; height: auto; max-height: 95vh; transform: scale(1.15); transform-origin: bottom center; object-fit: contain; filter: drop-shadow(0 20px 80px rgba(0,0,0,0.8)); -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 95%); mask-image: linear-gradient(to bottom, black 70%, transparent 95%);"></canvas>
+
+        <script>
+          document.addEventListener('DOMContentLoaded', () => {
+            const video = document.getElementById('hero-video-src');
+            const canvas = document.getElementById('hero-video');
+            
+            // Only use canvas processing on Safari (which falls back to the green screen MP4)
+            const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+            
+            if (isSafari) {
+                const ctx = canvas.getContext('2d', { willReadFrequently: true });
+                let w, h;
+                
+                video.addEventListener('loadedmetadata', () => {
+                    w = video.videoWidth;
+                    h = video.videoHeight;
+                    canvas.width = w;
+                    canvas.height = h;
+                });
+
+                function processFrame() {
+                    if (video.paused || video.ended) {
+                        requestAnimationFrame(processFrame);
+                        return;
+                    }
+                    if (!w || !h) {
+                        requestAnimationFrame(processFrame);
+                        return;
+                    }
+                    
+                    ctx.drawImage(video, 0, 0, w, h);
+                    const frame = ctx.getImageData(0, 0, w, h);
+                    const data = frame.data;
+                    const length = data.length;
+                    
+                    // Chroma key pure green background (#00FF00)
+                    for (let i = 0; i < length; i += 4) {
+                        const r = data[i];
+                        const g = data[i+1];
+                        const b = data[i+2];
+                        // If it's strongly green, make it transparent
+                        if (g > 150 && r < 100 && b < 100) {
+                            data[i+3] = 0;
+                        }
+                    }
+                    ctx.putImageData(frame, 0, 0);
+                    requestAnimationFrame(processFrame);
+                }
+                
+                video.addEventListener('play', processFrame);
+            } else {
+                // If it's Chrome/Firefox, WebM Alpha is supported, so just replace canvas with the video directly
+                video.style.display = 'block';
+                video.id = 'hero-video';
+                video.style.cssText = canvas.style.cssText;
+                canvas.parentNode.replaceChild(video, canvas);
+            }
+          });
+        </script>
       </div>
 
       <!-- Floating Left Badge -->
