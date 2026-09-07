@@ -143,19 +143,21 @@
                 const ctx = canvas.getContext('2d', { willReadFrequently: true });
                 let w, h;
                 
-                video.addEventListener('loadedmetadata', () => {
+                function setDimensions() {
                     w = video.videoWidth;
                     h = video.videoHeight;
                     canvas.width = w;
                     canvas.height = h;
-                });
+                }
+                
+                if (video.readyState >= 1) {
+                    setDimensions();
+                } else {
+                    video.addEventListener('loadedmetadata', setDimensions);
+                }
 
                 function processFrame() {
-                    if (video.paused || video.ended) {
-                        requestAnimationFrame(processFrame);
-                        return;
-                    }
-                    if (!w || !h) {
+                    if (video.paused || video.ended || !w || !h) {
                         requestAnimationFrame(processFrame);
                         return;
                     }
@@ -180,6 +182,14 @@
                 }
                 
                 video.addEventListener('play', processFrame);
+                if (!video.paused) {
+                    processFrame();
+                }
+                
+                // Force play on iOS low power mode if it doesn't autoplay
+                document.body.addEventListener('touchstart', () => {
+                    if (video.paused) video.play();
+                }, {once: true});
             } else {
                 // If it's Chrome/Firefox, WebM Alpha is supported, so just replace canvas with the video directly
                 video.style.display = 'block';
