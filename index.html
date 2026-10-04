@@ -117,7 +117,7 @@
 
       <!-- Main Headline -->
       <div class="hero-modern-headline">
-        <h1>Hi I'm Abdelrahman<br><span class="italic">Launch Video Expert</span></h1>
+        <h1>Hi I'm Abdelrahman<br><span class="italic">Creative Director</span></h1>
       </div>
 
             <!-- Person Image (3D Character Ready) -->
@@ -137,15 +137,24 @@
             const canvas = document.getElementById('hero-video');
             
             // Only use canvas processing on Safari (which falls back to the green screen MP4)
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+                (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
             const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+            const needsChromaKey = isIOS || isSafari;
             
-            if (isSafari) {
+            if (needsChromaKey) {
+                // Codec support does not guarantee WebM alpha support.
+                // Select the green-screen source before processing any frames.
+                video.querySelector('source[type="video/webm"]').remove();
+                video.muted = true;
+                video.load();
                 const ctx = canvas.getContext('2d', { willReadFrequently: true });
                 let w, h;
                 
                 function setDimensions() {
-                    w = video.videoWidth;
-                    h = video.videoHeight;
+                    const scale = Math.min(1, 540 / video.videoHeight);
+                    w = Math.round(video.videoWidth * scale);
+                    h = Math.round(video.videoHeight * scale);
                     canvas.width = w;
                     canvas.height = h;
                 }
@@ -181,14 +190,22 @@
                     requestAnimationFrame(processFrame);
                 }
                 
-                video.addEventListener('play', processFrame);
-                if (!video.paused) {
+                let processing = false;
+                function startProcessing() {
+                    if (processing) return;
+                    processing = true;
                     processFrame();
                 }
+                video.addEventListener('play', startProcessing);
+                if (!video.paused) {
+                    startProcessing();
+                }
                 
-                // Force play on iOS low power mode if it doesn't autoplay
+                video.play().catch(() => {});
+
+                // Retry play on iOS low power mode if it doesn't autoplay
                 document.body.addEventListener('touchstart', () => {
-                    if (video.paused) video.play();
+                    if (video.paused) video.play().catch(() => {});
                 }, {once: true});
             } else {
                 // If it's Chrome/Firefox, WebM Alpha is supported, so just replace canvas with the video directly
