@@ -126,8 +126,8 @@
         <video id="hero-video-src" autoplay loop muted playsinline poster="assets/3d-character-poster.webp" style="display: none;">
           <!-- Chrome / Firefox VP9 with Alpha -->
           <source src="assets/3d-character-alpha.webm" type="video/webm">
-          <!-- Safari / iOS Green Screen Fallback -->
-          <source src="assets/3d-character-safari-green.mp4" type="video/mp4">
+          <!-- Safari / iOS: color plus original transparency mask -->
+          <source src="assets/3d-character-safari-alpha.mp4" type="video/mp4">
         </video>
         <canvas id="hero-video" style="width: 100%; height: auto; max-height: 95vh; transform: scale(1.15); transform-origin: bottom center; object-fit: contain; filter: drop-shadow(0 20px 80px rgba(0,0,0,0.8)); -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 95%); mask-image: linear-gradient(to bottom, black 70%, transparent 95%);"></canvas>
 
@@ -136,27 +136,31 @@
             const video = document.getElementById('hero-video-src');
             const canvas = document.getElementById('hero-video');
             
-            // Only use canvas processing on Safari (which falls back to the green screen MP4)
+            // Apple browsers reconstruct the original alpha from a side-by-side MP4.
             const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
                 (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
             const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-            const needsChromaKey = isIOS || isSafari;
+            const needsAlphaMask = isIOS || isSafari;
             
-            if (needsChromaKey) {
+            if (needsAlphaMask) {
                 // Codec support does not guarantee WebM alpha support.
-                // Select the green-screen source before processing any frames.
+                // Explicitly select the MP4 containing color and its original alpha mask.
                 video.querySelector('source[type="video/webm"]').remove();
                 video.muted = true;
                 video.load();
                 const ctx = canvas.getContext('2d', { willReadFrequently: true });
+                const maskCanvas = document.createElement('canvas');
+                const maskCtx = maskCanvas.getContext('2d', { willReadFrequently: true });
                 let w, h;
                 
                 function setDimensions() {
                     const scale = Math.min(1, 540 / video.videoHeight);
-                    w = Math.round(video.videoWidth * scale);
+                    w = Math.round(video.videoWidth / 2 * scale);
                     h = Math.round(video.videoHeight * scale);
                     canvas.width = w;
                     canvas.height = h;
+                    maskCanvas.width = w;
+                    maskCanvas.height = h;
                 }
                 
                 if (video.readyState >= 1) {
@@ -171,20 +175,18 @@
                         return;
                     }
                     
-                    ctx.drawImage(video, 0, 0, w, h);
+                    // Left half is color; right half preserves the WebM's alpha.
+                    const sourceWidth = video.videoWidth / 2;
+                    ctx.clearRect(0, 0, w, h);
+                    ctx.drawImage(video, 0, 0, sourceWidth, video.videoHeight, 0, 0, w, h);
+                    maskCtx.drawImage(video, sourceWidth, 0, sourceWidth, video.videoHeight, 0, 0, w, h);
                     const frame = ctx.getImageData(0, 0, w, h);
+                    const mask = maskCtx.getImageData(0, 0, w, h).data;
                     const data = frame.data;
-                    const length = data.length;
-                    
-                    // Chroma key pure green background (#00FF00)
-                    for (let i = 0; i < length; i += 4) {
-                        const r = data[i];
-                        const g = data[i+1];
-                        const b = data[i+2];
-                        // If it's strongly green, make it transparent
-                        if (g > 150 && r < 100 && b < 100) {
-                            data[i+3] = 0;
-                        }
+                    for (let i = 0; i < data.length; i += 4) {
+                        // Normalize codec noise while retaining soft antialiased edges.
+                        data[i + 3] = Math.round(Math.max(0, Math.min(1,
+                            (mask[i] - 3) / 249)) * 255);
                     }
                     ctx.putImageData(frame, 0, 0);
                     requestAnimationFrame(processFrame);
