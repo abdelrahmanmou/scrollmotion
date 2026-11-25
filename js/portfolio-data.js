@@ -12,7 +12,7 @@ export const CATEGORIES = [
   { id: 'saas', label: 'SaaS & Tech' },
   { id: 'brand', label: 'Ads & Brand' },
   { id: 'story', label: 'Documentary & Edu' },
-  { id: 'talking', label: 'Talking Head' },
+  { id: 'testimonials', label: 'Client Testimonials' },
   { id: 'reels', label: 'Social Reels' },
   { id: 'longform', label: 'Long-form YouTube' },
 ];
@@ -60,11 +60,11 @@ export const VIDEOS = [
   local('azza-fahmy', { title: 'Azza Fahmy', client: 'Educatly', category: 'story', format: 'vertical', duration: 85, blurb: 'Biography short on the jewellery designer.' }),
   local('mostafa-mosharrafa', { title: 'Mostafa Mosharrafa', client: 'Educatly', category: 'story', format: 'vertical', duration: 67, blurb: 'Archive-driven biography short.' }),
   local('ahmed-el-shuqairy', { title: 'Ahmed El-Shuqairy', client: 'Educatly', category: 'story', format: 'vertical', duration: 63, blurb: 'Biography short.' }),
-  local('ten-seconds', { title: '10 Seconds', client: 'Archive edit', category: 'story', format: 'landscape', duration: 18, blurb: 'Archive-footage montage.' }),
+  local('ten-seconds', { title: 'Editorial Launch Video', client: '', category: 'saas', format: 'landscape', duration: 18, blurb: 'Editorial launch film built from archive footage.' }),
 
-  // Talking head
-  local('alex-saint', { title: 'Alex Saint', client: 'Indie Crush', category: 'talking', format: 'vertical', duration: 34, blurb: 'Captioned talking-head edit.' }),
-  local('dean', { title: 'Dean', client: '', category: 'talking', format: 'vertical', duration: 32, blurb: 'Talking-head edit.' }),
+  // Client testimonials (clients talking about working with Scroll Studio)
+  local('alex-saint', { title: 'Alex Saint', client: 'Indie Crush', category: 'testimonials', format: 'vertical', duration: 34, blurb: 'Client testimonial.' }),
+  local('dean', { title: 'Dean', client: '', category: 'testimonials', format: 'vertical', duration: 32, blurb: 'Client testimonial.' }),
 
   // Social reels
   ...[17, 29, 10, 25, 34, 5, 7, 13, 24, 4, 14, 7, 32, 20, 13, 9, 6, 8, 40].map((d, i) =>
