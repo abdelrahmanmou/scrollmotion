@@ -23,10 +23,12 @@
 
   <!-- Styles -->
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/portfolio.css">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700&display=swap" rel="stylesheet">
 
   <!-- Scripts -->
   <script src="js/script.js" defer></script>
+  <script type="module" src="js/portfolio.js"></script>
 
   <!-- BreadcrumbList Schema -->
   <script type="application/ld+json">
@@ -116,7 +118,7 @@
   </header>
 
   <!-- Hero Section -->
-  <section class="hero" style="min-height: 60vh;">
+  <section class="hero pf-hero">
     <div class="hero-bg"></div>
     <div class="container hero-content">
       <span class="hero-subtitle">Selected Works</span>
@@ -125,328 +127,71 @@
     </div>
   </section>
 
-  <!-- SaaS & Startups (Priority) -->
-  <section id="saas-startups" class="section">
-    <div class="container">
-      <div class="text-center fade-in">
-        <h2>SaaS & Startups</h2>
-        <p>Motion graphics and explainers for tech companies.</p>
-      </div>
-
-      <div class="motion-container fade-in">
-        <!-- Reusing the Grid Layout for better visibility -->
-        <div class="portfolio-grid" style="margin-top: 40px;">
-          <!-- Item 0: Hub xyz -->
-          <div class="portfolio-card fade-in">
-            <div class="video-container">
-              <video src="HubFinal.mp4" controls muted loop playsinline preload="metadata"></video>
-            </div>
-            <div class="card-content">
-              <h3>Hub xyz</h3>
-              <p>Cinematic SaaS promotion video.</p>
-            </div>
+  <main class="pf">
+    <!-- Videos chosen through a share link (?show=slug-a,slug-b) -->
+    <section id="pf-picked" class="pf-section pf-picked" hidden>
+      <div class="container">
+        <div class="pf-head">
+          <div>
+            <span class="pf-eyebrow">Shared with you</span>
+            <h2 id="pf-picked-title">Picked for you</h2>
           </div>
-
-          <!-- Item 1 -->
-          <div class="portfolio-card fade-in">
-            <div class="video-container">
-              <video src="Cryptexpromo.mp4" controls muted loop playsinline preload="metadata"
-                poster="thumbnails/cryptex-thumb.jpg"></video>
-            </div>
-            <div class="card-content">
-              <h3 class="card-title">Cryptex Promo</h3>
-              <p style="font-size: 0.9rem;">3D Motion Graphics • Branding</p>
-            </div>
-          </div>
-
-          <!-- Item 2 -->
-          <div class="portfolio-card fade-in">
-            <div class="video-container">
-              <video src="Blackbox%20X%20Elevenlabs.mp4" controls muted loop playsinline preload="metadata"
-                poster="thumbnails/blackbox-thumb.jpg"></video>
-            </div>
-            <div class="card-content">
-              <h3 class="card-title">Blackbox X Elevenlabs</h3>
-              <p style="font-size: 0.9rem;">SaaS Motion Graphics • Promo</p>
-            </div>
-          </div>
-
-          <!-- Item 3 -->
-          <div class="portfolio-card fade-in">
-            <div class="video-container">
-              <iframe src="https://www.youtube.com/embed/iMGmx4ZA7JI" title="Indie Crush Explainer" frameborder="0"
-                loading="lazy" allowfullscreen></iframe>
-            </div>
-            <div class="card-content">
-              <h3 class="card-title">Indie Crush Explainer</h3>
-              <p style="font-size: 0.9rem;">SaaS Explainer Video</p>
-            </div>
-          </div>
-
-          <!-- Item 4 -->
-          <div class="portfolio-card fade-in">
-            <div class="video-container">
-              <iframe src="https://www.youtube.com/embed/GgiPSq-xArE" title="Base Supply Overview" frameborder="0"
-                loading="lazy" allowfullscreen></iframe>
-            </div>
-            <div class="card-content">
-              <h3 class="card-title">Base Supply Overview</h3>
-              <p style="font-size: 0.9rem;">SaaS Product Demo</p>
-            </div>
-          </div>
+          <a class="pf-link" href="portfolio.html">View the full portfolio</a>
         </div>
+        <div id="pf-picked-grid" class="pf-grid"></div>
+      </div>
+    </section>
+
+    <section id="work" class="pf-section">
+      <div class="container">
+        <div class="pf-head">
+          <h2 id="pf-all-title">All work</h2>
+          <button id="pf-select-toggle" class="pf-select-toggle" type="button" aria-pressed="false">
+            <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <span>Create share link</span>
+          </button>
+        </div>
+        <div id="pf-filters" class="pf-filters" role="toolbar" aria-label="Filter by category"></div>
+        <div id="pf-grid" class="pf-grid"></div>
+        <noscript><p class="pf-noscript">Turn on JavaScript to browse the portfolio.</p></noscript>
+      </div>
+    </section>
+  </main>
+
+  <!-- Share-link builder -->
+  <div id="pf-bar" class="pf-bar" hidden>
+    <div class="pf-bar-inner">
+      <div class="pf-bar-text">
+        <strong id="pf-bar-count">Tap videos to pick them</strong>
+        <ol id="pf-bar-list" class="pf-bar-list"></ol>
+      </div>
+      <div class="pf-bar-actions">
+        <button id="pf-bar-clear" type="button" class="pf-btn-ghost">Clear</button>
+        <button id="pf-bar-open" type="button" class="pf-btn-ghost">Preview</button>
+        <button id="pf-bar-copy" type="button" class="pf-btn">Copy link</button>
+        <button id="pf-bar-done" type="button" class="pf-btn-ghost" aria-label="Close">Done</button>
       </div>
     </div>
-  </section>
+  </div>
 
-  <hr style="border: 0; border-top: 1px solid var(--accent-subtle); opacity: 0.3; width: 90%; margin: 0 auto;">
-
-  <!-- Social Media Marketing Reels -->
-  <section id="marketing-reels" class="section" style="background: linear-gradient(to bottom, var(--bg-main), #0a0a0a);">
-    <div class="container">
-      <div class="text-center fade-in">
-        <h2>Social Media Marketing Reels</h2>
-        <p>Engaging vertical video content designed for modern social platforms.</p>
-      </div>
-
-      <div class="shorts-container fade-in">
-        <button class="scroll-btn prev" aria-label="Scroll Left">❮</button>
-        <div class="shorts-track">
-          <div class="short-card" id="reel-1">
-            <button class="share-btn" aria-label="Share video" title="Copy link">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
-            </button>
-            <video src="public/social-media-reel-1.mp4#t=0.1" controls muted loop playsinline preload="metadata" style="width: 100%; height: 100%; object-fit: cover;"></video>
-          </div>
-          <div class="short-card" id="reel-2">
-            <button class="share-btn" aria-label="Share video" title="Copy link">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
-            </button>
-            <video src="public/social-media-reel-2.mp4#t=0.1" controls muted loop playsinline preload="metadata" style="width: 100%; height: 100%; object-fit: cover;"></video>
-          </div>
-          <div class="short-card" id="reel-3">
-            <button class="share-btn" aria-label="Share video" title="Copy link">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
-            </button>
-            <video src="public/social-media-reel-3.mp4#t=0.1" controls muted loop playsinline preload="metadata" style="width: 100%; height: 100%; object-fit: cover;"></video>
-          </div>
-          <div class="short-card" id="reel-4">
-            <button class="share-btn" aria-label="Share video" title="Copy link">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
-            </button>
-            <video src="public/social-media-reel-4.mp4#t=0.1" controls muted loop playsinline preload="metadata" style="width: 100%; height: 100%; object-fit: cover;"></video>
-          </div>
-          <div class="short-card" id="reel-5">
-            <button class="share-btn" aria-label="Share video" title="Copy link">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
-            </button>
-            <video src="public/social-media-reel-5.mp4#t=0.1" controls muted loop playsinline preload="metadata" style="width: 100%; height: 100%; object-fit: cover;"></video>
-          </div>
-          <div class="short-card" id="reel-6">
-            <button class="share-btn" aria-label="Share video" title="Copy link">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
-            </button>
-            <video src="public/social-media-reel-6.mp4#t=0.1" controls muted loop playsinline preload="metadata" style="width: 100%; height: 100%; object-fit: cover;"></video>
-          </div>
-          <div class="short-card" id="reel-7">
-            <button class="share-btn" aria-label="Share video" title="Copy link">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
-            </button>
-            <video src="public/social-media-reel-7.mp4#t=0.1" controls muted loop playsinline preload="metadata" style="width: 100%; height: 100%; object-fit: cover;"></video>
-          </div>
-          <div class="short-card" id="reel-8">
-            <button class="share-btn" aria-label="Share video" title="Copy link">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
-            </button>
-            <video src="public/social-media-reel-8.mp4#t=0.1" controls muted loop playsinline preload="metadata" style="width: 100%; height: 100%; object-fit: cover;"></video>
-          </div>
-          <div class="short-card" id="reel-9">
-            <button class="share-btn" aria-label="Share video" title="Copy link">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
-            </button>
-            <video src="public/social-media-reel-9.mp4#t=0.1" controls muted loop playsinline preload="metadata" style="width: 100%; height: 100%; object-fit: cover;"></video>
-          </div>
-          <div class="short-card" id="reel-10">
-            <button class="share-btn" aria-label="Share video" title="Copy link">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
-            </button>
-            <video src="public/social-media-reel-10.mp4#t=0.1" controls muted loop playsinline preload="metadata" style="width: 100%; height: 100%; object-fit: cover;"></video>
-          </div>
-          <div class="short-card" id="reel-11">
-            <button class="share-btn" aria-label="Share video" title="Copy link">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
-            </button>
-            <video src="public/social-media-reel-11.mp4#t=0.1" controls muted loop playsinline preload="metadata" style="width: 100%; height: 100%; object-fit: cover;"></video>
-          </div>
-          <div class="short-card" id="reel-12">
-            <button class="share-btn" aria-label="Share video" title="Copy link">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
-            </button>
-            <video src="public/social-media-reel-12.mp4#t=0.1" controls muted loop playsinline preload="metadata" style="width: 100%; height: 100%; object-fit: cover;"></video>
-          </div>
-          <div class="short-card" id="reel-13">
-            <button class="share-btn" aria-label="Share video" title="Copy link">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
-            </button>
-            <video src="public/social-media-reel-13.mp4#t=0.1" controls muted loop playsinline preload="metadata" style="width: 100%; height: 100%; object-fit: cover;"></video>
-          </div>
-          <div class="short-card" id="reel-14">
-            <button class="share-btn" aria-label="Share video" title="Copy link">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
-            </button>
-            <video src="public/social-media-reel-14.mp4#t=0.1" controls muted loop playsinline preload="metadata" style="width: 100%; height: 100%; object-fit: cover;"></video>
-          </div>
-          <div class="short-card" id="reel-15">
-            <button class="share-btn" aria-label="Share video" title="Copy link">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
-            </button>
-            <video src="public/social-media-reel-15.mp4#t=0.1" controls muted loop playsinline preload="metadata" style="width: 100%; height: 100%; object-fit: cover;"></video>
-          </div>
-          <div class="short-card" id="reel-16">
-            <button class="share-btn" aria-label="Share video" title="Copy link">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
-            </button>
-            <video src="public/social-media-reel-16.mp4#t=0.1" controls muted loop playsinline preload="metadata" style="width: 100%; height: 100%; object-fit: cover;"></video>
-          </div>
-          <div class="short-card" id="reel-17">
-            <button class="share-btn" aria-label="Share video" title="Copy link">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
-            </button>
-            <video src="public/social-media-reel-17.mp4#t=0.1" controls muted loop playsinline preload="metadata" style="width: 100%; height: 100%; object-fit: cover;"></video>
-          </div>
-          <div class="short-card" id="reel-18">
-            <button class="share-btn" aria-label="Share video" title="Copy link">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
-            </button>
-            <video src="public/social-media-reel-18.mp4#t=0.1" controls muted loop playsinline preload="metadata" style="width: 100%; height: 100%; object-fit: cover;"></video>
-          </div>
-          <div class="short-card" id="reel-19">
-            <button class="share-btn" aria-label="Share video" title="Copy link">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
-            </button>
-            <video src="public/social-media-reel-19.mp4#t=0.1" controls muted loop playsinline preload="metadata" style="width: 100%; height: 100%; object-fit: cover;"></video>
-          </div>
+  <!-- Lightbox player -->
+  <dialog id="pf-lightbox" class="pf-lightbox" aria-label="Video player">
+    <button class="pf-lb-close" type="button" aria-label="Close">×</button>
+    <button class="pf-lb-nav pf-lb-prev" type="button" aria-label="Previous video">‹</button>
+    <div class="pf-lb-body">
+      <div id="pf-lb-stage" class="pf-lb-stage"></div>
+      <div class="pf-lb-caption">
+        <div>
+          <h3 id="pf-lb-title"></h3>
+          <p id="pf-lb-meta"></p>
         </div>
-        <button class="scroll-btn next" aria-label="Scroll Right">❯</button>
+        <button id="pf-lb-share" type="button" class="pf-btn-ghost">Copy link</button>
       </div>
     </div>
-  </section>
+    <button class="pf-lb-nav pf-lb-next" type="button" aria-label="Next video">›</button>
+  </dialog>
 
-  <hr style="border: 0; border-top: 1px solid var(--accent-subtle); opacity: 0.3; width: 90%; margin: 0 auto;">
-
-  <!-- Other Projects: Long Form -->
-  <section id="long-form" class="section">
-    <div class="container">
-      <div class="text-center fade-in">
-        <h2>Long form youtube</h2>
-        <p>Documentaries, Reviews, and Content Creation.</p>
-      </div>
-
-      <div class="portfolio-grid" style="margin-top: 40px;">
-        <!-- Item 1 -->
-        <div class="portfolio-card fade-in">
-          <div class="video-container">
-            <iframe src="https://www.youtube.com/embed/Ppw0W5IXNAI" title="El Reno Tornado" frameborder="0"
-              loading="lazy" allowfullscreen></iframe>
-          </div>
-          <div class="card-content">
-            <h3 class="card-title">El Reno Tornado Documentary</h3>
-            <p style="font-size: 0.9rem;">Documentary • Editing</p>
-          </div>
-        </div>
-
-        <!-- Item 2 -->
-        <div class="portfolio-card fade-in">
-          <div class="video-container">
-            <iframe src="https://www.youtube.com/embed/sjnAYnpWrzU" title="Digital Launchpad Review" frameborder="0"
-              loading="lazy" allowfullscreen></iframe>
-          </div>
-          <div class="card-content">
-            <h3 class="card-title">Digital Launchpad Review</h3>
-            <p style="font-size: 0.9rem;">Product Review</p>
-          </div>
-        </div>
-
-        <!-- Item 3 -->
-        <div class="portfolio-card fade-in">
-          <div class="video-container">
-            <iframe src="https://www.youtube.com/embed/P2mnVDrl7vM" title="Shopify Dropshipping" frameborder="0"
-              loading="lazy" allowfullscreen></iframe>
-          </div>
-          <div class="card-content">
-            <h3 class="card-title">Shopify Dropshipping</h3>
-            <p style="font-size: 0.9rem;">Case Study</p>
-          </div>
-        </div>
-
-        <!-- Item 4 -->
-        <div class="portfolio-card fade-in">
-          <div class="video-container">
-            <iframe src="https://www.youtube.com/embed/miixnqPhUvE" title="F1 Moments" frameborder="0" loading="lazy"
-              allowfullscreen></iframe>
-          </div>
-          <div class="card-content">
-            <h3 class="card-title">Funniest F1 Moments</h3>
-            <p style="font-size: 0.9rem;">Compilation</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Other Projects: Shorts -->
-  <section id="shorts-other" class="section" style="background: linear-gradient(to bottom, var(--bg-main), #0a0a0a);">
-    <div class="container">
-      <div class="text-center fade-in">
-        <h2>Short Form Content</h2>
-        <p>Reels & TikToks for Creators.</p>
-      </div>
-
-      <div class="shorts-container fade-in">
-        <button class="scroll-btn prev" aria-label="Scroll Left">❮</button>
-        <div class="shorts-track">
-          <div class="short-card" id="reel-ahmed">
-            <button class="share-btn" aria-label="Share video" title="Copy link">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
-            </button>
-            <video src="https://cdn.jsdelivr.net/gh/abdelrahmanmou/scrollmotion@main/public/Ahmed%20El-Shuqairyfinall.mp4" controls muted loop playsinline preload="metadata"
-              poster="thumbnails/ahmed-thumb.jpg" style="object-fit: cover;"></video>
-          </div>
-          <div class="short-card" id="reel-edited">
-            <button class="share-btn" aria-label="Share video" title="Copy link">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
-            </button>
-            <video src="https://cdn.jsdelivr.net/gh/abdelrahmanmou/scrollmotion@main/public/Reel2edited.mp4" controls muted loop playsinline preload="metadata"
-              poster="thumbnails/reel2-thumb.jpg" style="object-fit: cover;"></video>
-          </div>
-          <div class="short-card" id="reel-mostafa">
-            <button class="share-btn" aria-label="Share video" title="Copy link">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
-            </button>
-            <video src="https://cdn.jsdelivr.net/gh/abdelrahmanmou/scrollmotion@main/public/Mostafa%20Mosharrafa.mp4" controls muted loop playsinline preload="metadata"
-              poster="thumbnails/mostafa-thumb.jpg" style="object-fit: cover;"></video>
-          </div>
-          <!-- Ad 1: Unicafone -->
-          <div class="short-card" id="reel-unicafone">
-            <button class="share-btn" aria-label="Share video" title="Copy link">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
-            </button>
-            <video src="https://cdn.jsdelivr.net/gh/abdelrahmanmou/scrollmotion@main/public/Unicafone.mp4#t=0.1" controls muted loop playsinline preload="metadata"
-              style="width: 100%; height: 100%; object-fit: cover;"></video>
-          </div>
-          <!-- Ad 2: Azza Fahmy -->
-          <div class="short-card" id="reel-azza">
-            <button class="share-btn" aria-label="Share video" title="Copy link">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
-            </button>
-            <video src="https://cdn.jsdelivr.net/gh/abdelrahmanmou/scrollmotion@main/public/Azza%20Fahmy%20Final.mp4#t=0.1" controls muted loop playsinline preload="metadata"
-              style="width: 100%; height: 100%; object-fit: cover;"></video>
-          </div>
-        </div>
-        <button class="scroll-btn next" aria-label="Scroll Right">❯</button>
-      </div>
-    </div>
-  </section>
+  <div id="pf-toast" class="pf-toast" role="status" aria-live="polite"></div>
 
   <!-- Footer -->
   <footer>
