@@ -2,7 +2,6 @@
 
 .pf {
   --pf-accent: var(--hero-accent, #c1ff72);
-  --pf-serif: 'Instrument Serif', Georgia, serif;
   --pf-muted: #9a9a9a;
   --pf-line: rgba(255, 255, 255, 0.08);
 }
@@ -26,10 +25,7 @@
   letter-spacing: -0.04em;
 }
 .pf-intro h1 em {
-  font-family: 'Instrument Serif', Georgia, serif;
-  font-style: italic;
-  font-weight: 400;
-  letter-spacing: -0.01em;
+  font-style: normal;
   color: var(--hero-accent, #c1ff72);
 }
 .pf-lede {
@@ -139,12 +135,10 @@ html { scroll-padding-top: 150px; }
 .pf-num { font-size: 0.95rem; color: var(--hero-accent, #c1ff72); font-variant-numeric: tabular-nums; }
 .pf-cat-title h2 {
   margin: 0;
-  font-family: 'Instrument Serif', Georgia, serif;
-  font-style: italic;
-  font-weight: 400;
-  font-size: clamp(2.4rem, 4.5vw, 3.6rem);
+  font-weight: 500;
+  font-size: clamp(2rem, 3.6vw, 3rem);
   line-height: 1;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.03em;
 }
 .pf-cat-side { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
 .pf-cat-side p { margin: 0; max-width: 360px; font-size: 0.95rem; line-height: 1.5; color: var(--pf-muted); }
@@ -183,9 +177,7 @@ html { scroll-padding-top: 150px; }
   line-height: 1;
 }
 .pf-cta h2 em {
-  font-family: 'Instrument Serif', Georgia, serif;
-  font-style: italic;
-  font-weight: 400;
+  font-style: normal;
   color: var(--hero-accent, #c1ff72);
 }
 .pf-cta-btn {
