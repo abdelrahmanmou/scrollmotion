@@ -1,0 +1,83 @@
+# Scrollmotion / Scroll Studio
+
+## Project purpose
+
+Static marketing site for Abdelrahman Moustafa's motion-graphics studio.
+
+- Repository: `https://github.com/abdelrahmanmou/scrollmotion`
+- Production site: `https://scrollmotions.pages.dev/`
+- Hosting: Cloudflare Pages, connected to `main`
+- Build output: `dist/`
+- Stack: static HTML/CSS/vanilla JavaScript built with Vite 7
+
+## Start here
+
+```bash
+npm ci
+npm run dev
+npm run build
+```
+
+Use Node 20.19+ or Node 22.12+; Vite 7 requires it. `vite.config.js` discovers every HTML file recursively so all pages are Vite build entries.
+
+Do not commit `dist/` or `node_modules/`.
+
+## Repository layout
+
+- `index.html`: homepage and hero avatar logic
+- `css/style.css`: global styles and responsive rules
+- `js/script.js`: progressive enhancement, GSAP and Lenis integrations
+- `assets/`: homepage media, including the avatar formats
+- `portfolio.html`, `case-studies.html`, `services/`, `industries/`, `locations/`, `articles/`, `blog/`: static site pages
+- `vite.config.js`: multi-page Vite build configuration
+
+## Current hero avatar implementation
+
+The hero uses a video with transparency. Keep the three related assets and the browser routing intact:
+
+| Target browsers | Source / behavior |
+| --- | --- |
+| Chrome and Firefox desktop/Android | `assets/3d-character-alpha.webm`, rendered directly with its VP9 alpha channel |
+| iPhone, iPad, Safari | `assets/3d-character-safari-alpha.mp4`, rendered through a canvas |
+
+`3d-character-safari-alpha.mp4` contains two equal-width panels: the left panel is color and the right panel is the original alpha mask. The canvas code in `index.html` reconstructs transparency from that mask. This superseded the old green-screen fallback because threshold keying produced green rims around antialiased edges.
+
+When changing this system:
+
+1. Preserve `autoplay`, `loop`, `muted`, and `playsinline` on the hidden source video.
+2. Preserve iOS/iPadOS detection, including iPad desktop mode: `navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1`.
+3. Do not restore green-screen thresholding; it causes visible fringing.
+4. Test a real iPhone or iPad after deployment. Desktop Chromium does not exercise the Apple canvas path.
+5. Keep the canvas work bounded at its existing reduced resolution for mobile performance.
+
+The current headline in `index.html` is **Creative Director**.
+
+## Deployment workflow
+
+Cloudflare Pages deploys after a push to `main`.
+
+```bash
+git status
+npm run build
+git add <intended files>
+git commit -m "<clear message>"
+git push origin main
+```
+
+Verify the `Cloudflare Pages: scrollmotions` check for the pushed commit. There is also a distinct Cloudflare project/check called `scrollmotion` that has failed in the past; it is not the production Pages site above. Do not treat that failure as a failed deployment of `scrollmotions.pages.dev` unless the `scrollmotions` check itself fails.
+
+After deployment, hard refresh the live site and confirm the changed markup/assets are served. For hero/avatar work, validate both desktop and real iOS Safari/Chrome.
+
+## Recent context
+
+- `06338c1` — Replaced Apple green-screen keying with color + original-alpha-mask MP4. The deployment to `scrollmotions.pages.dev` succeeded.
+- `7da8f67` — Changed the hero headline to “Creative Director” and made Apple fallback selection explicit.
+- `a5e0686` / `a71c2b6` — Earlier Safari canvas work; useful history but superseded by `06338c1` for edge transparency.
+
+## Working conventions
+
+- Prefer small, focused edits. This is a static multi-page site; a change to shared CSS or JS can affect many pages.
+- Preserve existing user changes and inspect `git status` before writing.
+- Use `rg` to locate content before broad replacement.
+- Build before push. Build warnings about legacy non-module scripts on content pages currently exist; only investigate when they affect the requested page or create a build failure.
+- Do not expose or commit secrets, tokens, deployment credentials, or user contact data.
