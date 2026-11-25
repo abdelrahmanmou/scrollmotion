@@ -24,7 +24,7 @@
   <!-- Styles -->
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/portfolio.css">
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 
   <!-- Scripts -->
   <script src="js/script.js" defer></script>
@@ -117,19 +117,32 @@
     <div class="mobile-overlay"></div>
   </header>
 
-  <!-- Hero Section -->
-  <section class="hero pf-hero">
-    <div class="hero-bg"></div>
-    <div class="container hero-content">
-      <span class="hero-subtitle">Selected Works</span>
-      <h1>Our Portfolio</h1>
-      <p>Specializing in <strong>SaaS Motion Graphics</strong> and <strong>Startup Launch Videos</strong>.</p>
+  <!-- Intro -->
+  <section class="pf-intro">
+    <div class="container pf-intro-inner">
+      <div class="pf-intro-text">
+        <span class="pf-eyebrow">Selected work</span>
+        <h1>My <em>Portfolio</em></h1>
+        <p class="pf-lede">Launch videos, motion graphics and short-form content I've made for SaaS startups, brands and creators.</p>
+      </div>
+      <div class="pf-intro-side">
+        <p id="pf-total" class="pf-total"></p>
+        <button id="pf-select-toggle" class="pf-select-toggle" type="button" aria-pressed="false">
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          <span>Pick videos to share</span>
+        </button>
+      </div>
     </div>
   </section>
 
-  <main class="pf">
+  <!-- Category bar: jumps to each section -->
+  <div class="pf-catbar">
+    <nav id="pf-cats" class="container pf-cats" aria-label="Categories"></nav>
+  </div>
+
+  <main class="pf" id="work">
     <!-- Videos chosen through a share link (?show=slug-a,slug-b) -->
-    <section id="pf-picked" class="pf-section pf-picked" hidden>
+    <section id="pf-picked" class="pf-block pf-picked" hidden>
       <div class="container">
         <div class="pf-head">
           <div>
@@ -138,22 +151,31 @@
           </div>
           <a class="pf-link" href="portfolio.html">View the full portfolio</a>
         </div>
-        <div id="pf-picked-grid" class="pf-grid"></div>
+        <div id="pf-picked-grid" class="pf-grid pf-grid-picked"></div>
       </div>
     </section>
 
-    <section id="work" class="pf-section">
+    <!-- Start here -->
+    <section id="pf-featured" class="pf-block pf-featured" hidden>
       <div class="container">
-        <div class="pf-head">
-          <h2 id="pf-all-title">All work</h2>
-          <button id="pf-select-toggle" class="pf-select-toggle" type="button" aria-pressed="false">
-            <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-            <span>Create share link</span>
-          </button>
+        <div class="pf-head pf-head-small">
+          <h2 class="pf-eyebrow">Start here</h2>
+          <span class="pf-muted">Three pieces I'd show first</span>
         </div>
-        <div id="pf-filters" class="pf-filters" role="toolbar" aria-label="Filter by category"></div>
-        <div id="pf-grid" class="pf-grid"></div>
-        <noscript><p class="pf-noscript">Turn on JavaScript to browse the portfolio.</p></noscript>
+        <div id="pf-featured-grid" class="pf-featured-grid"></div>
+      </div>
+    </section>
+
+    <!-- One section per category, built from js/portfolio-data.js -->
+    <div id="pf-sections"></div>
+    <noscript><div class="container"><p class="pf-noscript">Turn on JavaScript to browse the portfolio.</p></div></noscript>
+
+    <section class="pf-cta">
+      <div class="container">
+        <h2>Want one like <em>these?</em></h2>
+        <a href="/#contact" class="pf-cta-btn">Start a project
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
       </div>
     </section>
   </main>

@@ -2581,3 +2581,76 @@ html.lenis {
     color: #000;
     border-color: #c1ff72;
 }
+
+
+/* ===== Hero: hand-drawn "see my work" note ===== */
+/* Same box as the avatar's drawn frame (608x1080, scaled 1.15 from the bottom) */
+.hero-note {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    height: 100%;
+    aspect-ratio: 608 / 1080;
+    transform: translateX(-50%) scale(1.15);
+    transform-origin: bottom center;
+    pointer-events: none;
+    z-index: 3;
+    --note-color: var(--hero-accent);
+}
+.hero-note-arrow {
+    position: absolute;
+    left: 69%;
+    top: 38%;
+    width: 26.5%;
+    overflow: visible;
+}
+.hero-note-draw {
+    fill: none;
+    stroke: var(--note-color);
+    stroke-width: 3.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 400;
+    stroke-dashoffset: 400;
+    animation: hero-note-draw 1.1s ease-out 1.2s forwards;
+}
+.hero-note-head { animation-delay: 2.1s; animation-duration: .3s; }
+.hero-note-link {
+    position: absolute;
+    left: 96%;
+    top: 35%;
+    pointer-events: auto;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 6px 8px;
+    white-space: nowrap;
+    font-family: 'Caveat', 'Segoe Print', 'Bradley Hand', cursive;
+    font-weight: 700;
+    font-size: clamp(30px, 4.6vh, 46px);
+    line-height: 1;
+    color: var(--note-color);
+    transform: rotate(-5deg);
+    transform-origin: left center;
+    opacity: 0;
+    animation: hero-note-fade .5s ease 2.2s forwards;
+    transition: color .2s ease;
+}
+.hero-note-link svg { width: 100%; height: 0.3em; margin-top: 2px; overflow: visible; }
+.hero-note-link svg .hero-note-draw { stroke-width: 2.6; animation-delay: 2.4s; animation-duration: .5s; }
+.hero-note-link:hover,
+.hero-note-link:focus-visible { color: #ffffff; }
+.hero-note-link:hover .hero-note-draw { stroke: #ffffff; }
+
+@keyframes hero-note-draw { to { stroke-dashoffset: 0; } }
+@keyframes hero-note-fade { to { opacity: 1; } }
+
+@media (max-width: 768px) {
+    .hero-note-arrow { left: 66%; top: 39%; width: 20%; }
+    .hero-note-link { left: 62%; top: 31%; font-size: 26px; padding: 4px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hero-note-draw { animation: none; stroke-dashoffset: 0; }
+    .hero-note-link { animation: none; opacity: 1; }
+}

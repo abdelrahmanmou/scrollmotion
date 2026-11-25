@@ -26,6 +26,7 @@
   <!-- Styles -->
   <link rel="stylesheet" href="css/style.css">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&display=swap" rel="stylesheet">
 
   <!-- Scripts -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
@@ -218,6 +219,17 @@
             }
           });
         </script>
+        <!-- Hand-drawn "see my work" note. The frame matches the avatar video's drawn area,
+             so the arrow stays next to the laptop at every screen size. -->
+        <div class="hero-note">
+          <svg class="hero-note-arrow" viewBox="0 0 200 120" aria-hidden="true" focusable="false">
+            <path class="hero-note-draw" d="M6 100 C 30 112, 62 100, 60 76 C 58 56, 30 62, 40 82 C 54 108, 120 92, 186 40"/>
+            <path class="hero-note-draw hero-note-head" d="M168 43 L186 40 L179 57"/>
+          </svg>
+          <a class="hero-note-link" href="portfolio.html">see my work
+            <svg viewBox="0 0 190 14" aria-hidden="true" focusable="false"><path class="hero-note-draw" d="M3 9 C 40 3, 80 12, 120 6 S 170 4, 187 8"/></svg>
+          </a>
+        </div>
       </div>
 
       <!-- Floating Left Badge -->

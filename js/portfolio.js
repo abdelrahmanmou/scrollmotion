@@ -1,4 +1,4 @@
-import { CATEGORIES, VIDEOS, LEGACY_ANCHORS } from './portfolio-data.js';
+import { CATEGORIES, VIDEOS, FEATURED, LEGACY_ANCHORS } from './portfolio-data.js';
 
 const bySlug = new Map(VIDEOS.map(v => [v.slug, v]));
 const catLabel = id => (CATEGORIES.find(c => c.id === id) || {}).label || '';
@@ -7,9 +7,11 @@ const els = {
   picked: document.getElementById('pf-picked'),
   pickedGrid: document.getElementById('pf-picked-grid'),
   pickedTitle: document.getElementById('pf-picked-title'),
-  filters: document.getElementById('pf-filters'),
-  grid: document.getElementById('pf-grid'),
-  allTitle: document.getElementById('pf-all-title'),
+  cats: document.getElementById('pf-cats'),
+  total: document.getElementById('pf-total'),
+  featured: document.getElementById('pf-featured'),
+  featuredGrid: document.getElementById('pf-featured-grid'),
+  sections: document.getElementById('pf-sections'),
   selectToggle: document.getElementById('pf-select-toggle'),
   bar: document.getElementById('pf-bar'),
   barCount: document.getElementById('pf-bar-count'),
@@ -33,7 +35,6 @@ const pickedSlugs = (params.get('show') || '')
   .map(s => s.trim().toLowerCase())
   .filter((s, i, arr) => s && bySlug.has(s) && arr.indexOf(s) === i);
 
-let activeFilter = 'all';
 let selectMode = false;
 const selection = []; // ordered slugs
 let lbList = [];
@@ -83,11 +84,11 @@ const ICONS = {
 };
 
 // ---------- Cards ----------
-function card(v, { picked = false } = {}) {
+function card(v, { picked = false, anchor = false, inSection = false } = {}) {
   const el = document.createElement('article');
   el.className = `pf-card pf-${v.format}${picked ? ' is-picked' : ''}`;
   el.dataset.slug = v.slug;
-  el.id = `v-${v.slug}`;
+  if (anchor) el.id = `v-${v.slug}`;
   el.innerHTML = `
     <button class="pf-thumb" type="button" aria-label="Play ${v.title}">
       <span class="pf-thumb-bg" style="background-image:url('${v.poster}')"></span>
@@ -100,7 +101,7 @@ function card(v, { picked = false } = {}) {
     <div class="pf-info">
       <div class="pf-text">
         <h3>${v.title}</h3>
-        <p>${v.client && v.client !== v.title ? `${v.client} · ` : ''}${catLabel(v.category)}</p>
+        <p>${inSection ? (v.client && v.client !== v.title ? v.client : v.blurb || '') : `${v.client && v.client !== v.title ? `${v.client} · ` : ''}${catLabel(v.category)}`}</p>
       </div>
       <button class="pf-share" type="button" aria-label="Copy link to ${v.title}" title="Copy link to this video">${ICONS.link}</button>
     </div>`;
@@ -129,31 +130,113 @@ function renderPicked() {
   els.picked.hidden = false;
   els.pickedTitle.textContent = pickedSlugs.length === 1 ? 'Picked for you' : `${pickedSlugs.length} videos picked for you`;
   pickedSlugs.forEach(s => els.pickedGrid.appendChild(card(bySlug.get(s), { picked: true })));
-  els.allTitle.textContent = 'More work';
-  document.title = `Selected work – Scroll Studio`;
+  document.title = `Selected work – Abdelrahman Moustafa`;
 }
 
-function visibleVideos() {
-  const rest = VIDEOS.filter(v => !pickedSlugs.includes(v.slug));
-  return activeFilter === 'all' ? rest : rest.filter(v => v.category === activeFilter);
+// Everything that isn't already in the picked row, in category order
+const rest = VIDEOS.filter(v => !pickedSlugs.includes(v.slug));
+const groups = CATEGORIES
+  .map(c => ({ ...c, videos: rest.filter(v => v.category === c.id) }))
+  .filter(g => g.videos.length);
+const playOrder = () => pickedSlugs.concat(groups.flatMap(g => g.videos.map(v => v.slug)));
+
+const LIMIT = { wide: 3, tall: 6 };
+
+function renderFeatured() {
+  if (pickedSlugs.length) return; // a share link already says what to watch first
+  const list = FEATURED.filter(s => bySlug.has(s));
+  if (!list.length) return;
+  list.forEach((s, i) => {
+    const el = card(bySlug.get(s));
+    if (i === 0) el.classList.add('pf-feature-main');
+    els.featuredGrid.appendChild(el);
+  });
+  els.featured.hidden = false;
 }
 
-function renderFilters() {
-  const rest = VIDEOS.filter(v => !pickedSlugs.includes(v.slug));
-  const chips = [{ id: 'all', label: 'All', n: rest.length }]
-    .concat(CATEGORIES.map(c => ({ ...c, n: rest.filter(v => v.category === c.id).length })))
-    .filter(c => c.n > 0);
-  els.filters.innerHTML = chips
-    .map(c => `<button type="button" class="pf-chip${c.id === activeFilter ? ' active' : ''}" data-filter="${c.id}" aria-pressed="${c.id === activeFilter}">${c.label}<span>${c.n}</span></button>`)
+function renderCats() {
+  els.total.innerHTML = `<strong>${VIDEOS.length} videos</strong> in ${groups.length} categories`;
+  const links = [{ id: 'work', label: 'All', n: rest.length }]
+    .concat(groups.map(g => ({ id: `cat-${g.id}`, label: g.label, n: g.videos.length })));
+  els.cats.innerHTML = links
+    .map((l, i) => `<a href="#${l.id}" class="pf-cat${i === 0 ? ' active' : ''}" data-target="${l.id}">${l.label}<span>${l.n}</span></a>`)
     .join('');
 }
 
-function renderGrid() {
-  els.grid.innerHTML = '';
+function row(videos, kind) {
+  const grid = document.createElement('div');
+  grid.className = `pf-grid pf-row-${kind}`;
+  videos.forEach((v, i) => {
+    const el = card(v, { anchor: true, inSection: true });
+    if (i >= LIMIT[kind]) el.classList.add('pf-extra');
+    grid.appendChild(el);
+  });
+  return grid;
+}
+
+function renderSections() {
   const frag = document.createDocumentFragment();
-  visibleVideos().forEach(v => frag.appendChild(card(v)));
-  els.grid.appendChild(frag);
+  groups.forEach((g, i) => {
+    let wide = g.videos.filter(v => v.format !== 'vertical');
+    let tall = g.videos.filter(v => v.format === 'vertical');
+    // A lone landscape video among many vertical ones joins the vertical row
+    if (wide.length === 1 && tall.length > LIMIT.tall) { tall = tall.concat(wide); wide = []; }
+    const more = wide.length > LIMIT.wide || tall.length > LIMIT.tall;
+    const sec = document.createElement('section');
+    sec.className = `pf-block pf-cat-section${more ? ' is-collapsed' : ''}`;
+    sec.id = `cat-${g.id}`;
+    sec.innerHTML = `
+      <div class="container">
+        <div class="pf-cat-head">
+          <div class="pf-cat-title">
+            <span class="pf-num">${String(i + 1).padStart(2, '0')}</span>
+            <h2>${g.label}</h2>
+            <span class="pf-muted">${g.videos.length} video${g.videos.length > 1 ? 's' : ''}</span>
+          </div>
+          <div class="pf-cat-side">
+            <p>${g.desc || ''}</p>
+            ${more ? `<button type="button" class="pf-more" aria-expanded="false">See all ${g.videos.length} <span aria-hidden="true">→</span></button>` : ''}
+          </div>
+        </div>
+      </div>`;
+    const box = sec.querySelector('.container');
+    if (wide.length) box.appendChild(row(wide, 'wide'));
+    if (tall.length) box.appendChild(row(tall, 'tall'));
+    frag.appendChild(sec);
+  });
+  els.sections.appendChild(frag);
   syncSelectionUI();
+}
+
+function expand(sec, open = true) {
+  sec.classList.toggle('is-collapsed', !open);
+  const b = sec.querySelector('.pf-more');
+  if (!b) return;
+  b.setAttribute('aria-expanded', String(open));
+  const n = sec.querySelectorAll('.pf-card').length;
+  b.innerHTML = open ? 'Show less' : `See all ${n} <span aria-hidden="true">→</span>`;
+}
+
+// Highlight the category you're scrolling through
+function watchSections() {
+  if (!('IntersectionObserver' in window)) return;
+  const links = [...els.cats.querySelectorAll('.pf-cat')];
+  const setActive = id => links.forEach(l => {
+    const on = l.dataset.target === id;
+    l.classList.toggle('active', on);
+    if (on && els.cats.scrollWidth > els.cats.clientWidth) {
+      els.cats.scrollTo({ left: l.offsetLeft - 16, behavior: 'smooth' });
+    }
+  });
+  const io = new IntersectionObserver(entries => {
+    const hit = entries.filter(e => e.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+    if (hit) setActive(hit.target.id);
+  }, { rootMargin: '-140px 0px -60% 0px' });
+  els.sections.querySelectorAll('.pf-cat-section').forEach(s => io.observe(s));
+  window.addEventListener('scroll', () => {
+    const first = els.sections.querySelector('.pf-cat-section');
+    if (first && first.getBoundingClientRect().top > 160) setActive('work');
+  }, { passive: true });
 }
 
 // ---------- Selection mode ----------
@@ -161,7 +244,7 @@ function setSelectMode(on) {
   selectMode = on;
   document.body.classList.toggle('pf-selecting', on);
   els.selectToggle.setAttribute('aria-pressed', String(on));
-  els.selectToggle.querySelector('span').textContent = on ? 'Done selecting' : 'Create share link';
+  els.selectToggle.querySelector('span').textContent = on ? 'Done selecting' : 'Pick videos to share';
   if (on && !selection.length && pickedSlugs.length) selection.push(...pickedSlugs);
   syncSelectionUI();
 }
@@ -239,20 +322,23 @@ function onCardClick(e) {
     return;
   }
   if (e.target.closest('.pf-thumb')) {
-    // Arrow keys walk through picked videos first, then the current filter
-    openLightbox(slug, pickedSlugs.concat(visibleVideos().map(v => v.slug)));
+    // Arrow keys walk through picked videos first, then every category in order
+    openLightbox(slug, playOrder());
   }
 }
 
 els.pickedGrid.addEventListener('click', onCardClick);
-els.grid.addEventListener('click', onCardClick);
-
-els.filters.addEventListener('click', e => {
-  const b = e.target.closest('[data-filter]');
-  if (!b) return;
-  activeFilter = b.dataset.filter;
-  renderFilters();
-  renderGrid();
+els.featuredGrid.addEventListener('click', onCardClick);
+els.sections.addEventListener('click', e => {
+  const more = e.target.closest('.pf-more');
+  if (more) {
+    const sec = more.closest('.pf-cat-section');
+    const opening = sec.classList.contains('is-collapsed');
+    expand(sec, opening);
+    if (!opening) sec.scrollIntoView({ block: 'start' });
+    return;
+  }
+  onCardClick(e);
 });
 
 els.selectToggle.addEventListener('click', () => setSelectMode(!selectMode));
@@ -285,8 +371,10 @@ document.addEventListener('keydown', e => {
 
 // ---------- Init ----------
 renderPicked();
-renderFilters();
-renderGrid();
+renderFeatured();
+renderCats();
+renderSections();
+watchSections();
 
 // Support old #reel-… links from the previous layout
 const hash = decodeURIComponent(location.hash.slice(1));
@@ -294,6 +382,8 @@ const legacy = LEGACY_ANCHORS[hash] || (bySlug.has(hash) ? hash : null) || (hash
 if (legacy) {
   const target = document.getElementById(`v-${legacy}`);
   if (target) {
+    const sec = target.closest('.pf-cat-section');
+    if (sec && target.classList.contains('pf-extra')) expand(sec, true);
     requestAnimationFrame(() => {
       target.scrollIntoView({ block: 'center' });
       target.classList.add('is-flash');

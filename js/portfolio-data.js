@@ -9,14 +9,17 @@
 // Files in public/ are served from the site root, so paths start with "/".
 
 export const CATEGORIES = [
-  { id: 'saas', label: 'SaaS & Tech' },
-  { id: 'creator', label: 'Creator Content' },
-  { id: 'brand', label: 'Ads & Brand' },
-  { id: 'story', label: 'Documentary & Edu' },
-  { id: 'testimonials', label: 'Client Testimonials' },
-  { id: 'reels', label: 'Social Reels' },
-  { id: 'longform', label: 'Long-form YouTube' },
+  { id: 'saas', label: 'SaaS & Tech', desc: 'Launch films, explainers and feature videos for software products.' },
+  { id: 'creator', label: 'Creator Content', desc: 'Retention-edited shorts for creators in finance, real estate and business.' },
+  { id: 'brand', label: 'Ads & Brand', desc: 'Brand films, launch reels and performance ads for social.' },
+  { id: 'story', label: 'Documentary & Edu', desc: 'Archive-driven biographies and documentary-style films.' },
+  { id: 'testimonials', label: 'Client Testimonials', desc: 'Clients talking about what it was like to work with me.' },
+  { id: 'reels', label: 'Social Reels', desc: 'Short-form marketing reels.' },
+  { id: 'longform', label: 'Long-form YouTube', desc: 'Documentaries, reviews and compilations.' },
 ];
+
+// Shown in the "Start here" row at the top of the page (first one is the big card).
+export const FEATURED = ['searchable', 'goldsand', 'blackbox-elevenlabs'];
 
 const local = (slug, extra) => ({
   slug,
@@ -96,7 +99,7 @@ export const VIDEOS = [
   local('anna-pyrex', { title: 'From Pyrex to AI', client: 'Anna', category: 'creator', format: 'vertical', duration: 110, blurb: 'Business-story explainer short.' }),
   local('soudan-600egp', { title: '600 EGP Door to Door', client: 'Soudan', category: 'creator', format: 'vertical', duration: 65, blurb: 'Arabic creator short.' }),
 
-  // Client testimonials (clients talking about working with Scroll Studio)
+  // Client testimonials (clients talking about working with Abdelrahman)
   local('alex-saint', { title: 'Alex Saint', client: 'Indie Crush', category: 'testimonials', format: 'vertical', duration: 34, blurb: 'Client testimonial.' }),
   local('dean', { title: 'Dean', client: '', category: 'testimonials', format: 'vertical', duration: 32, blurb: 'Client testimonial.' }),
 
