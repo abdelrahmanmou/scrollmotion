@@ -54,6 +54,7 @@
       <div class="cms-tabs" role="tablist">
         <button class="cms-tab is-active" data-tab="videos" role="tab">Videos <span id="video-count"></span></button>
         <button class="cms-tab" data-tab="categories" role="tab">Categories</button>
+        <button class="cms-tab" data-tab="links" role="tab">Links</button>
         <span class="cms-spacer"></span>
         <button id="add-video" class="cms-btn cms-btn-primary" type="button">+ Add video</button>
       </div>
@@ -73,6 +74,20 @@
           <div id="cat-filter" class="cms-chips"></div>
         </div>
         <div id="video-list"></div>
+      </section>
+
+      <!-- Tracked share links -->
+      <section id="tab-links" class="cms-panel" hidden>
+        <div class="cms-links-head">
+          <p class="cms-muted">Every share link you copy here is tracked: when it's opened, from where, and how long each video is watched. Your own visits don't count while you're signed in.</p>
+          <button id="links-refresh" class="cms-btn" type="button">Refresh</button>
+        </div>
+        <form id="link-add" class="cms-link-add">
+          <input id="link-add-url" type="url" placeholder="Paste a link you already sent…" aria-label="Link you already sent" required>
+          <input id="link-add-name" placeholder="Client name" aria-label="Client name" maxlength="100">
+          <button class="cms-btn" type="submit">Track it</button>
+        </form>
+        <div id="links-list"></div>
       </section>
 
       <!-- Categories -->
@@ -183,7 +198,10 @@
       <div class="cms-sharebar-text">
         <strong id="share-count"></strong>
         <ol id="share-list" class="cms-share-list"></ol>
-        <input id="share-url" class="cms-share-url" readonly aria-label="Share link">
+        <div class="cms-share-row">
+          <input id="share-name" class="cms-share-url cms-share-name" placeholder="Client name (optional)" maxlength="100" aria-label="Client name">
+          <input id="share-url" class="cms-share-url" readonly aria-label="Share link">
+        </div>
       </div>
       <div class="cms-sharebar-actions">
         <button id="share-clear" type="button" class="cms-btn cms-btn-ghost">Clear</button>

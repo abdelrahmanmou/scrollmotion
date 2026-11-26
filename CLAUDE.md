@@ -45,6 +45,7 @@ The portfolio video list is managed at `https://scrollmotions.pages.dev/admin`.
 - All portfolio videos and thumbnails live in R2 (moved from `public/` on 2026-11-26; the old files remain in Git history). Don't add video files to the repo; upload through the CMS. `case-studies.html` also plays two videos from `/media/`. Only the hero avatar files stay in `assets/`.
 - Slugs are permanent: share links use `?show=slug-a,slug-b`.
 - Local test with Functions: `npm run build`, then `npx wrangler pages dev dist --r2 MEDIA` with `ADMIN_PASSWORD=…` in `.dev.vars` (git-ignored).
+- Share-link tracking: D1 database `scrollmotions-analytics` bound as `DB`. `js/share-tracking.js` (loaded by `js/portfolio.js`) sends beacons to `POST /api/track` only on `?show=` pages: an `open` on load and `watch` updates (seconds watched per video). Visits from a signed-in admin are ignored. A link is identified by its normalised `show` list plus optional `ref` (`&ref=client-name`, added by the admin's client-name field), so links sent before tracking are still matched. Tables (`links`, `visits`, `plays`) are created by `functions/_lib/track.js`. Admin view: Links tab via `/api/admin/links`. Local test: add `--d1 DB=local-analytics` to `wrangler pages dev`.
 - Deploy hook `main-rebuild` (Settings → Builds) rebuilds `main` if a GitHub push doesn't trigger a build.
 
 ## Current hero avatar implementation
