@@ -11,7 +11,7 @@ const slugify = s => String(s || '').toLowerCase().normalize('NFKD').replace(/[�
   .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 60);
 const fmtTime = s => (s ? `${Math.floor(s / 60)}:${String(Math.round(s % 60)).padStart(2, '0')}` : '');
 const fmtSize = b => (b > 1e9 ? `${(b / 1e9).toFixed(1)} GB` : `${Math.round(b / 1e6)} MB`);
-const shareLink = slugs => `${location.origin}/portfolio?show=${[].concat(slugs).join(',')}`;
+const shareLink = (slugs, ref) => `${location.origin}/portfolio?show=${[].concat(slugs).join(',')}${ref ? `&ref=${ref}` : ''}`;
 
 const PART_SIZE = 10 * 1024 * 1024;
 const MAX_FEATURED = 3;
@@ -320,8 +320,8 @@ async function moveToR2() {
 // ---------- Tabs ----------
 document.querySelectorAll('.cms-tab').forEach(t => t.addEventListener('click', () => {
   document.querySelectorAll('.cms-tab').forEach(x => x.classList.toggle('is-active', x === t));
-  $('tab-videos').hidden = t.dataset.tab !== 'videos';
-  $('tab-categories').hidden = t.dataset.tab !== 'categories';
+  ['videos', 'categories', 'links'].forEach(n => { $(`tab-${n}`).hidden = t.dataset.tab !== n; });
+  if (t.dataset.tab === 'links') loadLinks();
 }));
 
 // ---------- Render ----------
@@ -486,7 +486,7 @@ function renderShare() {
   $('share-bar').hidden = !picks.length;
   document.body.classList.toggle('has-sharebar', picks.length > 0);
   if (!picks.length) return;
-  const url = shareLink(picks);
+  const url = shareLink(picks, slugify($('share-name').value));
   $('share-count').textContent = `Share link · ${picks.length} video${picks.length > 1 ? 's' : ''} shown first, in this order`;
   $('share-list').innerHTML = picks.map((s, i) => {
     const v = bySlug(s);
@@ -512,9 +512,140 @@ $('share-list').addEventListener('click', e => {
   renderShare();
   renderVideos();
 });
-$('share-clear').addEventListener('click', () => { picks = []; renderShare(); renderVideos(); });
-$('share-copy').addEventListener('click', () => copy(shareLink(picks)));
+$('share-clear').addEventListener('click', () => { picks = []; $('share-name').value = ''; renderShare(); renderVideos(); });
+$('share-name').addEventListener('input', renderShare);
+$('share-copy').addEventListener('click', async () => {
+  const name = $('share-name').value.trim();
+  const ref = slugify(name);
+  copy(shareLink(picks, ref));
+  // Register it so it shows (with its name) in the Links tab before it's opened
+  api('/api/admin/links', { method: 'PUT', body: { show: picks.join(','), ref, label: name } })
+    .catch(e => toast(`Link copied, but tracking couldn't save its name: ${e.message}`, true));
+});
 $('share-url').addEventListener('focus', e => e.target.select());
+
+// ---------- Tracked links ----------
+const fmtWatch = s => { s = Math.round(s || 0); return s < 60 ? `${s}s` : `${Math.floor(s / 60)}m ${String(s % 60).padStart(2, '0')}s`; };
+function ago(ms) {
+  const m = Math.round((Date.now() - ms) / 60000);
+  if (m < 1) return 'just now';
+  if (m < 60) return `${m} min ago`;
+  const h = Math.round(m / 60);
+  if (h < 24) return `${h} h ago`;
+  const d = Math.round(h / 24);
+  return d < 30 ? `${d} day${d > 1 ? 's' : ''} ago` : new Date(ms).toLocaleDateString();
+}
+const when = ms => new Date(ms).toLocaleString(undefined, { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+let regionNames = null;
+try { regionNames = new Intl.DisplayNames(undefined, { type: 'region' }); } catch { /* old browser */ }
+const place = v => [v.city, v.country ? (regionNames ? regionNames.of(v.country) : v.country) : ''].filter(Boolean).join(', ') || 'Unknown place';
+const titleOf = slug => (bySlug(slug) || {}).title || slug;
+
+let linksCache = [];
+async function loadLinks() {
+  const box = $('links-list');
+  box.innerHTML = '<p class="cms-muted cms-empty">Loading…</p>';
+  try {
+    const { links } = await api('/api/admin/links');
+    linksCache = links;
+    renderLinks();
+  } catch (e) {
+    box.innerHTML = `<p class="cms-error">${esc(e.message)}</p>`;
+  }
+}
+
+function renderLinks() {
+  const box = $('links-list');
+  if (!linksCache.length) {
+    box.innerHTML = '<p class="cms-muted cms-empty">No tracked links yet. Pick videos with “+ Share” and copy a link, or paste one you already sent above.</p>';
+    return;
+  }
+  box.innerHTML = linksCache.map(l => {
+    const slugs = l.show.split(',');
+    const stats = l.visits
+      ? `<strong class="cms-opened">Opened ${l.visits}×</strong>${l.people > 1 ? ` by ${l.people} people` : ''} · last seen ${ago(l.last_seen)} · ${l.videos_watched ? `watched ${fmtWatch(l.watched)} across ${l.videos_watched} video${l.videos_watched > 1 ? 's' : ''}` : 'no videos played yet'}`
+      : '<span class="cms-muted">Not opened yet</span>';
+    return `<div class="cms-linkrow" data-id="${esc(l.id)}">
+      <div class="cms-linkrow-main">
+        <div class="cms-linkrow-title"><strong>${esc(l.label || 'Unnamed link')}</strong>${l.ref ? ` <span class="cms-tag">ref: ${esc(l.ref)}</span>` : ''}</div>
+        <div class="cms-small">${stats}</div>
+        <div class="cms-muted cms-small cms-linkrow-videos">${slugs.length} video${slugs.length > 1 ? 's' : ''}: ${slugs.slice(0, 4).map(s => esc(titleOf(s))).join(', ')}${slugs.length > 4 ? '…' : ''}</div>
+      </div>
+      <div class="cms-row-actions">
+        ${l.visits ? '<button type="button" data-act="details">Details</button>' : ''}
+        <button type="button" data-act="rename">Rename</button>
+        <button type="button" data-act="copy">Copy</button>
+        <button type="button" data-act="delete" class="cms-danger">Delete</button>
+      </div>
+      <div class="cms-linkrow-details" hidden></div>
+    </div>`;
+  }).join('');
+}
+
+$('links-refresh').addEventListener('click', loadLinks);
+
+$('links-list').addEventListener('click', async e => {
+  const b = e.target.closest('button[data-act]');
+  if (!b) return;
+  const row = b.closest('.cms-linkrow');
+  const l = linksCache.find(x => x.id === row.dataset.id);
+  if (!l) return;
+  if (b.dataset.act === 'copy') copy(shareLink(l.show.split(','), l.ref));
+  if (b.dataset.act === 'rename') {
+    const name = prompt('Client name for this link:', l.label || '');
+    if (name === null) return;
+    await api('/api/admin/links', { method: 'PUT', body: { show: l.show, ref: l.ref, label: name.trim(), clearLabel: !name.trim() } });
+    loadLinks();
+  }
+  if (b.dataset.act === 'delete') {
+    if (!confirm(`Stop tracking “${l.label || 'this link'}” and delete its history?\n\nThe link itself keeps working.`)) return;
+    await api(`/api/admin/links?id=${encodeURIComponent(l.id)}`, { method: 'DELETE' });
+    loadLinks();
+  }
+  if (b.dataset.act === 'details') {
+    const d = row.querySelector('.cms-linkrow-details');
+    if (!d.hidden) { d.hidden = true; b.textContent = 'Details'; return; }
+    d.hidden = false;
+    b.textContent = 'Hide';
+    d.innerHTML = '<p class="cms-muted cms-small">Loading…</p>';
+    try {
+      const { visits } = await api(`/api/admin/links?id=${encodeURIComponent(l.id)}`);
+      d.innerHTML = visits.map(v => {
+        const mins = Math.max(0, Math.round((v.last_seen - v.started) / 1000));
+        const plays = v.plays.length
+          ? v.plays.map(p => {
+            const yt = (bySlug(p.slug) || {}).youtube;
+            const pct = p.duration ? Math.min(100, Math.round((p.seconds / p.duration) * 100)) : null;
+            return `<li><span class="cms-play-title">${esc(titleOf(p.slug))}</span>
+              ${yt ? '<span class="cms-muted cms-yt-note">opened (YouTube can’t report watch time)</span>'
+                : `<span class="cms-bar"><span style="width:${pct ?? 0}%"></span></span><span class="cms-muted">${fmtWatch(p.seconds)}${p.duration ? ` of ${fmtWatch(p.duration)} · ${pct}%` : ''}</span>`}</li>`;
+          }).join('')
+          : '<li class="cms-muted">Looked at the page, didn’t play a video</li>';
+        return `<div class="cms-visit">
+          <div><strong>${esc(when(v.started))}</strong> <span class="cms-muted">· ${esc(place(v))} · ${esc(v.device || '')}${mins > 5 ? ` · on page ${fmtWatch(mins)}` : ''}</span></div>
+          <ul class="cms-plays">${plays}</ul>
+        </div>`;
+      }).join('') || '<p class="cms-muted cms-small">No visits yet.</p>';
+    } catch (err) {
+      d.innerHTML = `<p class="cms-error">${esc(err.message)}</p>`;
+    }
+  }
+});
+
+$('link-add').addEventListener('submit', async e => {
+  e.preventDefault();
+  let u;
+  try { u = new URL($('link-add-url').value.trim()); } catch { toast('That isn’t a valid link', true); return; }
+  const show = u.searchParams.get('show');
+  if (!show) { toast('That link has no ?show= videos in it', true); return; }
+  try {
+    await api('/api/admin/links', { method: 'PUT', body: { show, ref: u.searchParams.get('ref') || '', label: $('link-add-name').value.trim() } });
+    $('link-add-url').value = '';
+    $('link-add-name').value = '';
+    toast('Tracking that link');
+    loadLinks();
+  } catch (err) { toast(err.message, true); }
+});
 
 // ---------- Categories ----------
 function renderCategories() {

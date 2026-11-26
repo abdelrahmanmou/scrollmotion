@@ -252,6 +252,34 @@ body.has-sharebar .cms-wrap { padding-bottom: 200px; }
 }
 .cms-sharebar-actions { display: flex; gap: 8px; }
 
+/* Tracked links */
+.cms-links-head { display: flex; gap: 16px; align-items: flex-start; justify-content: space-between; }
+.cms-links-head p { margin: 0; max-width: 640px; }
+.cms-link-add { display: grid; grid-template-columns: 1fr 220px auto; gap: 8px; margin: 18px 0 20px; }
+.cms-link-add input {
+  padding: 10px 12px; background: #0a0a0a; border: 1px solid var(--line); border-radius: 10px; outline: none;
+}
+.cms-link-add input:focus { border-color: var(--accent); }
+.cms-linkrow {
+  display: grid; grid-template-columns: 1fr auto; gap: 8px 14px; align-items: center;
+  padding: 14px; margin-bottom: 8px;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
+}
+.cms-linkrow-main { display: grid; gap: 3px; min-width: 0; }
+.cms-linkrow-title strong { font-weight: 500; }
+.cms-linkrow-videos { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cms-opened { color: var(--accent); font-weight: 500; }
+.cms-linkrow-details { grid-column: 1 / -1; border-top: 1px solid var(--line); padding-top: 10px; display: grid; gap: 12px; }
+.cms-visit { font-size: 14px; }
+.cms-plays { list-style: none; margin: 6px 0 0; padding: 0 0 0 12px; display: grid; gap: 4px; font-size: 13px; }
+.cms-plays li { display: grid; grid-template-columns: minmax(140px, 260px) 120px auto; gap: 10px; align-items: center; }
+.cms-play-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cms-yt-note { grid-column: 2 / -1; }
+.cms-bar { height: 6px; border-radius: 999px; background: #222; overflow: hidden; }
+.cms-bar span { display: block; height: 100%; background: var(--accent); }
+.cms-share-row { display: grid; grid-template-columns: 220px 1fr; gap: 8px; }
+.cms-share-name { color: var(--text); }
+
 /* Toast */
 .cms-toast {
   position: fixed; left: 50%; bottom: 24px; z-index: 100;
@@ -279,6 +307,10 @@ body.has-sharebar .cms-wrap { padding-bottom: 200px; }
   .cms-frame { grid-template-columns: 1fr; }
   .cms-grid2 { grid-template-columns: 1fr; }
   .cms-tabs { flex-wrap: wrap; }
+  .cms-link-add, .cms-share-row { grid-template-columns: 1fr; }
+  .cms-linkrow { grid-template-columns: 1fr; }
+  .cms-plays li { grid-template-columns: 1fr; gap: 2px; }
+  .cms-links-head { flex-direction: column; }
   .cms-sharebar-inner { flex-direction: column; align-items: stretch; padding: 12px 14px; }
   .cms-sharebar-actions .cms-btn { flex: 1; justify-content: center; }
 }

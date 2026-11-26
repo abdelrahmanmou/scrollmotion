@@ -1,5 +1,6 @@
 import { LEGACY_ANCHORS } from './portfolio-data.js';
 import { loadCatalog } from './portfolio-catalog.js';
+import { startTracking } from './share-tracking.js';
 
 // The list comes from the CMS (/admin), with the built-in list as fallback
 const { CATEGORIES, VIDEOS, FEATURED } = await loadCatalog();
@@ -33,6 +34,9 @@ const pickedSlugs = (params.get('show') || '')
   .split(',')
   .map(s => s.trim().toLowerCase())
   .filter((s, i, arr) => s && bySlug.has(s) && arr.indexOf(s) === i);
+
+// Share links (?show=…) report opens and watch time to the CMS
+const tracker = startTracking({ show: params.get('show'), ref: params.get('ref') });
 
 let lbList = [];
 let lbIndex = 0;
@@ -208,10 +212,13 @@ function openLightbox(slug, list) {
 function showInLightbox() {
   const v = bySlug.get(lbList[lbIndex]);
   els.lbStage.className = `pf-lb-stage pf-${esc(v.format)}`;
+  tracker.detach();
   if (v.youtube) {
+    tracker.opened(v.slug);
     els.lbStage.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(v.youtube)}?autoplay=1&rel=0" title="${esc(v.title)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`;
   } else {
     els.lbStage.innerHTML = `<video src="${esc(v.src)}" poster="${esc(v.poster)}" controls autoplay playsinline></video>`;
+    tracker.attach(els.lbStage.querySelector('video'), v.slug);
   }
   els.lbTitle.textContent = v.title;
   els.lbMeta.textContent = [v.client !== v.title ? v.client : '', catLabel(v.category), v.blurb].filter(Boolean).join(' · ');
@@ -219,6 +226,7 @@ function showInLightbox() {
 }
 
 function closeLightbox() {
+  tracker.detach();
   els.lbStage.innerHTML = '';
   if (els.lightbox.open) els.lightbox.close();
   document.documentElement.classList.remove('pf-lock');
