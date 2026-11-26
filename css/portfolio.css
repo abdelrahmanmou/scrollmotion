@@ -105,6 +105,15 @@ html { scroll-padding-top: 150px; }
 .pf-head-small .pf-eyebrow { margin: 0; font-size: 0.9rem; }
 
 .pf-picked { padding-top: 56px; }
+.pf-note {
+  margin: -8px 0 28px; padding: 16px 20px; max-width: 720px;
+  border-left: 2px solid var(--hero-accent, #c1ff72);
+  background: rgba(255, 255, 255, 0.03); border-radius: 0 12px 12px 0;
+}
+.pf-note[hidden] { display: none; }
+.pf-note blockquote { margin: 0; font-size: 1.05rem; line-height: 1.55; white-space: pre-line; }
+.pf-note figcaption { margin-top: 8px; color: var(--text-muted); font-size: 0.85rem; }
+.pf-note figcaption::before { content: '— '; }
 .pf-grid-picked { grid-template-columns: repeat(auto-fill, minmax(min(100%, 380px), 1fr)); }
 
 /* Start here */

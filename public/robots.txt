@@ -3,8 +3,8 @@ Allow: /
 Disallow: /admin
 Disallow: /api/
 
-Sitemap: https://scrollmotion.site/sitemap.xml
+Sitemap: https://scrollmotions.pages.dev/sitemap.xml
 
 # AI/LLM Information File
 # See https://llmstxt.org for specification
-LLMs: https://scrollmotion.site/llms.txt
+LLMs: https://scrollmotions.pages.dev/llms.txt

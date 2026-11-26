@@ -18,8 +18,41 @@ export async function ensureSchema(db) {
     db.prepare(`CREATE TABLE IF NOT EXISTS plays (
       visit_id TEXT NOT NULL, slug TEXT NOT NULL, seconds REAL NOT NULL DEFAULT 0,
       duration REAL, updated INTEGER NOT NULL, PRIMARY KEY (visit_id, slug))`),
+    db.prepare('CREATE TABLE IF NOT EXISTS settings (key TEXT PRIMARY KEY, value TEXT NOT NULL)'),
   ]);
+  // Columns added after the first release
+  const cols = (await db.prepare('PRAGMA table_info(links)').all()).results.map(c => c.name);
+  if (!cols.includes('greet')) await db.prepare('ALTER TABLE links ADD COLUMN greet INTEGER NOT NULL DEFAULT 1').run();
+  if (!cols.includes('note')) await db.prepare("ALTER TABLE links ADD COLUMN note TEXT NOT NULL DEFAULT ''").run();
   ready = true;
+}
+
+// Public details for a link page: who it's for and your note (only if greeting is on)
+export async function linkMeta(env, rawShow, rawRef) {
+  if (!env.DB) return null;
+  const show = normShow(rawShow);
+  if (!show) return null;
+  await ensureSchema(env.DB);
+  const ref = normRef(rawRef);
+  let row = await env.DB.prepare('SELECT label, greet, note FROM links WHERE id = ?').bind(linkId(show, ref)).first();
+  // A ref typed by hand that was never registered: fall back to the plain link
+  if (!row && ref) row = await env.DB.prepare('SELECT label, greet, note FROM links WHERE id = ?').bind(linkId(show, '')).first();
+  if (!row) return { name: '', note: '' };
+  return { name: row.greet ? row.label : '', note: row.note || '' };
+}
+
+export async function getSetting(db, key) {
+  const r = await db.prepare('SELECT value FROM settings WHERE key = ?').bind(key).first();
+  return r ? r.value : null;
+}
+export async function setSetting(db, key, value) {
+  if (value === null) return db.prepare('DELETE FROM settings WHERE key = ?').bind(key).run();
+  return db.prepare('INSERT INTO settings (key, value) VALUES (?, ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value').bind(key, value).run();
+}
+
+export function countryName(code) {
+  if (!code) return '';
+  try { return new Intl.DisplayNames(['en'], { type: 'region' }).of(code) || code; } catch { return code; }
 }
 
 // "Goldsand, hub-xyz" → "goldsand,hub-xyz"
