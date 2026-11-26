@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Portfolio CMS – Scroll Studio</title>
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/admin.css">
+  <script type="module" src="../js/admin.js"></script>
+</head>
+<body>
+  <!-- Sign in -->
+  <main id="login" class="cms-center" hidden>
+    <form id="login-form" class="cms-card cms-login">
+      <h1>Portfolio CMS</h1>
+      <p class="cms-muted">Sign in to add and edit the videos on your portfolio.</p>
+      <label class="cms-field">
+        <span>Password</span>
+        <input id="login-password" type="password" autocomplete="current-password" required autofocus>
+      </label>
+      <p id="login-error" class="cms-error" hidden></p>
+      <button class="cms-btn cms-btn-primary" type="submit">Sign in</button>
+    </form>
+  </main>
+
+  <!-- Shown until Cloudflare is set up -->
+  <main id="setup" class="cms-center" hidden>
+    <div class="cms-card cms-login">
+      <h1>Almost ready</h1>
+      <p id="setup-msg" class="cms-muted"></p>
+    </div>
+  </main>
+
+  <!-- Editor -->
+  <div id="app" hidden>
+    <header class="cms-top">
+      <div class="cms-top-left">
+        <strong>Portfolio CMS</strong>
+        <span id="save-status" class="cms-status" data-state="saved">All changes live</span>
+      </div>
+      <nav class="cms-top-right">
+        <a class="cms-btn cms-btn-ghost" href="/portfolio" target="_blank" rel="noopener">View portfolio ↗</a>
+        <button id="logout" class="cms-btn cms-btn-ghost" type="button">Sign out</button>
+      </nav>
+    </header>
+
+    <div class="cms-wrap">
+      <div id="banner" class="cms-banner" hidden></div>
+
+      <div class="cms-tabs" role="tablist">
+        <button class="cms-tab is-active" data-tab="videos" role="tab">Videos <span id="video-count"></span></button>
+        <button class="cms-tab" data-tab="categories" role="tab">Categories</button>
+        <span class="cms-spacer"></span>
+        <button id="add-video" class="cms-btn cms-btn-primary" type="button">+ Add video</button>
+      </div>
+
+      <!-- Videos -->
+      <section id="tab-videos" class="cms-panel">
+        <div class="cms-featured">
+          <div>
+            <h2>Start here</h2>
+            <p class="cms-muted">Shown at the top of the portfolio (first one is the big card). Star a video to add it.</p>
+          </div>
+          <ol id="featured-list" class="cms-featured-list"></ol>
+        </div>
+
+        <div class="cms-filters">
+          <input id="search" type="search" placeholder="Search titles and clients…" aria-label="Search videos">
+          <div id="cat-filter" class="cms-chips"></div>
+        </div>
+        <div id="video-list"></div>
+      </section>
+
+      <!-- Categories -->
+      <section id="tab-categories" class="cms-panel" hidden>
+        <p class="cms-muted">Sections on the portfolio page, in this order. A category with videos in it can't be deleted until they're moved.</p>
+        <div id="cat-list"></div>
+        <button id="add-cat" class="cms-btn" type="button">+ Add category</button>
+      </section>
+    </div>
+  </div>
+
+  <!-- Add / edit video -->
+  <dialog id="editor" class="cms-dialog">
+    <form id="editor-form" method="dialog">
+      <header class="cms-dialog-head">
+        <h2 id="editor-title">Add video</h2>
+        <button type="button" class="cms-x" data-close aria-label="Close">×</button>
+      </header>
+
+      <div class="cms-dialog-body">
+        <div id="source-pick" class="cms-seg" role="radiogroup">
+          <label><input type="radio" name="source" value="file" checked> Upload a file</label>
+          <label><input type="radio" name="source" value="youtube"> YouTube link</label>
+        </div>
+
+        <div id="file-zone" class="cms-drop">
+          <input id="file-input" type="file" accept="video/mp4,video/webm,video/quicktime,.mp4,.m4v,.mov,.webm" hidden>
+          <div id="drop-empty">
+            <p><strong>Drop a video here</strong> or <button type="button" class="cms-link" id="file-browse">choose a file</button></p>
+            <p class="cms-muted">MP4 (H.264) plays everywhere. Export at 1080p, ideally under 60&nbsp;MB, so it loads fast.</p>
+          </div>
+          <div id="file-info" class="cms-muted" hidden></div>
+        </div>
+
+        <label id="yt-zone" class="cms-field" hidden>
+          <span>YouTube link</span>
+          <input id="yt-url" type="url" placeholder="https://www.youtube.com/watch?v=…">
+        </label>
+
+        <div id="frame-zone" class="cms-frame" hidden>
+          <div class="cms-frame-stage">
+            <video id="frame-video" muted playsinline preload="metadata"></video>
+            <img id="frame-img" alt="" hidden>
+          </div>
+          <div class="cms-frame-controls">
+            <span class="cms-label">Thumbnail</span>
+            <input id="frame-slider" type="range" min="0" max="1000" value="100" aria-label="Pick the thumbnail frame">
+            <div class="cms-frame-btns">
+              <span id="frame-time" class="cms-muted"></span>
+              <button type="button" id="poster-upload-btn" class="cms-link">or upload an image</button>
+              <input id="poster-input" type="file" accept="image/jpeg,image/png,image/webp" hidden>
+            </div>
+          </div>
+        </div>
+
+        <div class="cms-grid2">
+          <label class="cms-field cms-span2">
+            <span>Title *</span>
+            <input id="f-title" required maxlength="120">
+          </label>
+          <label class="cms-field">
+            <span>Client</span>
+            <input id="f-client" maxlength="80">
+          </label>
+          <label class="cms-field">
+            <span>Category</span>
+            <select id="f-category"></select>
+          </label>
+          <label class="cms-field cms-span2">
+            <span>Short description</span>
+            <input id="f-blurb" maxlength="240" placeholder="e.g. 60-second product explainer">
+          </label>
+          <label class="cms-field">
+            <span>Shape</span>
+            <select id="f-format">
+              <option value="landscape">Landscape (16:9)</option>
+              <option value="vertical">Vertical (9:16)</option>
+              <option value="square">Square</option>
+            </select>
+          </label>
+          <label class="cms-field">
+            <span>Link name</span>
+            <input id="f-slug" maxlength="80" pattern="[a-z0-9]+(-[a-z0-9]+)*" spellcheck="false">
+          </label>
+          <p id="slug-hint" class="cms-muted cms-span2 cms-small"></p>
+          <label class="cms-check cms-span2">
+            <input id="f-featured" type="checkbox"> Show in “Start here”
+          </label>
+        </div>
+
+        <p id="editor-error" class="cms-error" hidden></p>
+        <div id="progress" class="cms-progress" hidden>
+          <div class="cms-progress-bar"><span id="progress-fill"></span></div>
+          <p id="progress-text" class="cms-muted cms-small"></p>
+        </div>
+      </div>
+
+      <footer class="cms-dialog-foot">
+        <button type="button" class="cms-btn cms-btn-ghost" data-close>Cancel</button>
+        <button id="editor-save" type="submit" class="cms-btn cms-btn-primary">Upload &amp; publish</button>
+      </footer>
+    </form>
+  </dialog>
+
+  <div id="toast" class="cms-toast" role="status" aria-live="polite"></div>
+</body>
+</html>

@@ -1,4 +1,7 @@
-// Portfolio catalogue.
+// Built-in portfolio catalogue — the fallback list.
+//
+// The live list is managed in the CMS at /admin (see CLAUDE.md). This file is
+// used when the CMS has no list yet and by `npm run dev`.
 //
 // Each video has a stable `slug`. Slugs are used in share links such as
 //   /portfolio.html?show=azza-fahmy,hub-xyz

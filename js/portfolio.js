@@ -1,4 +1,11 @@
-import { CATEGORIES, VIDEOS, FEATURED, LEGACY_ANCHORS } from './portfolio-data.js';
+import { LEGACY_ANCHORS } from './portfolio-data.js';
+import { loadCatalog } from './portfolio-catalog.js';
+
+// The list comes from the CMS (/admin), with the built-in list as fallback
+const { CATEGORIES, VIDEOS, FEATURED } = await loadCatalog();
+
+// Titles and descriptions are typed into the CMS, so escape them before use in HTML
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 
 const bySlug = new Map(VIDEOS.map(v => [v.slug, v]));
 const catLabel = id => (CATEGORIES.find(c => c.id === id) || {}).label || '';
@@ -86,13 +93,13 @@ const ICONS = {
 // ---------- Cards ----------
 function card(v, { picked = false, anchor = false, inSection = false } = {}) {
   const el = document.createElement('article');
-  el.className = `pf-card pf-${v.format}${picked ? ' is-picked' : ''}`;
+  el.className = `pf-card pf-${esc(v.format)}${picked ? ' is-picked' : ''}`;
   el.dataset.slug = v.slug;
   if (anchor) el.id = `v-${v.slug}`;
   el.innerHTML = `
-    <button class="pf-thumb" type="button" aria-label="Play ${v.title}">
-      <span class="pf-thumb-bg" style="background-image:url('${v.poster}')"></span>
-      <img class="pf-thumb-img${v.youtube ? ' is-yt' : ''}" src="${v.poster}" alt="" loading="lazy" decoding="async">
+    <button class="pf-thumb" type="button" aria-label="Play ${esc(v.title)}">
+      <span class="pf-thumb-bg" style="background-image:url('${esc(v.poster)}')"></span>
+      <img class="pf-thumb-img${v.youtube ? ' is-yt' : ''}" src="${esc(v.poster)}" alt="" loading="lazy" decoding="async">
       <span class="pf-play">${ICONS.play}</span>
       ${v.duration ? `<span class="pf-badge pf-dur">${fmtTime(v.duration)}</span>` : ''}
       ${v.youtube ? '<span class="pf-badge pf-yt">YouTube</span>' : ''}
@@ -100,10 +107,10 @@ function card(v, { picked = false, anchor = false, inSection = false } = {}) {
     </button>
     <div class="pf-info">
       <div class="pf-text">
-        <h3>${v.title}</h3>
-        <p>${inSection ? (v.client && v.client !== v.title ? v.client : v.blurb || '') : `${v.client && v.client !== v.title ? `${v.client} · ` : ''}${catLabel(v.category)}`}</p>
+        <h3>${esc(v.title)}</h3>
+        <p>${esc(inSection ? (v.client && v.client !== v.title ? v.client : v.blurb || '') : `${v.client && v.client !== v.title ? `${v.client} · ` : ''}${catLabel(v.category)}`)}</p>
       </div>
-      <button class="pf-share" type="button" aria-label="Copy link to ${v.title}" title="Copy link to this video">${ICONS.link}</button>
+      <button class="pf-share" type="button" aria-label="Copy link to ${esc(v.title)}" title="Copy link to this video">${ICONS.link}</button>
     </div>`;
 
   // Hover preview on devices with a mouse
@@ -159,7 +166,7 @@ function renderCats() {
   const links = [{ id: 'work', label: 'All', n: rest.length }]
     .concat(groups.map(g => ({ id: `cat-${g.id}`, label: g.label, n: g.videos.length })));
   els.cats.innerHTML = links
-    .map((l, i) => `<a href="#${l.id}" class="pf-cat${i === 0 ? ' active' : ''}" data-target="${l.id}">${l.label}<span>${l.n}</span></a>`)
+    .map((l, i) => `<a href="#${esc(l.id)}" class="pf-cat${i === 0 ? ' active' : ''}" data-target="${esc(l.id)}">${esc(l.label)}<span>${l.n}</span></a>`)
     .join('');
 }
 
@@ -190,11 +197,11 @@ function renderSections() {
         <div class="pf-cat-head">
           <div class="pf-cat-title">
             <span class="pf-num">${String(i + 1).padStart(2, '0')}</span>
-            <h2>${g.label}</h2>
+            <h2>${esc(g.label)}</h2>
             <span class="pf-muted">${g.videos.length} video${g.videos.length > 1 ? 's' : ''}</span>
           </div>
           <div class="pf-cat-side">
-            <p>${g.desc || ''}</p>
+            <p>${esc(g.desc)}</p>
             ${more ? `<button type="button" class="pf-more" aria-expanded="false">See all ${g.videos.length} <span aria-hidden="true">→</span></button>` : ''}
           </div>
         </div>
@@ -267,7 +274,7 @@ function syncSelectionUI() {
     ? `${selection.length} selected · shown first, in this order`
     : 'Tap videos to pick them';
   els.barList.innerHTML = selection
-    .map((s, i) => `<li><span>${i + 1}</span>${bySlug.get(s).title}<button type="button" data-remove="${s}" aria-label="Remove ${bySlug.get(s).title}">×</button></li>`)
+    .map((s, i) => `<li><span>${i + 1}</span>${esc(bySlug.get(s).title)}<button type="button" data-remove="${s}" aria-label="Remove ${esc(bySlug.get(s).title)}">×</button></li>`)
     .join('');
   els.barCopy.disabled = !selection.length;
   els.barOpen.disabled = !selection.length;
@@ -285,11 +292,11 @@ function openLightbox(slug, list) {
 
 function showInLightbox() {
   const v = bySlug.get(lbList[lbIndex]);
-  els.lbStage.className = `pf-lb-stage pf-${v.format}`;
+  els.lbStage.className = `pf-lb-stage pf-${esc(v.format)}`;
   if (v.youtube) {
-    els.lbStage.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${v.youtube}?autoplay=1&rel=0" title="${v.title}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`;
+    els.lbStage.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(v.youtube)}?autoplay=1&rel=0" title="${esc(v.title)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`;
   } else {
-    els.lbStage.innerHTML = `<video src="${v.src}" poster="${v.poster}" controls autoplay playsinline></video>`;
+    els.lbStage.innerHTML = `<video src="${esc(v.src)}" poster="${esc(v.poster)}" controls autoplay playsinline></video>`;
   }
   els.lbTitle.textContent = v.title;
   els.lbMeta.textContent = [v.client !== v.title ? v.client : '', catLabel(v.category), v.blurb].filter(Boolean).join(' · ');
