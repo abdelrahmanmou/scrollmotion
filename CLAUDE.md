@@ -31,6 +31,21 @@ Do not commit `dist/` or `node_modules/`.
 - `portfolio.html`, `case-studies.html`, `services/`, `industries/`, `locations/`, `articles/`, `blog/`: static site pages
 - `vite.config.js`: multi-page Vite build configuration
 
+## Portfolio CMS (/admin)
+
+The portfolio video list is managed at `https://scrollmotions.pages.dev/admin`.
+
+- Storage: Cloudflare R2 bucket `scrollmotions-media`, bound to the Pages project as `MEDIA`. It holds `catalog.json` (the list), `catalog-history/` (last 40 versions), and uploads under `media/videos/` and `media/posters/`.
+- Login: the `ADMIN_PASSWORD` secret in Cloudflare Pages → Settings → Variables and secrets. Changing it signs everyone out.
+- Server code: `functions/` (Pages Functions). `public/_routes.json` limits Functions to `/api/*` and `/media/*` so static pages don't use Function requests.
+  - `GET /api/catalog` public list; `GET /media/*` streams R2 files with Range support.
+  - `/api/admin/*` login, catalogue save (etag-checked), multipart upload, media delete.
+- Front end: `admin/index.html`, `js/admin.js`, `css/admin.css`. `js/portfolio.js` loads the list via `js/portfolio-catalog.js` and falls back to the built-in `js/portfolio-data.js` (used by `npm run dev`, which has no Functions).
+- Once the CMS has saved, `js/portfolio-data.js` is only the fallback; edit videos in the CMS, not in that file.
+- Slugs are permanent: share links use `?show=slug-a,slug-b`.
+- Local test with Functions: `npm run build`, then `npx wrangler pages dev dist --r2 MEDIA` with `ADMIN_PASSWORD=…` in `.dev.vars` (git-ignored).
+- Deploy hook `main-rebuild` (Settings → Builds) rebuilds `main` if a GitHub push doesn't trigger a build.
+
 ## Current hero avatar implementation
 
 The hero uses a video with transparency. Keep the three related assets and the browser routing intact:

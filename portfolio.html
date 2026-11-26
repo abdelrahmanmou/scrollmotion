@@ -127,10 +127,6 @@
       </div>
       <div class="pf-intro-side">
         <p id="pf-total" class="pf-total"></p>
-        <button id="pf-select-toggle" class="pf-select-toggle" type="button" aria-pressed="false">
-          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-          <span>Pick videos to share</span>
-        </button>
       </div>
     </div>
   </section>
@@ -180,22 +176,6 @@
     </section>
   </main>
 
-  <!-- Share-link builder -->
-  <div id="pf-bar" class="pf-bar" hidden>
-    <div class="pf-bar-inner">
-      <div class="pf-bar-text">
-        <strong id="pf-bar-count">Tap videos to pick them</strong>
-        <ol id="pf-bar-list" class="pf-bar-list"></ol>
-      </div>
-      <div class="pf-bar-actions">
-        <button id="pf-bar-clear" type="button" class="pf-btn-ghost">Clear</button>
-        <button id="pf-bar-open" type="button" class="pf-btn-ghost">Preview</button>
-        <button id="pf-bar-copy" type="button" class="pf-btn">Copy link</button>
-        <button id="pf-bar-done" type="button" class="pf-btn-ghost" aria-label="Close">Done</button>
-      </div>
-    </div>
-  </div>
-
   <!-- Lightbox player -->
   <dialog id="pf-lightbox" class="pf-lightbox" aria-label="Video player">
     <button class="pf-lb-close" type="button" aria-label="Close">×</button>
@@ -207,13 +187,10 @@
           <h3 id="pf-lb-title"></h3>
           <p id="pf-lb-meta"></p>
         </div>
-        <button id="pf-lb-share" type="button" class="pf-btn-ghost">Copy link</button>
       </div>
     </div>
     <button class="pf-lb-nav pf-lb-next" type="button" aria-label="Next video">›</button>
   </dialog>
-
-  <div id="pf-toast" class="pf-toast" role="status" aria-live="polite"></div>
 
   <!-- Footer -->
   <footer>
