@@ -12,7 +12,7 @@ function send(payload) {
   fetch('/api/track', { method: 'POST', body, keepalive: true, credentials: 'same-origin', headers: { 'content-type': 'text/plain' } }).catch(() => {});
 }
 
-const noop = { attach() {}, detach() {}, opened() {} };
+const noop = { attach() {}, detach() {}, opened() {}, contact() {} };
 
 export function startTracking({ show, ref }) {
   if (!show) return noop;
@@ -82,8 +82,17 @@ export function startTracking({ show, ref }) {
     report(slug);
   }
 
+  // They tapped WhatsApp or "Book a call"
+  const contacted = new Set();
+  function contact(channel) {
+    if (contacted.has(channel)) return;
+    contacted.add(channel);
+    flush();
+    send({ ...base, t: 'contact', channel });
+  }
+
   addEventListener('pagehide', flush);
   document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') flush(); });
 
-  return { attach, detach, opened };
+  return { attach, detach, opened, contact };
 }

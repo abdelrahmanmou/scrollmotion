@@ -58,6 +58,25 @@ export async function onRequestPost({ request, env, waitUntil }) {
     return json({ ok: true });
   }
 
+  if (b.t === 'contact') {
+    const channel = b.channel === 'whatsapp' ? 'whatsapp' : b.channel === 'call' ? 'call' : null;
+    if (!channel) return json({ error: 'bad channel' }, 400);
+    const visit = await env.DB.prepare('SELECT contacted FROM visits WHERE id = ? AND link_id = ?').bind(b.visit, id).first();
+    if (!visit) return json({ ok: false, error: 'unknown visit' }, 404);
+    const done = visit.contacted ? visit.contacted.split(',') : [];
+    if (done.includes(channel)) return json({ ok: true });
+    await env.DB.prepare('UPDATE visits SET contacted = ?, last_seen = ? WHERE id = ?')
+      .bind(done.concat(channel).join(','), now, b.visit).run();
+    waitUntil((async () => {
+      const link = await env.DB.prepare('SELECT label FROM links WHERE id = ?').bind(id).first();
+      const who = (link && link.label) || 'Someone';
+      await sendAlert(env, channel === 'whatsapp'
+        ? `💬 ${who} tapped "Message me on WhatsApp" on your link. Check your WhatsApp.`
+        : `📅 ${who} opened your booking page (Calendly) from your link.`);
+    })().catch(() => {}));
+    return json({ ok: true });
+  }
+
   return json({ error: 'unknown event' }, 400);
 }
 

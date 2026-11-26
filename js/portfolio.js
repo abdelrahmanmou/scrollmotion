@@ -93,8 +93,28 @@ function renderPicked() {
   els.pickedTitle.textContent = pickedSlugs.length === 1 ? 'Picked for you' : `${pickedSlugs.length} videos picked for you`;
   pickedSlugs.forEach(s => els.pickedGrid.appendChild(card(bySlug.get(s), { picked: true })));
   document.title = `Selected work – Abdelrahman Moustafa`;
+  setChatMessage('');
   personalise();
 }
+
+// WhatsApp message typed in advance on links sent to clients
+function setChatMessage(name) {
+  const text = name
+    ? `Hi Abdelrahman, it's ${name}. I just watched the videos you sent me.`
+    : 'Hi Abdelrahman, I just watched the videos you sent me.';
+  const href = `https://wa.me/201002562925?text=${encodeURIComponent(text)}`;
+  document.getElementById('pf-wa').href = href;
+  if (window.waSetMessage) window.waSetMessage(text);
+}
+
+// Tell the tracker when they reach out (WhatsApp or booking a call)
+document.addEventListener('click', e => {
+  if (!pickedSlugs.length) return;
+  const a = e.target.closest('a');
+  if (!a) return;
+  if (a.matches('#pf-wa, .wa-float')) tracker.contact('whatsapp');
+  else if (a.href.includes('calendly.com')) tracker.contact('call');
+});
 
 // "For Sarah" and a note, set on the link in the CMS
 async function personalise() {
@@ -104,6 +124,7 @@ async function personalise() {
     if (!res.ok) return;
     const { name, note } = await res.json();
     if (name) {
+      setChatMessage(name);
       document.getElementById('pf-picked-eyebrow').textContent = `For ${name}`;
       document.title = `Picked for ${name} – Abdelrahman Moustafa`;
     }

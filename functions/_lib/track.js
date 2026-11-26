@@ -24,6 +24,8 @@ export async function ensureSchema(db) {
   const cols = (await db.prepare('PRAGMA table_info(links)').all()).results.map(c => c.name);
   if (!cols.includes('greet')) await db.prepare('ALTER TABLE links ADD COLUMN greet INTEGER NOT NULL DEFAULT 1').run();
   if (!cols.includes('note')) await db.prepare("ALTER TABLE links ADD COLUMN note TEXT NOT NULL DEFAULT ''").run();
+  const vcols = (await db.prepare('PRAGMA table_info(visits)').all()).results.map(c => c.name);
+  if (!vcols.includes('contacted')) await db.prepare("ALTER TABLE visits ADD COLUMN contacted TEXT NOT NULL DEFAULT ''").run();
   ready = true;
 }
 

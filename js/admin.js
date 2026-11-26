@@ -569,11 +569,12 @@ function renderLinks() {
     const stats = l.visits
       ? `<strong class="cms-opened">Opened ${l.visits}×</strong>${l.people > 1 ? ` by ${l.people} people` : ''} · last seen ${ago(l.last_seen)} · ${l.videos_watched ? `watched ${fmtWatch(l.watched)} across ${l.videos_watched} video${l.videos_watched > 1 ? 's' : ''}` : 'no videos played yet'}`
       : '<span class="cms-muted">Not opened yet</span>';
+    const reached = [l.whatsapp ? '<span class="cms-reached">💬 Tapped WhatsApp</span>' : '', l.calls ? '<span class="cms-reached">📅 Opened booking page</span>' : ''].filter(Boolean).join(' ');
     return `<div class="cms-linkrow" data-id="${esc(l.id)}">
       <div class="cms-linkrow-main">
         <div class="cms-linkrow-title"><strong>${esc(l.label || 'Unnamed link')}</strong>${l.ref ? ` <span class="cms-tag">ref: ${esc(l.ref)}</span>` : ''}${l.label && !l.greet ? ' <span class="cms-tag">name hidden on page</span>' : ''}</div>
         ${l.note ? `<div class="cms-muted cms-small">Note: “${esc(l.note.length > 90 ? `${l.note.slice(0, 90)}…` : l.note)}”</div>` : ''}
-        <div class="cms-small">${stats}</div>
+        <div class="cms-small">${stats}${reached ? ` · ${reached}` : ''}</div>
         <div class="cms-muted cms-small cms-linkrow-videos">${slugs.length} video${slugs.length > 1 ? 's' : ''}: ${slugs.slice(0, 4).map(s => esc(titleOf(s))).join(', ')}${slugs.length > 4 ? '…' : ''}</div>
       </div>
       <div class="cms-row-actions">
@@ -677,6 +678,7 @@ $('links-list').addEventListener('click', async e => {
           : '<li class="cms-muted">Looked at the page, didn’t play a video</li>';
         return `<div class="cms-visit">
           <div><strong>${esc(when(v.started))}</strong> <span class="cms-muted">· ${esc(place(v))} · ${esc(v.device || '')}${mins > 5 ? ` · on page ${fmtWatch(mins)}` : ''}</span></div>
+          ${v.contacted ? `<div class="cms-reached cms-small">${v.contacted.split(',').map(c => (c === 'whatsapp' ? '💬 Tapped WhatsApp' : '📅 Opened booking page')).join(' · ')}</div>` : ''}
           <ul class="cms-plays">${plays}</ul>
         </div>`;
       }).join('') || '<p class="cms-muted cms-small">No visits yet.</p>';
