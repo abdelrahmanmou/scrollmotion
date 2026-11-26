@@ -303,6 +303,11 @@ watchSections();
 
 // Support old #reel-… links from the previous layout
 const hash = decodeURIComponent(location.hash.slice(1));
+// #cat-reels etc. (menu links): sections are built by script, so jump once they exist
+if (hash.startsWith('cat-')) {
+  const sec = document.getElementById(hash);
+  if (sec) requestAnimationFrame(() => sec.scrollIntoView({ block: 'start' }));
+}
 const legacy = LEGACY_ANCHORS[hash] || (bySlug.has(hash) ? hash : null) || (hash.startsWith('v-') && bySlug.has(hash.slice(2)) ? hash.slice(2) : null);
 if (legacy) {
   const target = document.getElementById(`v-${legacy}`);
