@@ -19,7 +19,7 @@ export async function onRequestGet({ request, env }) {
     const link = await env.DB.prepare('SELECT * FROM links WHERE id = ?').bind(id).first();
     if (!link) return json({ error: 'Link not found' }, 404);
     const visits = (await env.DB.prepare(
-      'SELECT id, visitor, started, last_seen, country, city, device, referrer FROM visits WHERE link_id = ? ORDER BY started DESC LIMIT 200',
+      'SELECT id, visitor, started, last_seen, country, city, device, referrer, contacted FROM visits WHERE link_id = ? ORDER BY started DESC LIMIT 200',
     ).bind(id).all()).results;
     const plays = (await env.DB.prepare(
       `SELECT p.visit_id, p.slug, p.seconds, p.duration FROM plays p JOIN visits v ON v.id = p.visit_id
@@ -36,6 +36,8 @@ export async function onRequestGet({ request, env }) {
       COUNT(DISTINCT v.visitor) AS people,
       MIN(v.started) AS first_open,
       MAX(v.last_seen) AS last_seen,
+      SUM(CASE WHEN v.contacted LIKE '%whatsapp%' THEN 1 ELSE 0 END) AS whatsapp,
+      SUM(CASE WHEN v.contacted LIKE '%call%' THEN 1 ELSE 0 END) AS calls,
       (SELECT COALESCE(SUM(p.seconds), 0) FROM plays p JOIN visits v2 ON v2.id = p.visit_id WHERE v2.link_id = l.id) AS watched,
       (SELECT COUNT(DISTINCT p.slug) FROM plays p JOIN visits v2 ON v2.id = p.visit_id WHERE v2.link_id = l.id AND p.seconds >= 3) AS videos_watched
     FROM links l LEFT JOIN visits v ON v.link_id = l.id

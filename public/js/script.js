@@ -553,3 +553,46 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+// ---------- WhatsApp chat button (every page) ----------
+// Opens a chat with Abdelrahman with a message already typed. Pages can
+// change the message through window.waSetMessage(text) (the portfolio does
+// this on links sent to clients).
+(function () {
+    const NUMBER = '201002562925';
+    const DEFAULT_MSG = "Hi Abdelrahman, I found your website and I'd like to talk about a project.";
+    const waLink = text => `https://wa.me/${NUMBER}?text=${encodeURIComponent(text)}`;
+    window.waLink = waLink;
+    if (location.pathname.startsWith('/admin')) return;
+
+    function add() {
+        if (document.querySelector('.wa-float')) return;
+        const style = document.createElement('style');
+        style.textContent = `
+.wa-float{position:fixed;right:20px;bottom:20px;z-index:900;display:inline-flex;align-items:center;gap:10px;
+  padding:12px 18px 12px 14px;border-radius:999px;background:#25D366;color:#fff;font:600 15px/1 'Outfit',system-ui,sans-serif;
+  text-decoration:none;box-shadow:0 8px 24px rgba(0,0,0,.35);transition:transform .25s,box-shadow .2s,opacity .25s}
+.wa-float.wa-wait{opacity:0;transform:translateY(16px);pointer-events:none}
+.wa-float:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(0,0,0,.45)}
+.wa-float svg{width:26px;height:26px;flex:none}
+@media (max-width:640px){.wa-float{padding:14px;right:16px;bottom:16px}.wa-float span{display:none}}
+html.pf-lock .wa-float{display:none}`;
+        document.head.appendChild(style);
+        const a = document.createElement('a');
+        // Slide in once they start scrolling (or after a few seconds), so it
+        // doesn't sit on top of the first screen's buttons
+        a.className = 'wa-float wa-wait';
+        const show = () => { a.classList.remove('wa-wait'); removeEventListener('scroll', onScroll); };
+        const onScroll = () => { if (scrollY > 120) show(); };
+        addEventListener('scroll', onScroll, { passive: true });
+        setTimeout(show, 4000);
+        a.href = waLink(DEFAULT_MSG);
+        a.target = '_blank';
+        a.rel = 'noopener';
+        a.setAttribute('aria-label', 'Chat with Abdelrahman on WhatsApp');
+        a.innerHTML = '<svg viewBox="0 0 32 32" aria-hidden="true" fill="currentColor"><path d="M16.04 3C8.86 3 3.02 8.83 3.02 16c0 2.29.6 4.53 1.74 6.5L3 29l6.68-1.75A13 13 0 0 0 16.04 29C23.2 29 29 23.17 29 16S23.2 3 16.04 3zm0 23.62c-1.96 0-3.88-.53-5.56-1.52l-.4-.24-3.96 1.04 1.06-3.86-.26-.4A10.6 10.6 0 0 1 5.4 16c0-5.86 4.78-10.62 10.64-10.62 5.86 0 10.6 4.76 10.6 10.62 0 5.86-4.74 10.62-10.6 10.62zm5.83-7.95c-.32-.16-1.89-.93-2.18-1.04-.29-.1-.5-.16-.72.16-.21.32-.82 1.04-1 1.25-.19.21-.37.24-.69.08-.32-.16-1.35-.5-2.57-1.59-.95-.85-1.59-1.9-1.78-2.22-.19-.32-.02-.49.14-.65.14-.14.32-.37.48-.56.16-.18.21-.32.32-.53.1-.21.05-.4-.03-.56-.08-.16-.72-1.73-.98-2.37-.26-.62-.52-.54-.72-.55h-.61c-.21 0-.56.08-.85.4-.29.32-1.12 1.09-1.12 2.66s1.15 3.09 1.31 3.3c.16.21 2.26 3.45 5.47 4.84.77.33 1.36.53 1.83.68.77.24 1.47.21 2.02.13.62-.09 1.89-.77 2.16-1.52.27-.74.27-1.38.19-1.52-.08-.13-.29-.21-.61-.37z"/></svg><span>Chat on WhatsApp</span>';
+        document.body.appendChild(a);
+        window.waSetMessage = text => { a.href = waLink(text); };
+    }
+    if (document.body) add(); else document.addEventListener('DOMContentLoaded', add);
+})();
