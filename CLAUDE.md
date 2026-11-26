@@ -2,7 +2,7 @@
 
 ## Project purpose
 
-Personal site of Abdelrahman Moustafa — Creative Director (video editor / motion designer), based in Cairo, working remotely with clients worldwide. Write all copy in the first person ("I", "my"), not as an agency. "Scroll Studio" is the old brand name; don't reintroduce it. Booking links go to https://calendly.com/abdo-moustafa-1998/new-meeting (there is no on-page contact section). City pages under `locations/` describe remote work for clients in those cities; don't add local-business addresses for cities he isn't in.
+Personal site of Abdelrahman Moustafa — Creative Director (video editor / motion designer), based in Cairo, working remotely with clients worldwide. Write all copy in the first person ("I", "my"), not as an agency. "Scroll Studio" is the old brand name; don't reintroduce it. Booking links go to https://calendly.com/abdomoustafaib/30min (there is no on-page contact section). City pages under `locations/` describe remote work for clients in those cities; don't add local-business addresses for cities he isn't in.
 
 - Repository: `https://github.com/abdelrahmanmou/scrollmotion`
 - Production site: `https://scrollmotions.pages.dev/`
