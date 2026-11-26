@@ -176,6 +176,22 @@
     </form>
   </dialog>
 
+  <!-- Share-link builder (only here, never on the public site) -->
+  <div id="share-bar" class="cms-sharebar" hidden>
+    <div class="cms-sharebar-inner">
+      <div class="cms-sharebar-text">
+        <strong id="share-count"></strong>
+        <ol id="share-list" class="cms-share-list"></ol>
+        <input id="share-url" class="cms-share-url" readonly aria-label="Share link">
+      </div>
+      <div class="cms-sharebar-actions">
+        <button id="share-clear" type="button" class="cms-btn cms-btn-ghost">Clear</button>
+        <a id="share-open" class="cms-btn cms-btn-ghost" target="_blank" rel="noopener">Preview ↗</a>
+        <button id="share-copy" type="button" class="cms-btn cms-btn-primary">Copy link</button>
+      </div>
+    </div>
+  </div>
+
   <div id="toast" class="cms-toast" role="status" aria-live="polite"></div>
 </body>
 </html>

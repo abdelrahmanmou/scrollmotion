@@ -11,7 +11,7 @@ const slugify = s => String(s || '').toLowerCase().normalize('NFKD').replace(/[�
   .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 60);
 const fmtTime = s => (s ? `${Math.floor(s / 60)}:${String(Math.round(s % 60)).padStart(2, '0')}` : '');
 const fmtSize = b => (b > 1e9 ? `${(b / 1e9).toFixed(1)} GB` : `${Math.round(b / 1e6)} MB`);
-const shareLink = slug => `${location.origin}/portfolio?show=${slug}`;
+const shareLink = slugs => `${location.origin}/portfolio?show=${[].concat(slugs).join(',')}`;
 
 const PART_SIZE = 10 * 1024 * 1024;
 const MAX_FEATURED = 3;
@@ -26,6 +26,9 @@ let saveTimer = null;
 let busyUploading = false;
 let filterCat = 'all';
 let query = '';
+// Videos picked for a share link, in order (kept in this browser only)
+let picks = [];
+try { picks = JSON.parse(localStorage.getItem('cms-share-picks') || '[]').filter(s => typeof s === 'string'); } catch { /* ignore */ }
 
 // ---------- API ----------
 class ApiError extends Error {
@@ -261,6 +264,7 @@ document.querySelectorAll('.cms-tab').forEach(t => t.addEventListener('click', (
 // ---------- Render ----------
 function renderAll() {
   renderBanner();
+  renderShare();
   renderFeatured();
   renderFilters();
   renderVideos();
@@ -336,14 +340,14 @@ function renderVideos() {
           <div class="cms-row-main">
             <strong>${esc(v.title)}</strong>
             <span class="cms-muted">${esc([v.client, v.youtube ? 'YouTube' : v.format, fmtTime(v.duration)].filter(Boolean).join(' · '))}</span>
-            ${v.hidden ? '<span class="cms-tag">Hidden</span>' : ''}
+            ${v.hidden ? '<span class="cms-tag">Hidden · only via share links</span>' : ''}
           </div>
           <div class="cms-row-actions">
             <button type="button" data-act="up" ${i === 0 ? 'disabled' : ''} title="Move up" aria-label="Move up">↑</button>
             <button type="button" data-act="down" ${i === all.length - 1 ? 'disabled' : ''} title="Move down" aria-label="Move down">↓</button>
             <button type="button" data-act="star" class="${star ? 'is-on' : ''}" title="${star ? 'Remove from Start here' : 'Show in Start here'}" aria-pressed="${star}">★</button>
-            <button type="button" data-act="hide" title="${v.hidden ? 'Show on site' : 'Hide from site'}">${v.hidden ? 'Show' : 'Hide'}</button>
-            <button type="button" data-act="link" title="Copy a link that shows this video first">Link</button>
+            <button type="button" data-act="hide" title="${v.hidden ? 'Show on the portfolio' : 'Hide from the portfolio (still opens from share links)'}">${v.hidden ? 'Show' : 'Hide'}</button>
+            <button type="button" data-act="pick" class="${picks.includes(v.slug) ? 'is-on' : ''}" title="Add to a share link" aria-pressed="${picks.includes(v.slug)}">${picks.includes(v.slug) ? `Share ${picks.indexOf(v.slug) + 1}` : '+ Share'}</button>
             <button type="button" data-act="edit">Edit</button>
             <button type="button" data-act="delete" class="cms-danger" title="Delete">Delete</button>
           </div>
@@ -379,14 +383,18 @@ $('video-list').addEventListener('click', async e => {
     if (v.hidden) delete v.hidden; else v.hidden = true;
     renderVideos();
     queueSave();
-  } else if (act === 'link') {
-    copy(shareLink(slug));
+  } else if (act === 'pick') {
+    const i = picks.indexOf(slug);
+    if (i >= 0) picks.splice(i, 1); else picks.push(slug);
+    renderShare();
+    renderVideos();
   } else if (act === 'edit') {
     openEditor(v);
   } else if (act === 'delete') {
     if (!confirm(`Delete “${v.title}”?\n\nIt disappears from the portfolio and links to it stop showing it.${v.src && v.src.startsWith('/media/') ? ' The uploaded file is deleted too.' : ''}`)) return;
     catalog.videos.splice(catalog.videos.indexOf(v), 1);
     catalog.featured = catalog.featured.filter(s => s !== slug);
+    picks = picks.filter(s => s !== slug);
     renderAll();
     try {
       await saveNow();
@@ -406,6 +414,43 @@ function toggleFeatured(slug, on) {
   } else if (!on && i >= 0) f.splice(i, 1);
   return true;
 }
+
+// ---------- Share-link builder ----------
+function renderShare() {
+  picks = picks.filter(s => bySlug(s));
+  try { localStorage.setItem('cms-share-picks', JSON.stringify(picks)); } catch { /* ignore */ }
+  $('share-bar').hidden = !picks.length;
+  document.body.classList.toggle('has-sharebar', picks.length > 0);
+  if (!picks.length) return;
+  const url = shareLink(picks);
+  $('share-count').textContent = `Share link · ${picks.length} video${picks.length > 1 ? 's' : ''} shown first, in this order`;
+  $('share-list').innerHTML = picks.map((s, i) => {
+    const v = bySlug(s);
+    return `<li data-slug="${esc(s)}"><span>${i + 1}</span>${esc(v.title)}${v.hidden ? ' <em>(hidden)</em>' : ''}
+      <button type="button" data-move="-1" ${i === 0 ? 'disabled' : ''} aria-label="Move earlier">←</button>
+      <button type="button" data-move="1" ${i === picks.length - 1 ? 'disabled' : ''} aria-label="Move later">→</button>
+      <button type="button" data-remove aria-label="Remove">×</button></li>`;
+  }).join('');
+  $('share-url').value = url;
+  $('share-open').href = url;
+}
+
+$('share-list').addEventListener('click', e => {
+  const b = e.target.closest('button');
+  if (!b) return;
+  const s = b.closest('li').dataset.slug;
+  const i = picks.indexOf(s);
+  if (b.hasAttribute('data-remove')) picks.splice(i, 1);
+  else {
+    const j = i + Number(b.dataset.move);
+    if (j >= 0 && j < picks.length) [picks[i], picks[j]] = [picks[j], picks[i]];
+  }
+  renderShare();
+  renderVideos();
+});
+$('share-clear').addEventListener('click', () => { picks = []; renderShare(); renderVideos(); });
+$('share-copy').addEventListener('click', () => copy(shareLink(picks)));
+$('share-url').addEventListener('focus', e => e.target.select());
 
 // ---------- Categories ----------
 function renderCategories() {

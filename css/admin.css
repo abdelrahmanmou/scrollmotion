@@ -223,6 +223,35 @@ img { display: block; }
 .cms-progress-bar span { display: block; height: 100%; width: 0; background: var(--accent); transition: width .2s; }
 .cms-progress p { margin-top: 6px; }
 
+/* Share-link builder */
+body.has-sharebar .cms-wrap { padding-bottom: 200px; }
+.cms-sharebar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
+  background: rgba(13, 13, 13, .96); backdrop-filter: blur(10px);
+  border-top: 1px solid var(--line);
+}
+.cms-sharebar-inner { max-width: 1100px; margin: 0 auto; padding: 14px 24px; display: flex; gap: 16px; align-items: flex-end; }
+.cms-sharebar-text { flex: 1; min-width: 0; display: grid; gap: 8px; }
+.cms-sharebar-text strong { font-weight: 500; font-size: 14px; }
+.cms-share-list { list-style: none; margin: 0; padding: 0; display: flex; gap: 6px; flex-wrap: wrap; }
+.cms-share-list li {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 6px 4px 4px; border-radius: 999px; background: var(--panel-2); border: 1px solid var(--line); font-size: 13px;
+}
+.cms-share-list li > span {
+  display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 50%;
+  background: var(--accent); color: #000; font-size: 11px; font-weight: 700;
+}
+.cms-share-list em { color: var(--muted); font-style: normal; }
+.cms-share-list button { background: none; border: 0; color: var(--muted); cursor: pointer; padding: 0 2px; }
+.cms-share-list button:hover:not(:disabled) { color: var(--text); }
+.cms-share-list button:disabled { opacity: .3; cursor: default; }
+.cms-share-url {
+  width: 100%; padding: 8px 10px; border-radius: 8px; font-size: 13px;
+  background: #0a0a0a; border: 1px solid var(--line); color: var(--muted);
+}
+.cms-sharebar-actions { display: flex; gap: 8px; }
+
 /* Toast */
 .cms-toast {
   position: fixed; left: 50%; bottom: 24px; z-index: 100;
@@ -250,4 +279,7 @@ img { display: block; }
   .cms-frame { grid-template-columns: 1fr; }
   .cms-grid2 { grid-template-columns: 1fr; }
   .cms-tabs { flex-wrap: wrap; }
+  .cms-sharebar-inner { flex-direction: column; align-items: stretch; padding: 12px 14px; }
+  .cms-sharebar-actions .cms-btn { flex: 1; justify-content: center; }
 }
+body.has-sharebar .cms-toast { bottom: 170px; }

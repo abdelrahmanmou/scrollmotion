@@ -23,7 +23,8 @@ export async function loadCatalog({ timeoutMs = 4000 } = {}) {
         return {
           CATEGORIES: data.categories,
           FEATURED: data.featured || [],
-          VIDEOS: data.videos.filter(v => !v.hidden),
+          // Hidden videos stay out of the page but still open from a share link
+          VIDEOS: data.videos,
           source: 'cms',
         };
       }
