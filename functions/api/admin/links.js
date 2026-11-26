@@ -1,7 +1,7 @@
 // Admin: tracked share links.
 //   GET            → all links with totals
 //   GET ?id=…      → one link's visits with the videos watched in each
-//   PUT  { show, ref, label }   → add a link or rename it
+//   PUT  { show, ref, label?, note?, greet? } → add a link or edit it (omitted fields stay as they are)
 //   DELETE ?id=…   → forget a link and its visits
 import { json } from '../../_lib/auth.js';
 import { ensureSchema, normShow, normRef, linkId } from '../../_lib/track.js';
@@ -31,7 +31,7 @@ export async function onRequestGet({ request, env }) {
   }
 
   const rows = (await env.DB.prepare(`
-    SELECT l.id, l.show, l.ref, l.label, l.created,
+    SELECT l.id, l.show, l.ref, l.label, l.greet, l.note, l.created,
       COUNT(DISTINCT v.id) AS visits,
       COUNT(DISTINCT v.visitor) AS people,
       MIN(v.started) AS first_open,
@@ -53,10 +53,12 @@ export async function onRequestPut({ request, env }) {
   if (!show) return json({ error: 'The link has no videos' }, 400);
   const ref = normRef(b.ref);
   const id = linkId(show, ref);
-  const label = String(b.label || '').trim().slice(0, 100);
-  await env.DB.prepare(`INSERT INTO links (id, show, ref, label, created) VALUES (?, ?, ?, ?, ?)
-    ON CONFLICT(id) DO UPDATE SET label = CASE WHEN excluded.label <> '' OR ? THEN excluded.label ELSE links.label END`)
-    .bind(id, show, ref, label, Date.now(), b.clearLabel ? 1 : 0).run();
+  const label = typeof b.label === 'string' ? b.label.trim().slice(0, 100) : null;
+  const note = typeof b.note === 'string' ? b.note.trim().slice(0, 500) : null;
+  const greet = typeof b.greet === 'boolean' ? (b.greet ? 1 : 0) : null;
+  await env.DB.prepare(`INSERT INTO links (id, show, ref, label, note, greet, created) VALUES (?, ?, ?, COALESCE(?, ''), COALESCE(?, ''), COALESCE(?, 1), ?)
+    ON CONFLICT(id) DO UPDATE SET label = COALESCE(?, links.label), note = COALESCE(?, links.note), greet = COALESCE(?, links.greet)`)
+    .bind(id, show, ref, label, note, greet, Date.now(), label, note, greet).run();
   return json({ ok: true, id });
 }
 

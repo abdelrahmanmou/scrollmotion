@@ -82,6 +82,7 @@
           <p class="cms-muted">Every share link you copy here is tracked: when it's opened, from where, and how long each video is watched. Your own visits don't count while you're signed in.</p>
           <button id="links-refresh" class="cms-btn" type="button">Refresh</button>
         </div>
+        <div id="alerts" class="cms-alerts"></div>
         <form id="link-add" class="cms-link-add">
           <input id="link-add-url" type="url" placeholder="Paste a link you already sent…" aria-label="Link you already sent" required>
           <input id="link-add-name" placeholder="Client name" aria-label="Client name" maxlength="100">
@@ -199,9 +200,10 @@
         <strong id="share-count"></strong>
         <ol id="share-list" class="cms-share-list"></ol>
         <div class="cms-share-row">
-          <input id="share-name" class="cms-share-url cms-share-name" placeholder="Client name (optional)" maxlength="100" aria-label="Client name">
-          <input id="share-url" class="cms-share-url" readonly aria-label="Share link">
+          <input id="share-name" class="cms-share-url cms-share-name" placeholder="Client name (shown as “For …”)" maxlength="100" aria-label="Client name">
+          <input id="share-note" class="cms-share-url cms-share-name" placeholder="Note to them (optional)" maxlength="500" aria-label="Note to the client">
         </div>
+        <input id="share-url" class="cms-share-url" readonly aria-label="Share link">
       </div>
       <div class="cms-sharebar-actions">
         <button id="share-clear" type="button" class="cms-btn cms-btn-ghost">Clear</button>

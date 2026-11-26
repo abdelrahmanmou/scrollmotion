@@ -46,6 +46,9 @@ The portfolio video list is managed at `https://scrollmotions.pages.dev/admin`.
 - Slugs are permanent: share links use `?show=slug-a,slug-b`.
 - Local test with Functions: `npm run build`, then `npx wrangler pages dev dist --r2 MEDIA` with `ADMIN_PASSWORD=…` in `.dev.vars` (git-ignored).
 - Share-link tracking: D1 database `scrollmotions-analytics` bound as `DB`. `js/share-tracking.js` (loaded by `js/portfolio.js`) sends beacons to `POST /api/track` only on `?show=` pages: an `open` on load and `watch` updates (seconds watched per video). Visits from a signed-in admin are ignored. A link is identified by its normalised `show` list plus optional `ref` (`&ref=client-name`, added by the admin's client-name field), so links sent before tracking are still matched. Tables (`links`, `visits`, `plays`) are created by `functions/_lib/track.js`. Admin view: Links tab via `/api/admin/links`. Local test: add `--d1 DB=local-analytics` to `wrangler pages dev`.
+- Personal links: each tracked link has `label` (client name), `greet` (show the name) and `note`. `GET /api/link` gives the page "For {name}" and the note; `functions/portfolio.js` rewrites title/og/twitter tags on `/portfolio?show=…` so WhatsApp/LinkedIn/email previews show the first picked video's thumbnail, the client's name and the note (and `noindex`). `_routes.json` includes `/portfolio` for this.
+- Telegram alerts: secret `TELEGRAM_BOT_TOKEN`; the chat is connected from the admin Links tab (stored in D1 `settings`). `POST /api/track` sends an alert on a new visit (not for the same person within 30 minutes).
+- Site URLs use `https://scrollmotions.pages.dev` (no custom domain; `scrollmotion.site` was dropped on 2026-11-26).
 - Deploy hook `main-rebuild` (Settings → Builds) rebuilds `main` if a GitHub push doesn't trigger a build.
 
 ## Current hero avatar implementation

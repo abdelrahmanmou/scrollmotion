@@ -93,6 +93,25 @@ function renderPicked() {
   els.pickedTitle.textContent = pickedSlugs.length === 1 ? 'Picked for you' : `${pickedSlugs.length} videos picked for you`;
   pickedSlugs.forEach(s => els.pickedGrid.appendChild(card(bySlug.get(s), { picked: true })));
   document.title = `Selected work – Abdelrahman Moustafa`;
+  personalise();
+}
+
+// "For Sarah" and a note, set on the link in the CMS
+async function personalise() {
+  try {
+    const q = new URLSearchParams({ show: params.get('show') || '', ref: params.get('ref') || '' });
+    const res = await fetch(`/api/link?${q}`);
+    if (!res.ok) return;
+    const { name, note } = await res.json();
+    if (name) {
+      document.getElementById('pf-picked-eyebrow').textContent = `For ${name}`;
+      document.title = `Picked for ${name} – Abdelrahman Moustafa`;
+    }
+    if (note) {
+      document.getElementById('pf-note-text').textContent = note;
+      document.getElementById('pf-note').hidden = false;
+    }
+  } catch { /* the page works without it */ }
 }
 
 // Everything that isn't already in the picked row, in category order

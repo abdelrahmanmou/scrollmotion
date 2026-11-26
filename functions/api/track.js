@@ -2,11 +2,12 @@
 // Body: { t: 'open' | 'watch', show, ref, visit, visitor, referrer?, slug?, seconds?, duration? }
 // Visits from a signed-in admin (you) are ignored.
 import { isAuthed, json } from '../_lib/auth.js';
-import { ensureSchema, normShow, normRef, linkId, deviceOf } from '../_lib/track.js';
+import { ensureSchema, normShow, normRef, linkId, deviceOf, countryName } from '../_lib/track.js';
+import { sendAlert } from '../_lib/telegram.js';
 
 const ID = /^[A-Za-z0-9]{8,40}$/;
 
-export async function onRequestPost({ request, env }) {
+export async function onRequestPost({ request, env, waitUntil }) {
   if (!env.DB) return json({ ok: false }, 503);
   if (await isAuthed(request, env)) return json({ ok: true, skipped: 'admin' });
 
@@ -22,13 +23,20 @@ export async function onRequestPost({ request, env }) {
   const cf = request.cf || {};
 
   if (b.t === 'open') {
+    const known = await env.DB.prepare('SELECT 1 FROM visits WHERE id = ?').bind(b.visit).first();
+    // Same person reopening within 30 minutes doesn't trigger another alert
+    const recent = known ? null : await env.DB.prepare(
+      'SELECT 1 FROM visits WHERE link_id = ? AND visitor = ? AND last_seen > ?',
+    ).bind(id, b.visitor, now - 30 * 60000).first();
+    const device = deviceOf(request.headers.get('user-agent') || '');
     await env.DB.batch([
       env.DB.prepare('INSERT OR IGNORE INTO links (id, show, ref, label, created) VALUES (?, ?, ?, \'\', ?)').bind(id, show, ref, now),
       env.DB.prepare(`INSERT INTO visits (id, link_id, visitor, started, last_seen, country, city, device, referrer)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(id) DO UPDATE SET last_seen = excluded.last_seen`)
         .bind(b.visit, id, b.visitor, now, now, cf.country || '', cf.city || '',
-          deviceOf(request.headers.get('user-agent') || ''), String(b.referrer || '').slice(0, 200)),
+          device, String(b.referrer || '').slice(0, 200)),
     ]);
+    if (!known && !recent) waitUntil(alertOpen(env, request, id, show, device, cf).catch(() => {}));
     return json({ ok: true });
   }
 
@@ -51,4 +59,19 @@ export async function onRequestPost({ request, env }) {
   }
 
   return json({ error: 'unknown event' }, 400);
+}
+
+async function alertOpen(env, request, id, show, device, cf) {
+  const link = await env.DB.prepare('SELECT label FROM links WHERE id = ?').bind(id).first();
+  const n = (await env.DB.prepare('SELECT COUNT(*) AS n FROM visits WHERE link_id = ?').bind(id).first()).n;
+  const videos = show.split(',').length;
+  const where = [cf.city, countryName(cf.country)].filter(Boolean).join(', ') || 'Unknown place';
+  const who = (link && link.label) || 'Someone';
+  const text = [
+    `👀 ${who} opened your portfolio link${n > 1 ? ` (visit ${n})` : ''}`,
+    `📍 ${where} · ${device}`,
+    `🎬 ${videos} video${videos > 1 ? 's' : ''} picked`,
+    `Details: ${new URL('/admin/', request.url)}`,
+  ].join('\n');
+  await sendAlert(env, text);
 }

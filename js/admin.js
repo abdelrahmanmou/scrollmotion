@@ -321,7 +321,7 @@ async function moveToR2() {
 document.querySelectorAll('.cms-tab').forEach(t => t.addEventListener('click', () => {
   document.querySelectorAll('.cms-tab').forEach(x => x.classList.toggle('is-active', x === t));
   ['videos', 'categories', 'links'].forEach(n => { $(`tab-${n}`).hidden = t.dataset.tab !== n; });
-  if (t.dataset.tab === 'links') loadLinks();
+  if (t.dataset.tab === 'links') { loadLinks(); loadAlerts(); }
 }));
 
 // ---------- Render ----------
@@ -512,14 +512,18 @@ $('share-list').addEventListener('click', e => {
   renderShare();
   renderVideos();
 });
-$('share-clear').addEventListener('click', () => { picks = []; $('share-name').value = ''; renderShare(); renderVideos(); });
+$('share-clear').addEventListener('click', () => { picks = []; $('share-name').value = ''; $('share-note').value = ''; renderShare(); renderVideos(); });
 $('share-name').addEventListener('input', renderShare);
 $('share-copy').addEventListener('click', async () => {
   const name = $('share-name').value.trim();
+  const note = $('share-note').value.trim();
   const ref = slugify(name);
   copy(shareLink(picks, ref));
   // Register it so it shows (with its name) in the Links tab before it's opened
-  api('/api/admin/links', { method: 'PUT', body: { show: picks.join(','), ref, label: name } })
+  const body = { show: picks.join(','), ref };
+  if (name) body.label = name;
+  if (note) body.note = note;
+  api('/api/admin/links', { method: 'PUT', body })
     .catch(e => toast(`Link copied, but tracking couldn't save its name: ${e.message}`, true));
 });
 $('share-url').addEventListener('focus', e => e.target.select());
@@ -567,22 +571,76 @@ function renderLinks() {
       : '<span class="cms-muted">Not opened yet</span>';
     return `<div class="cms-linkrow" data-id="${esc(l.id)}">
       <div class="cms-linkrow-main">
-        <div class="cms-linkrow-title"><strong>${esc(l.label || 'Unnamed link')}</strong>${l.ref ? ` <span class="cms-tag">ref: ${esc(l.ref)}</span>` : ''}</div>
+        <div class="cms-linkrow-title"><strong>${esc(l.label || 'Unnamed link')}</strong>${l.ref ? ` <span class="cms-tag">ref: ${esc(l.ref)}</span>` : ''}${l.label && !l.greet ? ' <span class="cms-tag">name hidden on page</span>' : ''}</div>
+        ${l.note ? `<div class="cms-muted cms-small">Note: “${esc(l.note.length > 90 ? `${l.note.slice(0, 90)}…` : l.note)}”</div>` : ''}
         <div class="cms-small">${stats}</div>
         <div class="cms-muted cms-small cms-linkrow-videos">${slugs.length} video${slugs.length > 1 ? 's' : ''}: ${slugs.slice(0, 4).map(s => esc(titleOf(s))).join(', ')}${slugs.length > 4 ? '…' : ''}</div>
       </div>
       <div class="cms-row-actions">
         ${l.visits ? '<button type="button" data-act="details">Details</button>' : ''}
-        <button type="button" data-act="rename">Rename</button>
+        <button type="button" data-act="edit">Edit</button>
         <button type="button" data-act="copy">Copy</button>
         <button type="button" data-act="delete" class="cms-danger">Delete</button>
       </div>
+      <form class="cms-linkrow-edit" hidden>
+        <label class="cms-field"><span>Client name (also shown on the page as “For …”)</span><input name="label" maxlength="100" value="${esc(l.label)}"></label>
+        <label class="cms-check"><input type="checkbox" name="greet" ${l.greet ? 'checked' : ''}> Show their name on the page</label>
+        <label class="cms-field"><span>Note to them (shown above the videos)</span><textarea name="note" maxlength="500" rows="3">${esc(l.note)}</textarea></label>
+        <div class="cms-edit-btns"><button type="button" class="cms-btn cms-btn-ghost" data-act="edit-cancel">Cancel</button><button type="submit" class="cms-btn cms-btn-primary">Save</button></div>
+      </form>
       <div class="cms-linkrow-details" hidden></div>
     </div>`;
   }).join('');
 }
 
 $('links-refresh').addEventListener('click', loadLinks);
+
+$('links-list').addEventListener('submit', async e => {
+  const f = e.target.closest('.cms-linkrow-edit');
+  if (!f) return;
+  e.preventDefault();
+  const l = linksCache.find(x => x.id === f.closest('.cms-linkrow').dataset.id);
+  try {
+    await api('/api/admin/links', { method: 'PUT', body: { show: l.show, ref: l.ref, label: f.label.value.trim(), note: f.note.value.trim(), greet: f.greet.checked } });
+    toast('Saved');
+    loadLinks();
+  } catch (err) { toast(err.message, true); }
+});
+
+// ---------- Telegram alerts ----------
+async function loadAlerts() {
+  const box = $('alerts');
+  let s;
+  try { s = await api('/api/admin/alerts'); } catch (e) { box.innerHTML = `<p class="cms-error cms-small">${esc(e.message)}</p>`; return; }
+  if (!s.token) {
+    box.innerHTML = `<strong>Get a Telegram message when a link is opened</strong>
+      <ol class="cms-steps">
+        <li>In Telegram, open <a href="https://t.me/BotFather" target="_blank" rel="noopener">@BotFather</a>, send <code>/newbot</code>, and follow the prompts. It gives you a token.</li>
+        <li>In Cloudflare: Workers &amp; Pages → scrollmotions → Settings → Variables and secrets → Add. Type <em>Secret</em>, name <code>TELEGRAM_BOT_TOKEN</code>, paste the token, Save.</li>
+        <li>Redeploy the site (Deployments → latest → Retry deployment), then come back here.</li>
+      </ol>`;
+    return;
+  }
+  if (s.error) { box.innerHTML = `<p class="cms-error cms-small">${esc(s.error)}</p>`; return; }
+  if (!s.connected) {
+    box.innerHTML = `<strong>Almost there:</strong> open <a href="https://t.me/${esc(s.bot)}" target="_blank" rel="noopener">@${esc(s.bot)}</a> in Telegram and press <em>Start</em>, then
+      <button type="button" class="cms-btn cms-btn-primary" id="tg-connect">Connect</button>`;
+    $('tg-connect').onclick = () => alertAction('connect');
+    return;
+  }
+  box.innerHTML = `<span class="cms-opened">● Telegram alerts on</span> <span class="cms-muted">· sending to ${esc(s.chatName || 'you')} via @${esc(s.bot)}</span>
+    <button type="button" class="cms-btn" id="tg-test">Send test</button>
+    <button type="button" class="cms-btn cms-btn-ghost" id="tg-off">Turn off</button>`;
+  $('tg-test').onclick = () => alertAction('test');
+  $('tg-off').onclick = () => alertAction('disconnect');
+}
+async function alertAction(action) {
+  try {
+    await api('/api/admin/alerts', { method: 'POST', body: { action } });
+    toast(action === 'test' ? 'Test sent. Check Telegram' : action === 'connect' ? 'Connected' : 'Alerts off');
+  } catch (e) { toast(e.message, true); }
+  loadAlerts();
+}
 
 $('links-list').addEventListener('click', async e => {
   const b = e.target.closest('button[data-act]');
@@ -591,12 +649,8 @@ $('links-list').addEventListener('click', async e => {
   const l = linksCache.find(x => x.id === row.dataset.id);
   if (!l) return;
   if (b.dataset.act === 'copy') copy(shareLink(l.show.split(','), l.ref));
-  if (b.dataset.act === 'rename') {
-    const name = prompt('Client name for this link:', l.label || '');
-    if (name === null) return;
-    await api('/api/admin/links', { method: 'PUT', body: { show: l.show, ref: l.ref, label: name.trim(), clearLabel: !name.trim() } });
-    loadLinks();
-  }
+  if (b.dataset.act === 'edit') { const f = row.querySelector('.cms-linkrow-edit'); f.hidden = !f.hidden; }
+  if (b.dataset.act === 'edit-cancel') row.querySelector('.cms-linkrow-edit').hidden = true;
   if (b.dataset.act === 'delete') {
     if (!confirm(`Stop tracking “${l.label || 'this link'}” and delete its history?\n\nThe link itself keeps working.`)) return;
     await api(`/api/admin/links?id=${encodeURIComponent(l.id)}`, { method: 'DELETE' });
