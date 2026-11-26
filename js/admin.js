@@ -254,6 +254,69 @@ function renderBanner() {
   }
 }
 
+// ---------- Move site files to R2 ----------
+// Videos and thumbnails that still ship inside the website code (not in R2)
+const isSiteFile = u => typeof u === 'string' && u.startsWith('/') && !u.startsWith('/media/');
+function siteFiles() {
+  const out = [];
+  for (const v of catalog.videos) {
+    if (!v.youtube && isSiteFile(v.src)) out.push({ v, field: 'src', kind: 'video' });
+    if (isSiteFile(v.poster)) out.push({ v, field: 'poster', kind: 'poster' });
+  }
+  return out;
+}
+let moving = false;
+
+function renderStorage() {
+  const box = $('storage');
+  if (moving) return;
+  const files = siteFiles();
+  box.hidden = !files.length;
+  if (!files.length) return;
+  const vids = files.filter(f => f.kind === 'video').length;
+  box.innerHTML = `${vids} video${vids === 1 ? '' : 's'} and ${files.length - vids} thumbnail${files.length - vids === 1 ? '' : 's'} are still stored in the website code. Moving them to R2 lets them stream on iPhones and keeps the site small. <button type="button" class="cms-link" id="move-r2">Move to R2</button>`;
+  $('move-r2').onclick = moveToR2;
+}
+
+async function moveToR2() {
+  const files = siteFiles();
+  if (!files.length || moving) return;
+  moving = true;
+  busyUploading = true;
+  const box = $('storage');
+  const failed = [];
+  let done = 0;
+  try {
+    for (const f of files) {
+      box.textContent = `Moving to R2… ${done + 1} of ${files.length}: ${f.v.title} (${f.kind}). Keep this tab open.`;
+      const q = new URLSearchParams({ path: decodeURI(f.v[f.field]), kind: f.kind, slug: f.v.slug });
+      try {
+        const { url } = await api(`/api/admin/import?${q}`, { method: 'POST' });
+        f.v[f.field] = url;
+      } catch (e) {
+        failed.push(`${f.v.title} (${f.kind}): ${e.message}`);
+      }
+      done++;
+      // Save along the way so a closed tab doesn't lose finished copies
+      if (done % 10 === 0) await saveNow();
+    }
+    await saveNow();
+  } finally {
+    moving = false;
+    busyUploading = false;
+  }
+  renderAll();
+  if (failed.length) {
+    box.hidden = false;
+    box.innerHTML = `Moved ${files.length - failed.length} of ${files.length} files. These didn't move:<br>${failed.map(esc).join('<br>')}<br><button type="button" class="cms-link" id="move-r2">Try again</button>`;
+    $('move-r2').onclick = moveToR2;
+  } else {
+    box.hidden = true;
+    box.textContent = '';
+    toast(`Moved ${files.length} files to R2`);
+  }
+}
+
 // ---------- Tabs ----------
 document.querySelectorAll('.cms-tab').forEach(t => t.addEventListener('click', () => {
   document.querySelectorAll('.cms-tab').forEach(x => x.classList.toggle('is-active', x === t));
@@ -264,6 +327,7 @@ document.querySelectorAll('.cms-tab').forEach(t => t.addEventListener('click', (
 // ---------- Render ----------
 function renderAll() {
   renderBanner();
+  renderStorage();
   renderShare();
   renderFeatured();
   renderFilters();
