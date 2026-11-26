@@ -5,11 +5,7 @@
 //
 // Each video has a stable `slug`. Slugs are used in share links such as
 //   /portfolio.html?show=azza-fahmy,hub-xyz
-// so never rename a slug once a link has been sent. To add a video:
-//   1. Put a web-compressed MP4 in public/videos/<slug>.mp4 (keep it under 25 MiB)
-//   2. Put a poster frame in public/posters/<slug>.jpg
-//   3. Add an entry below.
-// Files in public/ are served from the site root, so paths start with "/".
+// so never rename a slug once a link has been sent. Add new videos in the CMS.
 
 export const CATEGORIES = [
   { id: 'saas', label: 'SaaS & Tech', desc: 'Launch films, explainers and feature videos for software products.' },
@@ -24,10 +20,76 @@ export const CATEGORIES = [
 // Shown in the "Start here" row at the top of the page (first one is the big card).
 export const FEATURED = ['searchable', 'goldsand', 'blackbox-elevenlabs'];
 
+// Files in the R2 bucket (moved there from the website code)
+const R2 = {
+  'yozo-anas': ['yozo-anas-mwxopzwn.mp4', 'yozo-anas-mwxoq0i2.jpg'],
+  'yozo-retention': ['yozo-retention-mwxoq0v6.mp4', 'yozo-retention-mwxoq1mp.jpg'],
+  'yozo-shopify-listing': ['yozo-shopify-listing-mwxoq1xx.mp4', 'yozo-shopify-listing-mwxoq2fl.jpg'],
+  'yozo-onboarding': ['yozo-onboarding-mwxoq2sq.mp4', 'yozo-onboarding-mwxoq3e0.jpg'],
+  'yozo-order-confirmation': ['yozo-order-confirmation-mwxoq4q9.mp4', 'yozo-order-confirmation-mwxoq535.jpg'],
+  'yozo-zena-ai': ['yozo-zena-ai-mwxoq5oz.mp4', 'yozo-zena-ai-mwxoq634.jpg'],
+  'yozo-abandoned-carts': ['yozo-abandoned-carts-mwxoq6d2.mp4', 'yozo-abandoned-carts-mwxoq6pz.jpg'],
+  'yozo-promo-square': ['yozo-promo-square-mwxoq6zj.mp4', 'yozo-promo-square-mwxoq7cn.jpg'],
+  'boardworks-explainer': ['boardworks-explainer-mwxoq818.mp4', 'boardworks-explainer-mwxoq8fm.jpg'],
+  'hub-xyz': ['hub-xyz-mwxoq9rf.mp4', 'hub-xyz-mwxoqa6c.jpg'],
+  'cryptex': ['cryptex-mwxoqc9k.mp4', 'cryptex-mwxoqcou.jpg'],
+  'blackbox-elevenlabs': ['blackbox-elevenlabs-mwxoqf7r.mp4', 'blackbox-elevenlabs-mwxoqfsw.jpg'],
+  'searchable': ['searchable-mwxoqiim.mp4', 'searchable-mwxoqj66.jpg'],
+  'yozo-testimonials': ['yozo-testimonials-mwxoqkp8.mp4', 'yozo-testimonials-mwxoqlbr.jpg'],
+  'yozo-ai-ugc': ['yozo-ai-ugc-mwxoqmne.mp4', 'yozo-ai-ugc-mwxoqn3w.jpg'],
+  'time-is-money': ['time-is-money-mwxoqouk.mp4', 'time-is-money-mwxoqp7b.jpg'],
+  'so-by-sora-launch': ['so-by-sora-launch-mwxoqq30.mp4', 'so-by-sora-launch-mwxoqqh1.jpg'],
+  'sora-collection-what-stays': ['sora-collection-what-stays-mwxoqrfm.mp4', 'sora-collection-what-stays-mwxoqruw.jpg'],
+  'sora-jameel': ['sora-jameel-mwxoqswe.mp4', 'sora-jameel-mwxoqtc2.jpg'],
+  'bayt-zayn-branding': ['bayt-zayn-branding-mwxoqug8.mp4', 'bayt-zayn-branding-mwxoqurh.jpg'],
+  'andaa-brand-story': ['andaa-brand-story-mwxoqw82.mp4', 'andaa-brand-story-mwxoqwns.jpg'],
+  'society-website': ['society-website-mwxoqxnv.mp4', 'society-website-mwxoqy0q.jpg'],
+  'workwise-marketing-strategy': ['workwise-marketing-strategy-mwxoqz4y.mp4', 'workwise-marketing-strategy-mwxoqzn7.jpg'],
+  'workwise-about': ['workwise-about-mwxor0za.mp4', 'workwise-about-mwxor1ft.jpg'],
+  'workwise-our-work': ['workwise-our-work-mwxor2g6.mp4', 'workwise-our-work-mwxor2uo.jpg'],
+  'workwise-3-second-audition': ['workwise-3-second-audition-mwxor48r.mp4', 'workwise-3-second-audition-mwxor4lz.jpg'],
+  'unicafone': ['unicafone-mwxor5vr.mp4', 'unicafone-mwxor68u.jpg'],
+  'educatly-ad': ['educatly-ad-mwxor81i.mp4', 'educatly-ad-mwxor8kf.jpg'],
+  'goldsand': ['goldsand-mwxor8wg.mp4', 'goldsand-mwxor9q9.jpg'],
+  'azza-fahmy': ['azza-fahmy-mwxorb82.mp4', 'azza-fahmy-mwxorbyk.jpg'],
+  'mostafa-mosharrafa': ['mostafa-mosharrafa-mwxorela.mp4', 'mostafa-mosharrafa-mwxorf2p.jpg'],
+  'ahmed-el-shuqairy': ['ahmed-el-shuqairy-mwxorg7v.mp4', 'ahmed-el-shuqairy-mwxorgmp.jpg'],
+  'ten-seconds': ['ten-seconds-mwxorhxa.mp4', 'ten-seconds-mwxorib4.jpg'],
+  'steph-kallaway': ['steph-kallaway-mwxorip1.mp4', 'steph-kallaway-mwxorjuc.jpg'],
+  'koh-pokemon': ['koh-pokemon-mwxork5x.mp4', 'koh-pokemon-mwxorknk.jpg'],
+  'dom-walls': ['dom-walls-mwxormiv.mp4', 'dom-walls-mwxormz0.jpg'],
+  'conner-4m': ['conner-4m-mwxorpeu.mp4', 'conner-4m-mwxorq3o.jpg'],
+  'cayden-dscr': ['cayden-dscr-mwxorqdm.mp4', 'cayden-dscr-mwxorqst.jpg'],
+  'mikey-florida-ohio': ['mikey-florida-ohio-mwxorrve.mp4', 'mikey-florida-ohio-mwxorsde.jpg'],
+  'anna-pyrex': ['anna-pyrex-mwxorucq.mp4', 'anna-pyrex-mwxorv16.jpg'],
+  'soudan-600egp': ['soudan-600egp-mwxorx2f.mp4', 'soudan-600egp-mwxorxl9.jpg'],
+  'alex-saint': ['alex-saint-mwxorzgd.mp4', 'alex-saint-mwxos010.jpg'],
+  'dean': ['dean-mwxos09m.mp4', 'dean-mwxos0mo.jpg'],
+  'reel-1': ['reel-1-mwxos0zv.mp4', 'reel-1-mwxos19x.jpg'],
+  'reel-2': ['reel-2-mwxos1k8.mp4', 'reel-2-mwxos1wp.jpg'],
+  'reel-3': ['reel-3-mwxos2rm.mp4', 'reel-3-mwxos31l.jpg'],
+  'reel-4': ['reel-4-mwxos3be.mp4', 'reel-4-mwxos3py.jpg'],
+  'reel-5': ['reel-5-mwxos3zs.mp4', 'reel-5-mwxos4bd.jpg'],
+  'reel-6': ['reel-6-mwxos4m8.mp4', 'reel-6-mwxos4xh.jpg'],
+  'reel-7': ['reel-7-mwxos56a.mp4', 'reel-7-mwxos5ff.jpg'],
+  'reel-8': ['reel-8-mwxos6d4.mp4', 'reel-8-mwxos6wk.jpg'],
+  'reel-9': ['reel-9-mwxos76n.mp4', 'reel-9-mwxos7g3.jpg'],
+  'reel-10': ['reel-10-mwxos7pm.mp4', 'reel-10-mwxos847.jpg'],
+  'reel-11': ['reel-11-mwxos8ei.mp4', 'reel-11-mwxos8y2.jpg'],
+  'reel-12': ['reel-12-mwxos974.mp4', 'reel-12-mwxos9ic.jpg'],
+  'reel-13': ['reel-13-mwxosagk.mp4', 'reel-13-mwxosazd.jpg'],
+  'reel-14': ['reel-14-mwxosb7x.mp4', 'reel-14-mwxosbkx.jpg'],
+  'reel-15': ['reel-15-mwxosbv6.mp4', 'reel-15-mwxosc5s.jpg'],
+  'reel-16': ['reel-16-mwxosceq.mp4', 'reel-16-mwxoscnh.jpg'],
+  'reel-17': ['reel-17-mwxoscwk.mp4', 'reel-17-mwxosd7b.jpg'],
+  'reel-18': ['reel-18-mwxose1x.mp4', 'reel-18-mwxosec3.jpg'],
+  'reel-19': ['reel-19-mwxosem7.mp4', 'reel-19-mwxosf0g.jpg'],
+};
+
 const local = (slug, extra) => ({
   slug,
-  src: `/videos/${slug}.mp4`,
-  poster: `/posters/${slug}.jpg`,
+  src: `/media/videos/${R2[slug][0]}`,
+  poster: `/media/posters/${R2[slug][1]}`,
   ...extra,
 });
 
@@ -41,8 +103,8 @@ const youtube = (slug, id, extra) => ({
 
 const reel = (n, duration, format) => ({
   slug: `reel-${n}`,
-  src: `/social-media-reel-${n}.mp4`,
-  poster: `/posters/reel-${n}.jpg`,
+  src: `/media/videos/${R2[`reel-${n}`][0]}`,
+  poster: `/media/posters/${R2[`reel-${n}`][1]}`,
   title: `Social Reel ${String(n).padStart(2, '0')}`,
   client: 'Short-form marketing',
   category: 'reels',

@@ -42,6 +42,7 @@ The portfolio video list is managed at `https://scrollmotions.pages.dev/admin`.
   - `/api/admin/*` login, catalogue save (etag-checked), multipart upload, media delete.
 - Front end: `admin/index.html`, `js/admin.js`, `css/admin.css`. `js/portfolio.js` loads the list via `js/portfolio-catalog.js` and falls back to the built-in `js/portfolio-data.js` (used by `npm run dev`, which has no Functions).
 - Once the CMS has saved, `js/portfolio-data.js` is only the fallback; edit videos in the CMS, not in that file.
+- All portfolio videos and thumbnails live in R2 (moved from `public/` on 2026-11-26; the old files remain in Git history). Don't add video files to the repo; upload through the CMS. `case-studies.html` also plays two videos from `/media/`. Only the hero avatar files stay in `assets/`.
 - Slugs are permanent: share links use `?show=slug-a,slug-b`.
 - Local test with Functions: `npm run build`, then `npx wrangler pages dev dist --r2 MEDIA` with `ADMIN_PASSWORD=…` in `.dev.vars` (git-ignored).
 - Deploy hook `main-rebuild` (Settings → Builds) rebuilds `main` if a GitHub push doesn't trigger a build.
